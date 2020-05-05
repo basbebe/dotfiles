@@ -1,7 +1,8 @@
-"
-"*****************************************************************************
-" dein Scripts
-"*****************************************************************************
+set encoding=utf-8
+scriptencoding utf-8
+"# Plugins
+
+"### dein Scripts
 if &compatible
   set nocompatible               " Be iMproved
 endif
@@ -17,28 +18,45 @@ if dein#load_state('/Users/bastian/.cache/dein')
   " Required:
   call dein#add('/Users/bastian/.cache/dein/repos/github.com/Shougo/dein.vim')
 
-"*****************************************************************************
-" Plugins
-"*****************************************************************************
+"## Plugins
 
-  " General
+  "### General
   call dein#add('mhinz/vim-startify')
   call dein#add('itchyny/lightline.vim')
   call dein#add('tpope/vim-surround')
   call dein#add('jiangmiao/auto-pairs')
+  call dein#add('Yggdroot/indentLine')
   call dein#add('preservim/nerdcommenter')
-  call dein#add('flazz/vim-colorschemes')
   call dein#add('psliwka/vim-smoothie')
-  call dein#add('junegunn/fzf')
+  call dein#add('junegunn/fzf', { 'build': './install --all', 'merged': 0 })
+  call dein#add('junegunn/fzf.vim', { 'depends': 'fzf' })
   call dein#add('junegunn/goyo.vim')
+  call dein#add('junegunn/limelight.vim')
 
-  " Code Completion
+  "### Colorthemes
+  call dein#add('morhetz/gruvbox')
+  call dein#add('drewtempelmeyer/palenight.vim')
+  call dein#add('ayu-theme/ayu-vim')
+
+  "### Syntax
+  call dein#add('neovimhaskell/haskell-vim')
+
+  "### Code Completion
   call dein#add('ncm2/ncm2')
   call dein#add('roxma/nvim-yarp')
   call dein#add('ncm2/ncm2-bufword')
   call dein#add('ncm2/ncm2-path')
   call dein#add('ncm2/ncm2-github')
+  call dein#add('ncm2/ncm2-syntax')
+  call dein#add('shougo/neco-syntax')
 
+  
+  call dein#add('Shougo/neosnippet.vim')  " Snippets
+  call dein#add('ncm2/ncm2-neosnippet')  " Snippets
+  call dein#add('Shougo/neosnippet-snippets')  " Snippets
+  call dein#add('honza/vim-snippets')  " Snippets
+  call dein#add('ncm2/ncm2-vim')  " Vimscript
+  call dein#add('shougo/neco-vim')  " Vimscript
   call dein#add('ncm2/ncm2-tern')  " Javascript
   call dein#add('ncm2/ncm2-jedi')  " Python
   call dein#add('slashmili/alchemist.vim')  " Elixir
@@ -51,26 +69,27 @@ if dein#load_state('/Users/bastian/.cache/dein')
     \ 'build': 'bash install.sh',
     \ })
 
-  " Linting
+  "### Linting
   call dein#add('dense-analysis/ale')
   call dein#add('maximbaz/lightline-ale')
 
-  " Git
+  "### Git
   call dein#add('tpope/vim-fugitive')
   call dein#add('airblade/vim-gitgutter')
   call dein#add('junegunn/gv.vim')
 
-  " NERDTree
+  "### NERDTree
   call dein#add('preservim/nerdtree')
   call dein#add('tiagofumo/vim-nerdtree-syntax-highlight')
   call dein#add('Xuyuanp/nerdtree-git-plugin')
-"  call dein#add('jistr/vim-nerdtree-tabs')
 
-" Pandoc & Markdown
+  "### Pandoc, Markdown, LaTeX
   call dein#add('vim-pandoc/vim-pandoc')
   call dein#add('vim-pandoc/vim-pandoc-syntax')
+  call dein#add('dhruvasagar/vim-table-mode')
+  call dein#add('lervag/vimtex')
 
-" Icons – needs to be last
+  "### Icons – needs to be last
   call dein#add('ryanoasis/vim-devicons')
 
   " Required:
@@ -88,14 +107,10 @@ if dein#check_install()
 endif
 let g:dein#auto_recache = 1
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " End dein Scripts
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 
-"*****************************************************************************
-" General Settings
-"*****************************************************************************
+"# General Settings
 
 set showcmd                                                 " Show command.
 set tabstop=4                                               " Set TAB size.
@@ -104,13 +119,13 @@ set shiftwidth=4                                            " Spaces for indenta
 set expandtab                                               " Insert appropriate number of spaces.
 set autoindent                                              " Auto carry the indentation.
 set smartindent                                             " Don't be dumb.
-set encoding=utf-8                                          " Force UTF-8.
 set background=dark                                         " Dark themed FTW.
 set nohidden                                                " Close the buffer when another file is opened.
 set autoread                                                " Auto update file if changed.
 set ruler                                                   " Show current line and column position.
 set hlsearch                                                " Highlight searching.
 set incsearch                                               " Incremental while searching.
+nnoremap <leader><space> :nohlsearch<CR>                    " keybinding to stop highlighting after search
 set ignorecase                                              " Don't care about case while searching.
 set smartcase                                               " Care about case if uppercase while searching.
 set wrapscan                                                " Wrap to start if EOF while searching.
@@ -121,7 +136,7 @@ set lazyredraw                                              " Need performance f
 set foldenable                                              " Enable folding.
 set nofoldenable                                            " Unfold all on start.
 set foldnestmax=10                                          " Maximum nested folding limit.
-set foldmethod=indent                                       " Fold based on indentation.
+set foldmethod=syntax                                       " Fold based on indentation.
 set magic                                                   " Better regex.
 set number                                                  " Show line number on current line.
 set relativenumber                                          " Show other line numbers as relatives.
@@ -140,7 +155,7 @@ syntax on                                                   " Force language syn
 "let &colorcolumn="120"
 set colorcolumn=80                                          " Set margin.
 set termguicolors                                           "
-set guifont=Hack\ Nerd\ Font\ Mono:h14  
+set guifont=Hack:h14  
 
 if !has('nvim')
     set ttymouse=xterm2
@@ -153,18 +168,51 @@ endif
 autocmd FileType vim setlocal shiftwidth=2 tabstop=2 softtabstop=2
 autocmd FileType markdown setlocal shiftwidth=2 tabstop=2 softtabstop=2
 
-"*****************************************************************************
-" Colors
-"*****************************************************************************
+"# Colors
 
-colorscheme smyck
+let g:gruvbox_contrast_dark='medium'
+let g:gruvbox_contrast_light='medium'
+let g:gruvbox_italic=1
+colorscheme gruvbox
 
-"*****************************************************************************
-" Plugin Settings
-"*****************************************************************************
+"# Key Mappings
 
-" startify
-"*****************************************************************************
+let mapleader="\<SPACE>"
+
+nnoremap <leader>w :w<CR>
+nnoremap <leader>b :Buffer
+nnoremap <leader>g :Gstatus
+nnoremap <leader><leader> <c-^>
+
+
+"# Plugin Settings
+
+"## startify
+
+autocmd User Startified setlocal cursorline
+
+let g:startify_enable_special      = 1
+let g:startify_files_number        = 10
+let g:startify_relative_path       = 1
+let g:startify_change_to_dir       = 1
+let g:startify_update_oldfiles     = 1
+let g:startify_session_autoload    = 1
+let g:startify_session_persistence = 1
+let g:startify_fortune_use_unicode = 1
+
+let g:startify_skiplist = [
+        \ 'COMMIT_EDITMSG',
+        \ 'bundle/.*/doc',
+        \ '/data/repo/neovim/runtime/doc',
+        \ '/Users/mhi/local/vim/share/vim/vim74/doc',
+        \ ]
+
+let g:startify_bookmarks = [
+        \ { 'c': '~/.vimrc' },
+        \ ]
+
+let g:startify_custom_footer =
+       \ ['', "   Vim is charityware. Please read ':help uganda'.", '']
 
 " " returns all modified files of the current git repo
 " `2>/dev/null` makes the command fail quietly, so that when we are not
@@ -190,15 +238,38 @@ let g:startify_lists = [
         \ { 'type': 'commands',  'header': ['   Commands']       },
         \ ]
 
-" lightline
-"*****************************************************************************
+" startify + NERDTree
+autocmd VimEnter *
+  \   if !argc()
+  \ |   Startify
+  \ |   NERDTree
+  \ |   wincmd w
+  \ | endif
+
+let NERDTreeHijackNetrw = 0
+
+"## indentLine
+
+let g:indentLine_fileTypeExclude = ['help', 'nerdtree', 'startify', 'tagbar', 'vimfiler', 'markdown', 'minimap', 'pandoc']
+
+"## haskell-vim
+
+let g:haskell_enable_quantification = 1   " to enable highlighting of `forall`
+let g:haskell_enable_recursivedo = 1      " to enable highlighting of `mdo` and `rec`
+let g:haskell_enable_arrowsyntax = 1      " to enable highlighting of `proc`
+let g:haskell_enable_pattern_synonyms = 1 " to enable highlighting of `pattern`
+let g:haskell_enable_typeroles = 1        " to enable highlighting of type roles
+let g:haskell_enable_static_pointers = 1  " to enable highlighting of `static`
+let g:haskell_backpack = 1                " to enable highlighting of backpack keywords
+
+"## lightline
 
 " change colortheme
 " Show git branch info (w/ fugitive)
 " Use Powerline Symbols
 
 let g:lightline = {
-  \   'colorscheme': 'one',
+  \   'colorscheme': 'gruvbox',
   \   'active': {
   \     'left':[ [ 'mode', 'paste' ],
   \              [ 'gitbranch', 'readonly', 'filename', 'modified' ]
@@ -215,14 +286,14 @@ let g:lightline = {
   \     'gitbranch': 'fugitive#Head',
   \   }
   \ }
-let g:lightline.separator = {
-  \   'left': '', 'right': ''
-  \}
-let g:lightline.subseparator = {
-  \   'left': '', 'right': ''
-  \}
+"let g:lightline.separator = {
+  "\   'left': '', 'right': ''
+  "\}
+"let g:lightline.subseparator = {
+  "\   'left': '', 'right': ''
+  "\}
 
-" ALE
+"### ALE-lightline
 
 let g:lightline.component_expand = {
       \  'linter_checking': 'lightline#ale#checking',
@@ -263,13 +334,16 @@ let g:lightline.tabline = {
 set showtabline=2  " Show tabline
 set guioptions-=e  " Don't use GUI tabline
 
-" nerdcommenter
-"*****************************************************************************
+"## nerdcommenter
 
-"filetype plugin on
 
-" FZF
-"*****************************************************************************
+"## vim-table-mode
+
+let g:table_mode_auto_align = 0
+let g:table_mode_corner_corner='+'
+let g:table_mode_header_fillchar='='
+
+"## FZF
 
 nnoremap <C-p> :Files<ENTER>
 if has('nvim')
@@ -279,8 +353,7 @@ if has('nvim')
   aug END
 end
 
-" ncm2
-"*****************************************************************************
+"## ncm2
 
 " enable ncm2 for all buffers
 autocmd BufEnter * call ncm2#enable_for_buffer()
@@ -320,8 +393,18 @@ au User Ncm2Plugin call ncm2#register_source({
         \ 'on_complete': ['ncm2#on_complete#omni', 'csscomplete#CompleteCSS'],
         \ })
 
-" LanguaceClient-neovim
-"*****************************************************************************
+"## neosnippets
+" Press enter key to trigger snippet expansion
+" The parameters are the same as `:help feedkeys()`
+inoremap <silent> <expr> <CR> ncm2_neosnippet#expand_or("\<CR>", 'n')
+imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+xmap <C-k>     <Plug>(neosnippet_expand_or_jump)
+nmap <C-k>     <Plug>(neosnippet_expand_or_jump)
+let g:neosnippet#enable_snipmate_compatibility = 1
+let g:neosnippet#snippets_directory='~/.cache/dein/repos/github.com/honza/vim-snippets/snippets'
+
+"## LanguageClient-neovim
 
 " Required for operations modifying multiple buffers like rename.
 set hidden
@@ -341,8 +424,7 @@ nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
 nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
 
 
-" ALE
-"*****************************************************************************
+"## ALE
 
 "let g:ale_linters = {
 "\   'python': ['flake8'],
@@ -359,8 +441,7 @@ let g:ale_fixers = {
 " keep sign gutter open
  "let g:ale_sign_column_always = 1
 
-" NERDTree
-"*****************************************************************************
+"## NERDTree
 
 " open NERDTree on opening an directory
 "autocmd StdinReadPre * let s:std_in=1
@@ -369,4 +450,14 @@ let g:ale_fixers = {
 " close vim if when only NERDTree is left
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 map <C-n> :NERDTreeToggle<CR>
+
+
+"# fold .vimrc
+
+augroup vim_folding
+    autocmd!
+    autocmd FileType vim set foldmethod=expr foldlevel=0
+    " note that double quote in foldexpr has to be escaped with backslash
+ autocmd FileType vim set foldexpr=getline(v:lnum)=~'^\"#'?'>'.(matchend(getline(v:lnum),'\"#*')-1):'='
+augroup END
 
