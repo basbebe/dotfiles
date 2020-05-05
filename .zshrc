@@ -30,8 +30,8 @@ alias tree='ls --tree'
 alias cat='bat'
 
 # manage dotfiles
-alias config='/usr/bin/git --git-dir=/$HOME/.dotfiles/ --work-tree=/$HOME'
-
+alias dotfiles='/usr/bin/git --git-dir=/$HOME/.dotfiles/ --work-tree=/$HOME'
+compdef dotfiles='git'
 # conflict between git merge and graphicsmagic
 unalias gm
 
