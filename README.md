@@ -18,3 +18,8 @@
 * pandoc – Markdown Converter
 * mupdf – PDF Viewer & Converter
 * httpie – curl replacement
+
+---
+
+This repository has been created by following this tuorial:
+https://www.atlassian.com/git/tutorials/dotfiles
