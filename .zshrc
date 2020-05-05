@@ -14,11 +14,26 @@ fi
 
 test -e ${HOME}/.iterm2_shell_integration.zsh && source ${HOME}/.iterm2_shell_integration.zsh
 
+# vim
 alias vim="nvim"
 alias vi="nvim"
 
-alias config='/usr/bin/git --git-dir=/$HOME/.cfg/ --work-tree=/$HOME'
+# exa
+alias ls='exa --icons'
+alias l='ls -l'
+alias la='ls -a'
+alias lla='ls -la'
+alias lt='ls --tree'
+alias tree='ls --tree'
+
+# bat
+alias cat='bat'
+
+# manage dotfiles
+alias config='/usr/bin/git --git-dir=/$HOME/.dotfiles/ --work-tree=/$HOME'
 
 # conflict between git merge and graphicsmagic
 unalias gm
 
+# fzf
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
