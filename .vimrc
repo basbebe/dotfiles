@@ -32,6 +32,7 @@ if dein#load_state('/Users/bastian/.cache/dein')
   call dein#add('junegunn/fzf.vim', { 'depends': 'fzf' })
   call dein#add('junegunn/goyo.vim')
   call dein#add('junegunn/limelight.vim')
+  call dein#add('mcchrish/nnn.vim')
 
   "### Colorthemes
   call dein#add('morhetz/gruvbox')
@@ -336,6 +337,28 @@ set guioptions-=e  " Don't use GUI tabline
 
 "## nerdcommenter
 
+" Add spaces after comment delimiters by default
+let g:NERDSpaceDelims = 1
+
+" Use compact syntax for prettified multi-line comments
+let g:NERDCompactSexyComs = 1
+
+" Align line-wise comment delimiters flush left instead of following code indentation
+let g:NERDDefaultAlign = 'left'
+
+" Set a language to use its alternate delimiters by default
+let g:NERDAltDelims_java = 1
+
+" Enable trimming of trailing whitespace when uncommenting
+let g:NERDTrimTrailingWhitespace = 1
+
+" Enable NERDCommenterToggle to check all selected lines is commented or not 
+let g:NERDToggleCheckAllLines = 1
+
+"## nnn
+
+" Floating window (neovim latest and vim with patch 8.2.191)
+let g:nnn#layout = { 'window': { 'width': 0.9, 'height': 0.6, 'highlight': 'Debug' } }
 
 "## vim-table-mode
 
