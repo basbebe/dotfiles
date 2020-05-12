@@ -8,15 +8,15 @@ if &compatible
 endif
 
 " Required:
-set runtimepath+=/Users/bastian/.cache/dein/repos/github.com/Shougo/dein.vim 
+set runtimepath+=~/.cache/dein/repos/github.com/Shougo/dein.vim 
 
-" Required:
-if dein#load_state('/Users/bastian/.cache/dein')
-  call dein#begin('/Users/bastian/.cache/dein')
+  " Required:
+  if dein#load_state('~/.cache/dein')
+  call dein#begin('~/.cache/dein')
 
   " Let dein manage dein
   " Required:
-  call dein#add('/Users/bastian/.cache/dein/repos/github.com/Shougo/dein.vim')
+  call dein#add('~/.cache/dein/repos/github.com/Shougo/dein.vim')
 
 "## Plugins
 
