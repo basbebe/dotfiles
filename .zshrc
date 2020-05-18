@@ -47,7 +47,7 @@ n ()
     # stty lwrap undef
     # stty lnext undef
 
-    nnn "$@"
+    nnn -Fc "$@"
 
     if [ -f "$NNN_TMPFILE" ]; then
             . "$NNN_TMPFILE"
@@ -55,7 +55,6 @@ n ()
     fi
 }
 [ -n "$NNNLVL" ] && PS1="N$NNNLVL $PS1"
-
 
 # manage dotfiles
 alias dotfiles='git --git-dir=/$HOME/.dotfiles/ --work-tree=/$HOME'
