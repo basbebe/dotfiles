@@ -1,6 +1,6 @@
 function theme_gruvbox
-    set fish_color_normal normal
-    set fish_color_command 005fd7
+    set fish_color_normal 
+    set fish_color_command 458588
     set fish_color_quote 999900
     set fish_color_end 009900
     set fish_color_comment 990000
