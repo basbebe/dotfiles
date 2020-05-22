@@ -42,6 +42,8 @@ set runtimepath+=~/.cache/dein/repos/github.com/Shougo/dein.vim
   "### Syntax
   call dein#add('neovimhaskell/haskell-vim')
   call dein#add('chr4/nginx.vim')
+  call dein#add('dag/vim-fish')
+  call dein#add('cespare/vim-toml')
 
   "### Code Completion
   call dein#add('ncm2/ncm2')
