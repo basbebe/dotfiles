@@ -9,7 +9,9 @@
 set -x PATH /usr/local/bin /usr/local/sbin $HOME/.local/bin $PATH
 
 #include local config
-source ~/.local.fish
+if test -e ~/.local.fish
+    source ~/.local.fish
+end
 
 #enable vim key bindings
 fish_vi_key_bindings
