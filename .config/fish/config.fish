@@ -57,7 +57,9 @@ set -x NNN_ARCHIVE "\\.(7z|bz2|gz|tar|tgz|zip)"
 set -x NNN_COLORS '1234'
 
 # Starship prompt
-starship init fish | source
+if type -q starship 
+    starship init fish | source
+end
 
 # enable iTerm2 tmux integration
 set -x ITERM_ENABLE_SHELL_INTEGRATION_WITH_TMUX YES
