@@ -8,11 +8,6 @@
 # PATH
 set -x PATH /usr/local/bin /usr/local/sbin $HOME/.local/bin $PATH
 
-#include local config
-if test -e ~/.local.fish
-    source ~/.local.fish
-end
-
 #enable vim key bindings
 fish_vi_key_bindings
 
@@ -66,7 +61,11 @@ starship init fish | source
 
 # enable iTerm2 tmux integration
 set -x ITERM_ENABLE_SHELL_INTEGRATION_WITH_TMUX YES
-
 # iTerm2 Shell integration
 source ~/.iterm2_shell_integration.(basename $SHELL)
+
+#include local config
+if test -e ~/.local.fish
+    source ~/.local.fish
+end
 
