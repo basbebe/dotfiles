@@ -158,7 +158,6 @@ set colorcolumn=80                                          " Set margin.
 set termguicolors                                           "
 set guifont=Hack:h14  
 
-set ttymouse=xterm2
 tnoremap <Esc> <C-\><C-n>
 
 autocmd FileType vim setlocal shiftwidth=2 tabstop=2 softtabstop=2
@@ -173,10 +172,9 @@ colorscheme gruvbox
 
 "# Key Mappings
 
-let mapleader="\<SPACE>"
+let mapleader=","
 
 nnoremap <leader>w :w<CR>
-nnoremap <leader>b :Buffer
 nnoremap <leader>g :Gstatus
 nnoremap <leader><leader> <c-^>
 
