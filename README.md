@@ -2,22 +2,24 @@
 
 ## Configured Applications
 
-* [ZSH](https://www.zsh.org/)
-  * [prezto](https://github.com/sorin-ionescu/prezto) – ZSH configuration Framework
-    * [prezto-contrib](https://github.com/belak/prezto-contrib)
+* [fish](https://fishshell.com/)
+  * [Fisher](https://github.com/jorgebucaran/fisher) – package manager for fish shell
+* [Starship prompt](https://starship.rs/)
+* [Kakoune code editor](https://kakoune.org/)
+    * [kak.plug](https://github.com/andreyorst/plug.kak) – plugin manager for Kakoune editor
 * [neovim](https://neovim.io/)
   * [dein.vim](https://github.com/Shougo/dein.vim) – vim Plugin Manager
-* exa – ls replacement
-* nnn – Filemanager
-* bat – cat replacement
-* fzf – Fuzzy Finder
+* [exa](https://the.exa.website/)– ls replacement
+* [nnn](https://github.com/jarun/nnn) – Filemanager
+* [bat](https://github.com/sharkdp/bat) – cat replacement
+* [fzf](https://github.com/junegunn/fzf) – Fuzzy Finder
 
 
 ## Other useful Programs
 
-* pandoc – Markdown Converter
-* mupdf – PDF Viewer & Converter
-* httpie – curl replacement
+* [pandoc](https://pandoc.org/) – Markdown Converter
+* [mupdf](https://mupdf.com/) – PDF Viewer & Converter
+* [httpie](https://httpie.org/) – curl replacement
 
 ---
 
