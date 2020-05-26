@@ -17,8 +17,8 @@ if status is-interactive
     if test -z $LANG
         set -x LANG 'de_DE.UTF-8'
     end
-    set -x EDITOR nvim
-    set -x VISUAL nvim
+    set -x EDITOR kak
+    set -x VISUAL kak
     set -x PAGER less
 
     # Less
