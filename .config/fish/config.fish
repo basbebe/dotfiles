@@ -1,3 +1,4 @@
+
 # .           .       .
 # |-. ,-. ,-. |-. ,-. |-. ,-.
 # | | ,-| `-. | | |-' | | |-'
@@ -6,12 +7,12 @@
 
 
 # PATH
-set -x PATH /usr/local/bin /usr/local/sbin $HOME/.local/bin $PATH
+set -px PATH /usr/local/sbin $HOME/.local/bin
 
 if status is-interactive
 
     #enable vim key bindings
-    fish_vi_key_bindings
+    # fish_vi_key_bindings
 
     # Defaults
     if test -z $LANG
@@ -36,7 +37,7 @@ if status is-interactive
 
     # exa
     alias exa 'exa --icons --grid'
-    abbr ls exa
+    abbr ls 'exa'
     abbr l 'exa -l'
     abbr la 'exa -a'
     abbr lla 'exa -la'
@@ -51,12 +52,13 @@ if status is-interactive
 
     # nnn
     abbr nnn n
+    set -x NNN_OPTS 'acEFx'
     set -x NNN_OPENER "$HOME/.config/nnn/plugins/nuke"
-    set -x NNN_BMS 'd:~/Documents;u:~/;D:~/Downloads/'
-    set -x NNN_PLUG 'f:finder;o:fzopen;p:preview-tui;d:diffs;t:nmount;v:imgview;g:-_git diff;l:-_git log;b:-_bat $nnn*;s:-pdfview'
-    set -x NNN_FIFO '/tmp/nnn.fifo'
+    set -x NNN_BMS 'd:~/Documents;u:~/'
+    set -x NNN_PLUG 'c:fzcd;f:finder;o:fzopen;O:-_launch $nnn*;p:preview-kitty;d:diffs;t:nmount;v:imgview;g:-_git diff;l:-_git log;z:-_|zathura $nnn*'
+    # set -x NNN_FIFO '/tmp/nnn.fifo'
     set -x NNN_ARCHIVE "\\.(7z|bz2|gz|tar|tgz|zip)"
-    set -x NNN_COLORS '1234'
+    set -x NNN_COLORS '4231'
 
     # Starship prompt
     if type -q starship 

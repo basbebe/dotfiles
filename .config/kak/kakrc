@@ -1,7 +1,6 @@
-colorscheme gruvbox
+# Plugins
 
 source "%val{config}/plugins/plug.kak/rc/plug.kak"
-
 
 plug "jbomanson/search-doc.kak" config %{
         require-module search-doc
@@ -20,14 +19,35 @@ plug "andreyorst/smarttab.kak" defer smarttab %{
 }
 plug "andreyorst/fzf.kak"
 
-# set set-option global expandtab
-# set-option global tabstop 4
-# add line numbers
+# Key Mappings
+
+## jj to escape
+hook global InsertChar j %{ try %{
+  exec -draft hH <a-k>jj<ret> d
+  exec <esc>
+}}
+
+## jk to escape
+hook global InsertChar k %{ try %{
+  exec -draft hH <a-k>jk<ret> d
+  exec <esc>
+}}
+
+## Mac Clipboard
+hook global NormalKey y|d|c %{ nop %sh{
+      printf %s "$kak_main_reg_dquote" | pbcopy
+}}
+map global user P -docstring 'Paste above' '!pbpaste<ret>'
+map global user p -docstring 'Paste below' '<a-!>pbpaste<ret>'
+map global user R -docstring 'Replace' '|pbpaste<ret>'
+
+# Appearance
+
+colorscheme gruvbox
+
 add-highlighter global/ number-lines -relative -hlcursor
 add-highlighter global/ show-whitespaces
-# add-highlighter global/ show-whitespaces -lf ' ' -only-trailing
-# add-highlighter global/ show-whitespaces -spc ' ' # display non-trailing tabs and nbsps
-# wrap at 80 characters
+
 add-highlighter global/ line '%val{cursor_line}' default,rgb:3c3735
 add-highlighter global/ column 81 default,red
-add-highlighter global/ wrap -width 81 -indent -word -marker ' … '
+add-highlighter global/ wrap -indent -word -marker ' … '
