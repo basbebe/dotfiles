@@ -1,0 +1,80 @@
+#!/usr/bin/env sh
+
+# Description: Text based file previewer
+#
+# Note: This plugin needs a "NNN_FIFO" to work.
+#
+# Dependencies: tmux (>=3.0) or xterm or $TERMINAL, less or $PAGER, file, tree
+#
+# Usage:
+#   You need to set a NNN_FIFO path and set a key for the plugin,
+#   then start `nnn`:
+#
+#     $ NNN_FIFO=/tmp/nnn.fifo nnn
+#
+#   Then in `nnn`, launch the `preview-tui` plugin.
+#
+#   If you provide the same NNN_FIFO to all nnn instances, there will be a
+#   single common preview window. I you provide different FIFO path, they
+#   will be independent.
+#
+# Shell: POSIX compliant
+# Authors: Todd Yamakawa, Léo Villeveygoux
+
+TERMINAL="${TERMINAL:-xterm}"
+PAGER="${PAGER:-less}"
+
+preview_file () {
+    kill "$(jobs -p)" 2>/dev/null
+    clear
+
+    encoding="$(file -b --mime-encoding "$1")"
+
+    if [ -d "$1" ]; then
+        # Print directory tree
+
+        cd "$1" || return
+
+        # we use a FIFO to access less PID
+        tmpfifopath="${TMPDIR:-/tmp}/nnn-preview-tui-fifo.$$"
+        mkfifo "$tmpfifopath" || return
+
+        $PAGER < "$tmpfifopath" &
+
+        (
+            exec > "$tmpfifopath"
+            tree&
+        )
+
+        rm "$tmpfifopath"
+    elif [ "$encoding" = "binary" ] ; then
+        # Binary file: just print filetype info
+        echo "-------- Binary file --------"
+        file -b "$1"
+    else
+        # Text file:
+        $PAGER "$1" &
+    fi
+}
+
+if [ "$PREVIEW_MODE" ] ; then
+    if [ ! -r "$NNN_FIFO" ] ; then
+        echo "No FIFO available! (\$NNN_FIFO='$NNN_FIFO')" >&2
+        read -r
+        exit 1
+    fi
+
+    preview_file "$1"
+
+    exec < "$NNN_FIFO"
+    while read -r selection ; do
+        preview_file "$selection"
+    done
+    exit 0
+fi
+
+if [ -e "${TMUX%%,*}" ] && [ "$(tmux -V | cut -c6)" -eq 3 ] ; then
+    tmux split-window -e "NNN_FIFO=$NNN_FIFO" -e "PREVIEW_MODE=1" -dh "$0" "$1"
+else
+    PREVIEW_MODE=1 $TERMINAL -e "$0" "$1" &
+fi
