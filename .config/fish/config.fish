@@ -52,7 +52,7 @@ if status is-interactive
 
     # nnn
     abbr nnn n
-    set -x NNN_OPTS 'acEFx'
+    set -x NNN_OPTS 'acEFSx'
     set -x NNN_OPENER "$HOME/.config/nnn/plugins/nuke"
     set -x NNN_BMS 'd:~/Documents;u:~/'
     set -x NNN_PLUG 'c:fzcd;f:finder;o:fzopen;O:-_launch $nnn*;p:preview-kitty;d:diffs;t:nmount;v:imgview;g:-_git diff;l:-_git log;z:-_|zathura $nnn*'
