@@ -35,6 +35,9 @@ if status is-interactive
     abbr vi nvim
     abbr vim nvim
 
+    # kakoune
+    abbr kk kittykak
+    
     # exa
     alias exa 'exa --icons --grid'
     abbr ls 'exa'
