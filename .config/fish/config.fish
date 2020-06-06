@@ -38,20 +38,28 @@ if status is-interactive
     # exa
     alias exa 'exa --icons --grid'
     abbr ls 'exa'
-    abbr l 'exa -l'
+    abbr ll 'exa -l'
     abbr la 'exa -a'
     abbr lla 'exa -la'
+    abbr llg 'exa -l --git'
     abbr tree 'exa --tree'
 
     # bat
     abbr cat bat
     set -x MANPAGER "sh -c 'col -bx | bat -l man -p'"
 
+    # Homebrew
+    abbr brews 'brew search'
+    abbr brewi 'brew install'
+    abbr brewn 'brew info'
+    abbr brewu 'brew update'
+    abbr brewU 'brew upgrade'
+    
     # Cask
     abbr cask 'brew cask'
 
     # nnn
-    abbr nnn n
+    # abbr nnn n
     set -x NNN_OPTS 'acEFSx'
     set -x NNN_OPENER "$HOME/.config/nnn/plugins/nuke"
     set -x NNN_BMS 'd:~/Documents;u:~/'
