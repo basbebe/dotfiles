@@ -26,6 +26,10 @@
 # Shell: POSIX compliant
 # Authors: Léo Villeveygoux
 
+set -x
+exec 2>>/tmp/preview-kitty-err.log
+: starting $$
+
 preview_file () {
     kill %% 2>/dev/null
     clear
@@ -63,6 +67,7 @@ if [ "$PREVIEW_MODE" ] ; then
 
     preview_file "$1"
 
+    wait %% 2>/dev/null
     exec < "$NNN_FIFO"
     while read -r selection ; do
         preview_file "$selection"
@@ -72,4 +77,4 @@ fi
 
 kitty @ launch --no-response --title "nnn preview" --keep-focus \
       --cwd="$PWD" --env "NNN_FIFO=$NNN_FIFO" --env "PREVIEW_MODE=1" \
-      "$0" > /dev/null
+      "$0" "$1" > /dev/null
