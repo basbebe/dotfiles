@@ -14,6 +14,7 @@ SETUVAR _fish_abbr_brews:brew\x20search
 SETUVAR _fish_abbr_brewu:brew\x20update
 SETUVAR _fish_abbr_cask:brew\x20cask
 SETUVAR _fish_abbr_cat:bat
+SETUVAR _fish_abbr_kk:kittykak
 SETUVAR _fish_abbr_l:exa\x20\x2dl
 SETUVAR _fish_abbr_la:exa\x20\x2da
 SETUVAR _fish_abbr_ll:exa\x20\x2dl
