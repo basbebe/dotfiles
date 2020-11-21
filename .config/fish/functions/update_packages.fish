@@ -12,7 +12,7 @@ function update_packages --description='updates package manager and other utilit
         set_color $emph_color
         printf '\n%s\n\n' 'updating Homebrew casks'
         set_color normal
-        brew cask upgrade
+        brew upgrade --cask 
     end
 
     set_color $emph_color

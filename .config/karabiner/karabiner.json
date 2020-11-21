@@ -163,18 +163,18 @@
                         },
                         {
                             "from": {
-                                "key_code": "right_alt"
-                            },
-                            "to": {
-                                "key_code": "right_command"
-                            }
-                        },
-                        {
-                            "from": {
                                 "key_code": "insert"
                             },
                             "to": {
                                 "key_code": "fn"
+                            }
+                        },
+                        {
+                            "from": {
+                                "key_code": "right_alt"
+                            },
+                            "to": {
+                                "key_code": "right_command"
                             }
                         }
                     ]
