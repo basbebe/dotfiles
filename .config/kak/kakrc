@@ -1,13 +1,15 @@
 # Plugins
 
+# source custom plugins
+source "~/git/pandoc.kak/rc/pandoc.kak"
+
 # source plug.kak script
 source "%val{config}/plugins/plug.kak/rc/plug.kak"
 
 # call plug.kak with `plug' command
-plug "andreyorst/plug.kak" noload config %{
-        # configure plug.kak here
-        }
-        
+plug "robertmeta/plug.kak" noload config %{
+    # configure plug.kak here
+}        
 plug "ul/kak-lsp" do %{
     cargo build --release --locked
     cargo install --force --path .
@@ -51,16 +53,59 @@ plug "ul/kak-lsp" do %{
     hook global KakEnd .* lsp-exit
 }
 
-plug "andreyorst/powerline.kak" config %{
-    powerline-start
+plug 'delapouite/kakoune-buffers' %{
+    # Suggested hook
+
+    hook global WinDisplay .* info-buffers
+
+    # Suggested mappings
+
+    map global user b ':enter-buffers-mode<ret>'              -docstring 'buffers…'
+    map global user B ':enter-user-mode -lock buffers<ret>'   -docstring 'buffers (lock)…'
+
+    # Suggested aliases
+
+    alias global bd delete-buffer
+    alias global bf buffer-first
+    alias global bl buffer-last
+    alias global bo buffer-only
+    alias global bo! buffer-only-force
+}
+plug "jdugan6240/powerline.kak" defer powerline %{
+    # set-option global powerline_format 'git bufname filetype mode_info line_column position'
+    # powerline-toggle line_column off
+    powerline-separator triangle
     powerline-theme gruvbox
+} config %{
+    powerline-start
+}
+plug "caksoylar/kakoune-smooth-scroll" config %{
+     hook global WinCreate .* %{ hook -once window WinDisplay .* smooth-scroll-enable }
 }
 plug "alexherbo2/prelude.kak"
-plug "alexherbo2/connect.kak"
+plug "alexherbo2/connect.kak" %{
+    require-module connect
+    require-module connect-nnn
+}
 plug 'alexherbo2/palette.kak'
-# plug 'evanrelf/number-toggle.kak'
-plug 'alexherbo2/surround.kak'
-plug 'alexherbo2/auto-pairs.kak'
+plug 'occivink/kakoune-sudo-write '
+plug 'evanrelf/number-toggle.kak' %{
+    set-option global number_toggle_params -hlcursor
+}
+plug 'alexherbo2/surround.kak' %{
+    require-module surround
+    ## Quoting
+    map -docstring 'Surround' global normal q ': enter-user-mode surround<ret>'
+    map -docstring 'Surround insert' global normal Q ': surround-enter-insert-mode<ret>'
+
+    ## Move macros to ^
+    map -docstring 'Play macro' global normal ^ q
+    map -docstring 'Record macro' global normal <a-^> Q
+}
+plug 'alexherbo2/auto-pairs.kak' %{
+    require-module auto-pairs
+    hook global WinCreate .* %{ auto-pairs-enable }
+}
 plug 'laelath/kakoune-show-matching-insert'
 plug 'alexherbo2/snippets.kak'
 
@@ -83,12 +128,26 @@ plug "andreyorst/fzf.kak"
 
 # Key Mappings
 
+## quick safe
+
+map global user w -docstring 'safe file' ':w<ret>'
+
+## edit kakrc
+map global user <,> -docstring 'edit kakrc' ':e "%val{config}/kakrc"<ret>'
+map global user <a-,> -docstring 'source kakrc' ':source "%val{config}/kakrc"<ret>'
+
+map global user <a-<> -docstring 'source current buffer' ':source "%val{buffile}<ret>'
+
 ## jj to escape
 hook global InsertChar j %{ try %{
   exec -draft hH <a-k>jj<ret> d
   exec <esc>
 }}
 
+## comments
+
+map global user c -docstring '(un-)comment line' ':comment-line<ret>'
+map global user C -docstring '(un-)comment block' ':comment-block<ret>'
 
 ## Mac Clipboard
 hook global NormalKey y|d|c %{ nop %sh{
@@ -103,17 +162,12 @@ map global user R -docstring 'Replace' '|pbpaste<ret>'
 ##verbose autoinfo
 set-option -add global autoinfo normal
 
-## surround.kak
-map global user s ': surround<ret>' -docstring 'Enter surround mode'
-map global user S ': surround _ _ * *<ret>' -docstring 'Enter surround mode with extra surrounding pairs'
-
-### Optional
-set-option global surround_begin auto-pairs-disable
-set-option global surround_end auto-pairs-enable
-
 ## case insensitive search by default
 map global normal / "/(?i)"
 
+# Pandoc
+set-option global pandoc_options "-d default"
+ 
 # Appearance
 
 colorscheme gruvbox
