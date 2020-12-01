@@ -5,9 +5,11 @@
 # ^-' `-^ `-' ^-' `-' ^-' `-'
 #
 
+# Java…
+set -x JAVA_HOME (/usr/libexec/java_home)
 
 # PATH
-set -px PATH /usr/local/sbin $HOME/.local/bin
+set -px PATH /usr/local/sbin $HOME/.local/bin $JAVA_HOME/bin
 
 if status is-interactive
 
