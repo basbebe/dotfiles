@@ -111,6 +111,7 @@ plug 'alexherbo2/surround.kak' %{
     ## Quoting
     map -docstring 'Surround' global normal q ': enter-user-mode surround<ret>'
     map -docstring 'Surround insert' global normal Q ': surround-enter-insert-mode<ret>'
+    map -docstring 'Surround (Replace)' global normal <a-q> ': surround-delete; enter-user-mode surround<ret>'
 
     ## Move macros to ^
     map -docstring 'Play macro' global normal ^ q
