@@ -5,11 +5,15 @@
 # ^-' `-^ `-' ^-' `-' ^-' `-'
 #
 
+# PATH
+set -px PATH /usr/local/sbin $HOME/.local/bin
+
+# Rust
+set -ax PATH $HOME/.cargo/bin
+
 # Java…
 set -x JAVA_HOME (/usr/libexec/java_home)
-
-# PATH
-set -px PATH /usr/local/sbin $HOME/.local/bin $JAVA_HOME/bin
+set -ax  PATH $JAVA_HOME/bin
 
 if status is-interactive
 
