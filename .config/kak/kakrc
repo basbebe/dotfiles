@@ -10,14 +10,16 @@ source "%val{config}/plugins/plug.kak/rc/plug.kak"
 plug "robertmeta/plug.kak" noload config %{
     # configure plug.kak here
 }        
-plug "ul/kak-lsp" do %{
+plug "kak-lsp/kak-lsp" do %{
     cargo build --release --locked
     cargo install --force --path .
 } config %{
 
+    set global lsp_cmd "kak-lsp -s %val{session} --config ~/.config/kak-lsp/kak-lsp.toml"
+
     # uncomment to enable debugging
+    # set global lsp_cmd "kak-lsp -s %val{session} --config ~/.config/kak-lsp/kak-lsp.toml -vvv --log /tmp/kak-lsp.log"
     # eval %sh{echo ${kak_opt_lsp_cmd} >> /tmp/kak-lsp.log}
-    # set global lsp_cmd "kak-lsp -s %val{session} -vvv --log /tmp/kak-lsp.log"
 
     # this is not necessary; the `lsp-enable-window` will take care of it
     # eval %sh{${kak_opt_lsp_cmd} --kakoune -s $kak_session}
@@ -30,12 +32,16 @@ plug "ul/kak-lsp" do %{
     define-command ee -docstring 'go to current error/warning from lsp' %{ lsp-find-error --include-warnings; lsp-find-error --previous --include-warnings }
 
     define-command lsp-restart -docstring 'restart lsp server' %{ lsp-stop; lsp-start }
-    hook global WinSetOption filetype=(c|cpp|cc|rust|javascript|typescript) %{
+    hook global WinSetOption filetype=(c|cpp|cc|rust|python|java|latexi|markdown) %{
         set-option window lsp_auto_highlight_references true
         set-option window lsp_hover_anchor false
         lsp-auto-hover-enable
         echo -debug "Enabling LSP for filtetype %opt{filetype}"
         lsp-enable-window
+    }
+
+    hook global WinSetOption filetype=python %{
+        set-option global lsp_server_configuration pyls.configurationSources=["flake8"]
     }
 
     hook global WinSetOption filetype=(rust) %{
@@ -62,6 +68,7 @@ plug 'delapouite/kakoune-buffers' %{
 
     map global user b ':enter-buffers-mode<ret>'              -docstring 'buffers…'
     map global user B ':enter-user-mode -lock buffers<ret>'   -docstring 'buffers (lock)…'
+    map global user <a-b> ':pick-buffers<ret>' -docstring 'pick buffer…'
 
     # Suggested aliases
 
@@ -71,6 +78,11 @@ plug 'delapouite/kakoune-buffers' %{
     alias global bo buffer-only
     alias global bo! buffer-only-force
 }
+# plug "enricozb/tabs.kak" %{
+#   set-option global modelinefmt_tabs '%val{cursor_line}:%val{cursor_char_column} {{context_info}} {{mode_info}}'
+#   map global user b ': enter-user-mode tabs<ret>' -docstring 'tabs'
+#   map global user B ': enter-user-mode -lock tabs<ret>' -docstring 'tabs (lock)'
+# }
 plug "jdugan6240/powerline.kak" defer powerline %{
     # set-option global powerline_format 'git bufname filetype mode_info line_column position'
     # powerline-toggle line_column off
@@ -80,7 +92,7 @@ plug "jdugan6240/powerline.kak" defer powerline %{
     powerline-start
 }
 plug "caksoylar/kakoune-smooth-scroll" config %{
-     hook global WinCreate .* %{ hook -once window WinDisplay .* smooth-scroll-enable }
+    hook global WinCreate .* %{ hook -once window WinDisplay [^*].* smooth-scroll-enable }
 }
 plug "alexherbo2/prelude.kak"
 plug "alexherbo2/connect.kak" %{
@@ -122,7 +134,7 @@ plug "andreyorst/smarttab.kak" defer smarttab %{
     # these languages will use `noexpandtab' behavior
     hook global WinSetOption filetype=(makefile|gas) noexpandtab
     # these languages will use `smarttab' behavior
-    hook global WinSetOption filetype=(c|cpp|java) smarttab
+    hook global WinSetOption filetype=(c|cpp) smarttab
 }
 plug "andreyorst/fzf.kak"
 
@@ -133,7 +145,7 @@ plug "andreyorst/fzf.kak"
 map global user w -docstring 'safe file' ':w<ret>'
 
 ## edit kakrc
-map global user <,> -docstring 'edit kakrc' ':e "%val{config}/kakrc"<ret>'
+map global user <,> -docstring 'edit kakrc' ':edit "%val{config}/kakrc"<ret>'
 map global user <a-,> -docstring 'source kakrc' ':source "%val{config}/kakrc"<ret>'
 
 map global user <a-<> -docstring 'source current buffer' ':source "%val{buffile}<ret>'
@@ -144,7 +156,7 @@ hook global InsertChar j %{ try %{
   exec <esc>
 }}
 
-## comments
+## commenting
 
 map global user c -docstring '(un-)comment line' ':comment-line<ret>'
 map global user C -docstring '(un-)comment block' ':comment-block<ret>'
