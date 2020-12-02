@@ -50,7 +50,7 @@ function kittykak \
     echo $name
     echo $type
 
-    set -l editorcmd "kak -s $name -e 'nc master; t'"
+    set -l editorcmd "kak -s $name -e 'nc master; kitty-repl'"
 
     kitty @ launch \
         --cwd $folder \
@@ -62,9 +62,10 @@ function kittykak \
     kitty @ launch \
         --cwd $folder \
         --title 'nnn' \
-        /usr/local/bin/fish -C "n $folder"
+        /usr/local/bin/fish -C "n ."
 
     kitty @ goto-layout --match title:$name tall
+    kitty @ focus-window --match title:editor
 
     return 0
 
