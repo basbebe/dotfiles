@@ -100,6 +100,12 @@ plug "alexherbo2/prelude.kak"
 plug "alexherbo2/connect.kak" %{
     require-module connect
     require-module connect-nnn
+    require-module connect-fzf
+    # compatibility
+    # alias global repl-new kitty-repl
+    hook global ModuleLoaded kitty %{
+          alias global popup kitty-terminal-tab # or kitty-terminal
+    }
 }
 plug 'alexherbo2/palette.kak'
 plug 'occivink/kakoune-sudo-write '
@@ -139,7 +145,10 @@ plug "andreyorst/smarttab.kak" defer smarttab %{
     # these languages will use `smarttab' behavior
     hook global WinSetOption filetype=(c|cpp) smarttab
 }
-plug "andreyorst/fzf.kak"
+plug "andreyorst/fzf.kak" %{
+    map global normal <c-p> ': fzf-mode<ret>'
+    # set-option global fzf_highlight_command bat
+}
 
 # Key Mappings
 
