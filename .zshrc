@@ -7,6 +7,11 @@ fi
 # export ITERM2_SQUELCH_MARK=1
 test -e ${HOME}/.iterm2_shell_integration.zsh && source ${HOME}/.iterm2_shell_integration.zsh
 
+# SSH via gpg-agent
+export GPG_TTY="$(tty)"
+export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+gpgconf --launch gpg-agent
+
 # spaceship prompt
 
 # SPACESHIP_CHAR_PREFIX="$(iterm2_prompt_mark) "

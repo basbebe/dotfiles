@@ -15,6 +15,11 @@ set -ax PATH $HOME/.cargo/bin
 set -x JAVA_HOME (/usr/libexec/java_home)
 set -ax  PATH $JAVA_HOME/bin
 
+# SSH via gpg-agent
+set -x GPG_TTY (tty)
+set -x SSH_AUTH_SOCK (gpgconf --list-dirs agent-ssh-socket)
+gpgconf --launch gpg-agent
+
 if status is-interactive
 
     #enable vim key bindings
