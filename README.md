@@ -21,6 +21,13 @@
 * [mupdf](https://mupdf.com/) – PDF Viewer & Converter
 * [httpie](https://httpie.org/) – curl replacement
 
+## Ressources
+
+* Yubikey
+  * https://github.com/drduh/YubiKey-Guide
+  * https://evilmartians.com/chronicles/stick-with-security-yubikey-ssh-gnupg-macos
+  * https://jms1.net/yubikey/make-ssh-use-gpg-agent.md
+
 ---
 
 This repository has been created by following this tuorial:
