@@ -1,6 +1,7 @@
 function update_packages --description='updates package manager and other utilities'
     set emph_color yellow -i
 
+    # Homebrew
     if type -q brew
         set_color $emph_color
         printf '%s\n\n' 'updating Homebrew'
@@ -15,13 +16,14 @@ function update_packages --description='updates package manager and other utilit
         brew upgrade --cask 
     end
 
+    # Fish shell
     set_color $emph_color
     printf '\n%s\n\n' 'updating fish shell'
     set_color normal
-    fisher self-update
-    fisher
+    fisher update
     fish_update_completions
 
+    # npm
     if type -q npm
         set_color $emph_color
         printf '\n%s\n\n' 'updating npm'
@@ -29,6 +31,7 @@ function update_packages --description='updates package manager and other utilit
         npm update -g
     end
 
+    # stack
     if type -q stack
         set_color $emph_color
         printf '\n%s\n\n' 'updating stack'
@@ -36,11 +39,15 @@ function update_packages --description='updates package manager and other utilit
         stack update
     end
 
+    # python
     if type -q python3
         set_color $emph_color
         printf '\n%s\n\n' 'updating pip3'
         set_color normal
+        pip3 install --upgrade pip
         pip3 install --user --upgrade pip
+        pip-review --auto
+        pip-review --user --auto
     end
 
     return 0
