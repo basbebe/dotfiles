@@ -21,7 +21,7 @@
 * [mupdf](https://mupdf.com/) – PDF Viewer & Converter
 * [httpie](https://httpie.org/) – curl replacement
 
-## Ressources
+## Resources
 
 * Yubikey
   * https://github.com/drduh/YubiKey-Guide
