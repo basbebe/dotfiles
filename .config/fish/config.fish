@@ -50,7 +50,7 @@ if status is-interactive
     abbr kk kittykak
     
     # exa
-    alias exa 'exa --icons --grid'
+    alias exa 'exa --icons'
     abbr ls 'exa'
     abbr ll 'exa -l'
     abbr la 'exa -a'
