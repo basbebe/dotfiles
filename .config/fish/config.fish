@@ -97,6 +97,6 @@ if status is-interactive
 end
 
 #include local config
-if test -e ~/.local.fish
-    source ~/.local.fish
+if test -e ~/.fish.local
+    source ~/.fish.local
 end
