@@ -15,6 +15,7 @@
 #    dependencies, see the script itself
 #  - vim (or any editor/pager really)
 #  - file
+#  - mktemp
 #  - xdotool (optional, to keep main window focused)
 #
 # How to use:
@@ -93,6 +94,18 @@ get_viewer_pid () {
         VIEWERPID="$(jobs -p %%)"
 }
 
+kill_viewer () {
+        if [ -n "$VIEWERPID" ] && jobs -p | grep "$VIEWERPID" ; then
+            kill "$VIEWERPID"
+        fi
+}
+
+sigint_kill () {
+	kill_viewer
+	kill "$TABBEDPID"
+	exit 0
+}
+
 previewer_loop () {
     unset -v NNN_FIFO
     # mute from now
@@ -101,6 +114,7 @@ previewer_loop () {
     MAINWINDOW="$(xdotool getactivewindow)"
 
     start_tabbed
+    trap sigint_kill SIGINT
 
     xdotool windowactivate "$MAINWINDOW"
 
@@ -122,9 +136,7 @@ previewer_loop () {
             continue
         fi
 
-        if [ -n "$VIEWERPID" ] && jobs -p | grep "$VIEWERPID" ; then
-            kill "$VIEWERPID"
-        fi
+        kill_viewer
 
         MIME="$(file -b --mime-type "$FILE")"
 
@@ -187,6 +199,7 @@ previewer_loop () {
         fi
     done
     kill "$TABBEDPID"
+    kill_viewer
 }
 
 if [ ! -r "$NNN_FIFO" ] ; then
