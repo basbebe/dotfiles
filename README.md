@@ -23,7 +23,7 @@
 
 * [pandoc](https://pandoc.org/) – Markdown Converter
 * [mupdf](https://mupdf.com/) – PDF Viewer & Converter
-* [httpie](https://httpie.org/) – curl replacement
+* [zathura](https://pwmt.org/projects/zathura/) - PDF Viewer
 
 ## Resources
 

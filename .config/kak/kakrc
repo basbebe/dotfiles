@@ -31,8 +31,19 @@ plug "kak-lsp/kak-lsp" do %{
     define-command pe -docstring 'go to previous error/warning from lsp' %{ lsp-find-error --previous --include-warnings }
     define-command ee -docstring 'go to current error/warning from lsp' %{ lsp-find-error --include-warnings; lsp-find-error --previous --include-warnings }
 
-map global normal <#> ':enter-user-mode lsp<ret>' -docstring 'lsp'
-    
+    map global normal <#> ':enter-user-mode lsp<ret>' -docstring 'lsp'
+
+    # Snippets
+    # def -hidden insert-c-n %{
+    #      try %{
+    #             lsp-snippets-select-next-placeholders
+    #                exec '<a-;>d'
+    #      } catch %{
+    #             exec -with-hooks '<c-n>'
+    #      }
+    # }
+    # map global insert <c-n> "<a-;>: insert-c-n<ret>"
+
     define-command lsp-restart -docstring 'restart lsp server' %{ lsp-stop; lsp-start }
     hook global WinSetOption filetype=(c|cpp|cc|rust|python|java|latexi|markdown) %{
         set-option window lsp_auto_highlight_references true
@@ -93,9 +104,9 @@ plug "jdugan6240/powerline.kak" defer powerline %{
 } config %{
     powerline-start
 }
-plug "caksoylar/kakoune-smooth-scroll" config %{
-    hook global WinCreate .* %{ hook -once window WinDisplay [^*].* smooth-scroll-enable }
-}
+# plug "caksoylar/kakoune-smooth-scroll" config %{
+#     hook global WinCreate .* %{ hook -once window WinDisplay [^*].* smooth-scroll-enable }
+# }
 plug "alexherbo2/prelude.kak"
 plug "alexherbo2/connect.kak" %{
     require-module connect
@@ -127,8 +138,9 @@ plug 'alexherbo2/auto-pairs.kak' %{
     require-module auto-pairs
     hook global WinCreate .* %{ auto-pairs-enable }
 }
-plug 'laelath/kakoune-show-matching-insert'
-plug 'alexherbo2/snippets.kak'
+plug 'laelath/kakoune-show-matching-insert' %{
+    add-highlighter global/ ranges show_matching_insert
+}
 
 plug "jbomanson/search-doc.kak" config %{
         require-module search-doc
