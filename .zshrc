@@ -78,3 +78,5 @@ unalias gm
 
 # fzf
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+source /Users/bastian/.config/broot/launcher/bash/br

@@ -10,7 +10,8 @@
 * [neovim](https://neovim.io/)
   * [dein.vim](https://github.com/Shougo/dein.vim) – vim Plugin Manager
 * [exa](https://the.exa.website/)– ls replacement
-* [nnn](https://github.com/jarun/nnn) – Filemanager
+* [nnn](https://github.com/jarun/nnn) – file manager
+* [broot](https://dystroy.org/broot/) - tree /fzf / file manager replacement
 * [bat](https://github.com/sharkdp/bat) – cat replacement
 * [fzf](https://github.com/junegunn/fzf) – Fuzzy Finder
 
