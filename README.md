@@ -8,6 +8,7 @@
 * [Kakoune code editor](https://kakoune.org/)
     * [kak.plug](https://github.com/andreyorst/plug.kak) – plugin manager for Kakoune editor
     * [kak-lsp](https://github.com/kak-lsp/kak-lsp) - Kakoune Language Server Protocol Client
+    * [kakmerge](https://github.com/lenormf/kakmerge) - merge tool for Kakoune
 * [neovim](https://neovim.io/)
   * [dein.vim](https://github.com/Shougo/dein.vim) – vim Plugin Manager
 * [exa](https://the.exa.website/)– ls replacement
@@ -15,6 +16,7 @@
 * [broot](https://dystroy.org/broot/) - tree /fzf / file manager replacement
 * [bat](https://github.com/sharkdp/bat) – cat replacement
 * [fzf](https://github.com/junegunn/fzf) – Fuzzy Finder
+* [delta](https://github.com/dandavison/delta) - viewer for git and diff output
 
 
 ## Other useful Programs

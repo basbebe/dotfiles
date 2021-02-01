@@ -1,0 +1,26 @@
+[core]
+	excludesfile = ~/.gitignore_global
+	pager = delta
+[commit]
+	template = ~/.stCommitMsg
+	gpgsign = true
+[tag]
+	forceSignAnnotated = true
+[include]
+	path = .gitconfig.local
+[init]
+	defaultBranch = master
+[merge]
+	tool = kakmerge
+[mergetool "kakmerge"]
+	trustExitCode = true
+	cmd = env LOCAL=\"${LOCAL}\" BASE=\"${BASE}\" REMOTE=\"${REMOTE}\" MERGED=\"${MERGED}\" ~/git/kakmerge/kakmerge
+[delta]
+	features = side-by-side line-numbers decorations
+	syntax-theme = gruvbox
+	plus-style = syntax "#003800"
+	minus-style = syntax "#3f0001"
+	whitespace-error-style = 22 reverse
+	side-by-side = true
+[interactive]
+	diffFilter = delta --color-only
