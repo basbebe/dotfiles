@@ -7,6 +7,7 @@
 * [Starship prompt](https://starship.rs/)
 * [Kakoune code editor](https://kakoune.org/)
     * [kak.plug](https://github.com/andreyorst/plug.kak) – plugin manager for Kakoune editor
+    * [kak-lsp](https://github.com/kak-lsp/kak-lsp) - Kakoune Language Server Protocol Client
 * [neovim](https://neovim.io/)
   * [dein.vim](https://github.com/Shougo/dein.vim) – vim Plugin Manager
 * [exa](https://the.exa.website/)– ls replacement

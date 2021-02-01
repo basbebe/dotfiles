@@ -72,6 +72,11 @@ roots = ["pubspec.yaml", ".git"]
 command = "sh"
 args = ["-c", "dart $(dirname $(which dart))/snapshots/analysis_server.dart.snapshot --lsp"]
 
+[language.elixir]
+filetypes = ["elixir"]
+roots = ["mix.exs"]
+command = "elixir-ls"
+
 [language.elm]
 filetypes = ["elm"]
 roots = ["elm.json"]
@@ -187,3 +192,14 @@ filetypes = ["terraform"]
 roots = ["*.tf"]
 command = "terraform-ls"
 args = ["serve"]
+
+[language.yaml]
+filetypes = ["yaml"]
+roots = [".git"]
+command = "yaml-language-server"
+args = ["--stdio"]
+
+[language.zig]
+filetypes = ["zig"]
+roots = ["build.zig"]
+command = "zls"
