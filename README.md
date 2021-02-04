@@ -6,7 +6,7 @@
   * [Fisher](https://github.com/jorgebucaran/fisher) – package manager for fish shell
 * [Starship prompt](https://starship.rs/)
 * [Kakoune code editor](https://kakoune.org/)
-    * [kak.plug](https://github.com/andreyorst/plug.kak) – plugin manager for Kakoune editor
+    * [kak.plug](https://github.com/robertmeta/plug.kak) – plugin manager for Kakoune editor
     * [connect.kak](https://github.com/alexherbo2/connect.kak) – Connect a program to Kakoune clients
     * [kak-lsp](https://github.com/kak-lsp/kak-lsp) – Kakoune Language Server Protocol Client
     * [kakmerge](https://github.com/lenormf/kakmerge) – merge tool for Kakoune
