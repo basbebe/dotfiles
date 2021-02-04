@@ -15,6 +15,10 @@ set -ax PATH $HOME/.cargo/bin
 set -x JAVA_HOME (/usr/libexec/java_home)
 set -ax  PATH $JAVA_HOME/bin
 
+# util-linux
+set -ax PATH /usr/local/opt/util-linux/bin
+set -ax PATH /usr/local/opt/util-linux/sbin
+
 # SSH via gpg-agent
 set -x GPG_TTY (tty)
 set -x SSH_AUTH_SOCK (gpgconf --list-dirs agent-ssh-socket)

@@ -17,7 +17,7 @@
 * [bat](https://github.com/sharkdp/bat) – cat replacement
 * [fzf](https://github.com/junegunn/fzf) – Fuzzy Finder
 * [delta](https://github.com/dandavison/delta) – viewer for git and diff output
-
+* [util-linux](https://github.com/karelzak/util-linux) – Linux utilities for macOS
 
 ## Other useful Programs
 
