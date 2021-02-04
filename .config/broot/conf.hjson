@@ -39,7 +39,7 @@
         # "vim mode"
         #
         #
-        modal: true
+        # modal: true
 
 	###############################################################
 	# Whether to mark the selected line with a triangle
@@ -232,14 +232,46 @@
 		# 	execution: ":move_to_panel"
 		# }
 
+		# always open with editor
+		{
+			key: enter
+			execution: "$EDITOR {file}"
+			leave_broot: false
+			apply_to: "file"
+		}
+
+		# vim-like navigation
+		{
+			key: ctrl-j
+			internal: ":line_down"
+		}
+		{
+			key: ctrl-k
+			internal: ":line_up"
+		}
+		{
+			key: ctrl-h
+			internal: ":up_tree"
+		}
+		{
+			key: ctrl-l
+			internal: ":focus"
+		}
+
                 # switch panels on macOS
 		{
-                        invocation: panel_left
 			key: alt-Left
 			internal: ":panel_left"
 		}
 		{
-                        invocation: panel_right
+			key: alt-Right
+			internal: ":panel_right"
+		}
+		{
+			key: alt-[
+			internal: ":panel_left"
+		}
+		{
 			key: alt-Right
 			internal: ":panel_right"
 		}

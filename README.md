@@ -13,7 +13,7 @@
   * [dein.vim](https://github.com/Shougo/dein.vim) – vim Plugin Manager
 * [exa](https://the.exa.website/) – ls replacement
 * [nnn](https://github.com/jarun/nnn) – file manager
-* [broot](https://dystroy.org/broot/) – tree /fzf / file manager replacement
+* [broot](https://dystroy.org/broot/) – file picker
 * [bat](https://github.com/sharkdp/bat) – cat replacement
 * [fzf](https://github.com/junegunn/fzf) – Fuzzy Finder
 * [delta](https://github.com/dandavison/delta) – viewer for git and diff output
