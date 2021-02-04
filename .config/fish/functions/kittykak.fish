@@ -16,15 +16,15 @@ function kittykak \
         printf '%s\n' $_help
         return 0
     end
-    
+
     if test ( count $argv ) -gt 1
         printf '%s' 'too many arguments'
         printf '%s\n' $_help
         return 1
-    elif test ( count $argv ) -eq 1
+    else if test ( count $argv ) -eq 1
         set folder $argv[1]
         if test -n "$folder" && test ! -d $folder 
-            printf '%s' $folder ' is not a folder'
+            printf '%s\n' $folder ' is not a folder'
             printf '%s\n' $_help
             return 1
         end
@@ -50,7 +50,9 @@ function kittykak \
     echo $name
     echo $type
 
-    set -l editorcmd "kak -s $name -e 'nc master; kitty-repl'"
+    set -l editorcmd "\
+            kak -s $name -d & ;\
+            kak -c $name -e 'ide '$name"
 
     kitty @ launch \
         --cwd $folder \
@@ -58,11 +60,6 @@ function kittykak \
         --tab-title $name \
         --title "editor" \
         /usr/local/bin/fish -C "$editorcmd"
-
-    kitty @ launch \
-        --cwd $folder \
-        --title 'nnn' \
-        /usr/local/bin/fish -C "n ."
 
     kitty @ goto-layout --match title:$name tall
     kitty @ focus-window --match title:editor
