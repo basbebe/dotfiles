@@ -73,3 +73,9 @@ symbol = " "
 [swift]
 symbol = "ﯣ "
 
+[custom.fish_private]
+when = 'test  "$STARSHIP_SHELL" = "fish" -a -n "$FISH_PRIVATE_MODE"'
+shell = ['sh', '--norc']
+description = "Indicates that fish shell is in private mode"
+symbol = "﫸 "
+style = "purple"

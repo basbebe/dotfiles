@@ -82,6 +82,11 @@ if status is-interactive
     set -x NNN_ARCHIVE "\\.(7z|bz2|gz|tar|tgz|zip)"
     set -x NNN_COLORS '#6d8ed6af;4235'
 
+    # publish fish_private_mode
+    if test -n "$fish_private_mode"
+        set -x FISH_PRIVATE_MODE $fish_private_mode
+    end
+
     # Starship prompt
     if type -q starship 
         starship init fish | source
