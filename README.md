@@ -7,6 +7,7 @@
 * [Starship prompt](https://starship.rs/)
 * [Kakoune code editor](https://kakoune.org/)
     * [kak.plug](https://github.com/andreyorst/plug.kak) – plugin manager for Kakoune editor
+    * [connect.kak](https://github.com/alexherbo2/connect.kak) – Connect a program to Kakoune clients
     * [kak-lsp](https://github.com/kak-lsp/kak-lsp) – Kakoune Language Server Protocol Client
     * [kakmerge](https://github.com/lenormf/kakmerge) – merge tool for Kakoune
 * [neovim](https://neovim.io/)
@@ -15,6 +16,8 @@
 * [nnn](https://github.com/jarun/nnn) – file manager
 * [broot](https://dystroy.org/broot/) – file picker
 * [bat](https://github.com/sharkdp/bat) – cat replacement
+* [ripgrep](https://github.com/BurntSushi/ripgrep) – grep replacement
+* [fd](https://github.com/sharkdp/fd) – find replacement
 * [fzf](https://github.com/junegunn/fzf) – Fuzzy Finder
 * [delta](https://github.com/dandavison/delta) – viewer for git and diff output
 * [util-linux](https://github.com/karelzak/util-linux) – Linux utilities for macOS
