@@ -1,178 +1,361 @@
+# Preamble
 require-module plug
 
 # Let plug.kak manage itself.
 plug plug https://github.com/alexherbo2/plug.kak %{
-    # Upgrade plugins
-    # Install plugins and build them.
-    define-command plug-upgrade -docstring 'plug-upgrade' %{
-        plug-install
-        plug-execute connect make install
-        plug-execute lsp cargo build --release
-    }
+  # Upgrade plugins
+  # Install plugins and build them.
+  define-command plug-upgrade -docstring 'plug-upgrade' %{
+    plug-install
+    plug-execute connect make install
+    plug-execute lsp cargo build --release --locked
+  }
 }
 
 plug-core %{
-    # Tools
-    set-option global makecmd 'make -j 8'
-    set-option global grepcmd 'rg --column --with-filename'
-}
+  # Options ────────────────────────────────────────────────────────────────────
 
-plug-old pandoc git/pandoc.kak %{
-    set-option global pandoc_options "-d default"
-}
+  # User interface
+  set-option -add global ui_options ncurses_status_on_top=yes
+  set-option -add global ui_options ncurses_assistant=cat
+  set-option -add global ui_options ncurses_set_title=no
 
-plug-old lsp https://github.com/kak-lsp/kak-lsp %{
-    set global lsp_cmd "kak-lsp -s %val{session} --config ~/.config/kak-lsp/kak-lsp.toml"
+  # Color scheme
+  # Gruvbox theme for Kakoune
+  # https://github.com/morhetz/gruvbox
+  colorscheme gruvbox
 
-    # uncomment to enable debugging
-    # set global lsp_cmd "kak-lsp -s %val{session} --config ~/.config/kak-lsp/kak-lsp.toml -vvv --log /tmp/kak-lsp.log"
-    # eval %sh{echo ${kak_opt_lsp_cmd} >> /tmp/kak-lsp.log}
+  # Status line
+  #
+  # Display Unicode code point in the status line.
+  #
+  # https://en.wikipedia.org/wiki/Unicode
+  # https://en.wikipedia.org/wiki/Code_point
+  set-option global modelinefmt '{yellow}%opt{out_of_view_status_line}{default} {{mode_info}} {magenta}%val{client}{default} at {yellow}%val{session}{default} on {green}%val{bufname}{default} {{context_info}} {cyan}U+%sh{printf ''%04x'' "$kak_cursor_char_value"}{default} {cyan}%val{cursor_line}{default}:{cyan}%val{cursor_char_column}{default}'
 
-    # this is not necessary; the `lsp-enable-window` will take care of it
-    # eval %sh{${kak_opt_lsp_cmd} --kakoune -s $kak_session}
 
-    set global lsp_diagnostic_line_error_sign '║'
-    set global lsp_diagnostic_line_warning_sign '┊'
+  # Verbose Autoinfo
+  set-option -add global autoinfo normal
 
-    define-command ne -docstring 'go to next error/warning from lsp' %{ lsp-find-error --include-warnings }
-    define-command pe -docstring 'go to previous error/warning from lsp' %{ lsp-find-error --previous --include-warnings }
-    define-command ee -docstring 'go to current error/warning from lsp' %{ lsp-find-error --include-warnings; lsp-find-error --previous --include-warnings }
+  # Highlighters
+  add-highlighter global/ number-lines -relative -hlcursor
+  add-highlighter global/show-matching show-matching
+  add-highlighter global/show-whitespaces show-whitespaces
+  add-highlighter global/ line '%val{cursor_line}' default,rgb:3c3735
+  add-highlighter global/ column 81 default,rgb:3c3836
+  add-highlighter global/ wrap -indent -word
 
-    map global normal <#> ': enter-user-mode lsp<ret>' -docstring 'lsp'
 
-    # Snippets
-    # def -hidden insert-c-n %{
-    #      try %{
-    #             lsp-snippets-select-next-placeholders
-    #                exec '<a-;>d'
-    #      } catch %{
-    #             exec -with-hooks '<c-n>'
-    #      }
-    # }
-    # map global insert <c-n> "<a-;>: insert-c-n<ret>"
 
-    define-command lsp-restart -docstring 'restart lsp server' %{ lsp-stop; lsp-start }
-    hook global WinSetOption filetype=(c|cpp|cc|rust|python|java|latexi|markdown) %{
-        set-option window lsp_auto_highlight_references true
-        set-option window lsp_hover_anchor false
-        lsp-auto-hover-enable
-        echo -debug "Enabling LSP for filtetype %opt{filetype}"
-        lsp-enable-window
+  # Scroll offset
+  set-option global scrolloff 5,1
+
+  # Indentation
+  # Indent with 2 spaces and make tabs appear as 2 spaces.
+  set-option global tabstop 2
+  set-option global indentwidth 2
+
+  # Filetype-specific
+  # Makefile
+  hook global WinSetOption filetype=makefile %{
+    set-option window indentwidth 0
+  }
+
+	# Windowing
+  hook global ModuleLoaded kitty %{
+  alias global terminal kitty-terminal
+  alias global popup kitty-terminal # or kitty-terminal-tab
+  }
+
+  # Tools
+  set-option global makecmd 'make -j 8'
+  set-option global grepcmd 'rg --column --with-filename'
+
+  # Commands ───────────────────────────────────────────────────────────────────
+
+
+  # IDE
+  # (needs connect.kak)
+
+  define-command ide -params 0..1 -docstring 'ide [session-name]: Turn Kakoune into an IDE' %{
+    # Session name
+    try %{
+      rename-session %arg{1}
     }
 
-    hook global WinSetOption filetype=python %{
-        set-option global lsp_server_configuration pyls.configurationSources=["flake8"]
+    # Main client
+    rename-client main
+    set-option global jumpclient main
+
+    # Tools client
+    new %{
+      rename-client tools
+      set-option global toolsclient tools
     }
 
-    hook global WinSetOption filetype=(rust) %{
-        set window lsp_server_configuration rust.clippy_preference="on"
+    # Docs client
+    new %{
+      rename-client docs
+      set-option global docsclient docs
     }
 
-    hook global WinSetOption filetype=rust %{
-        hook window BufWritePre .* %{
-            evaluate-commands %sh{
-                test -f rustfmt.toml && printf lsp-formatting-sync
-            }
-        }
+    # Project drawer
+    broot
+
+    # Git
+    > lazygit
+
+    # Terminal
+    >
+
+    # get focus back
+    focus main
+  }
+
+  # lazygit
+  # https://github.com/jesseduffield/lazygit
+  define-command lazygit -params .. -docstring 'Open lazygit' %{
+    + lazygit %arg{@}
+  }
+
+  alias global lg lazygit
+
+  # Aliases ────────────────────────────────────────────────────────────────────
+
+  # User modes
+  alias global u enter-user-mode
+
+
+  # Quick editing
+  define-command -docstring 'Open kakrc' edit-kakoune 'edit ~/.config/kak/kakrc'
+  define-command -docstring 'Open tmux.conf' edit-tmux 'edit ~/.tmux.conf'
+  define-command -docstring 'Open kitty.conf' edit-kitty 'edit ~/.config/kitty/kitty.conf'
+  define-command -docstring 'Open config.fish' edit-fish 'edit ~/.config/fish/config.fish'
+  define-command -docstring 'Open gitconfig' edit-git 'edit ~/.gitconfig'
+  define-command -docstring 'Open broot/conf.toml' edit-broot 'edit ~/.config/broot/conf.hjson'
+  define-command -docstring 'Open starship.toml' edit-starship 'edit ~/.config/starship.toml'
+
+  # Aliases
+  alias global ek edit-kakoune
+
+  # Git
+  alias global G lazygit
+
+  # Mappings ───────────────────────────────────────────────────────────────────
+
+  # Big keys
+  # [Enter] [Backspace] [Tab] [Alt-Tab]
+  map -docstring 'Enter command prompt' global normal <ret> :
+  map -docstring 'Reduce selections to their cursor' global normal <backspace> ';'
+  map -docstring 'Swap selections cursor and anchor' global normal <tab> '<a-;>'
+  map -docstring 'Ensure selection cursor is after anchor' global normal <a-tab> '<a-:>'
+
+  # Keep the jump functionality on Enter for grep and make.
+  hook global WinSetOption filetype=grep %{
+    map -docstring 'grep-jump' window normal <ret> ': grep-jump<ret>'
+  }
+
+  hook global WinSetOption filetype=make %{
+    map -docstring 'make-jump' window normal <ret> ': make-jump<ret>'
+  }
+
+  # Control keys
+  # [C-a] [C-f] [C-n] [C-o] [C-q] [C-s] [C-t] [C-w] [C-x]
+  map -docstring 'Alternate buffer' global normal <c-a> ga
+  map -docstring 'Find in buffer' global normal <c-f> '/(?i)\Q'
+  map -docstring 'Find in buffer' global prompt <c-f> '<home>(?i)\Q<end>'
+  map -docstring 'Open a new terminal window' global normal <c-n> ': connect-terminal<ret>'
+  map -docstring 'Open file' global normal <c-o> ':edit<space>'
+  map -docstring 'Quit' global normal <c-q> ': quit<ret>'
+  map -docstring 'Save buffer' global normal <c-s> ': write<ret>'
+  map -docstring 'Open a new tab' global normal <c-t> ': new<ret>'
+  map -docstring 'Terminal' global normal <c-w> ': enter-user-mode terminal<ret>'
+  map -docstring 'Write and quit' global normal <c-x> ': write-quit<ret>'
+
+  # case insensitive search by default
+  map global normal / "/(?i)"
+
+  # Select all occurrences of the current selection set.
+  map -docstring 'Select all occurrences of the current selection set' global normal <a-percent> '*%s<ret>'
+
+  # edit kakrc
+  map global user <,> -docstring 'edit kakrc' ': edit "%val{config}/kakrc"<ret>'
+
+  # alias for enter-user-mode
+  alias global u enter-user-mode
+
+  # commenting
+  map global user c -docstring '(un-)comment line' ': comment-line<ret>'
+  map global user C -docstring '(un-)comment block' ': comment-block<ret>'
+
+  # Mac Clipboard
+  hook global NormalKey y|d|c %{
+    nop %sh{
+      printf %s "$kak_main_reg_dquote" | pbcopy
     }
+  }
 
-    hook global KakEnd .* lsp-exit
+  # Move macros to ^
+  map -docstring 'Play macro' global normal ^ q
+  map -docstring 'Record macro' global normal <a-^> Q
+
+  map global user P -docstring 'Paste above' '!pbpaste<ret>'
+  map global user p -docstring 'Paste below' '<a-!>pbpaste<ret>'
+  map global user R -docstring 'Replace' '|pbpaste<ret>'
+
 }
 
-plug-old kakoune-buffers https://github.com/delapouite/kakoune-buffers %{
-    # Suggested hook
+# Plugins ──────────────────────────────────────────────────────────────────────
 
-    hook global WinDisplay .* info-buffers
-
-    # Suggested mappings
-
-    map global user b ': enter-buffers-mode<ret>'              -docstring 'buffers…'
-    map global user B ': enter-user-mode -lock buffers<ret>'   -docstring 'buffers (lock)…'
-    map global user <a-b> ': pick-buffers<ret>' -docstring 'pick buffer…'
-
-    # Suggested aliases
-
-    alias global bd delete-buffer
-    alias global bf buffer-first
-    alias global bl buffer-last
-    alias global bo buffer-only
-    alias global bo! buffer-only-force
+plug auto-pairs https://github.com/alexherbo2/auto-pairs.kak %{
+    auto-pairs-enable
 }
 
-plug powerline https://github.com/jdugan6240/powerline.kak %{
-    # set-option global powerline_format 'git bufname filetype mode_info line_column position'
-    # powerline-toggle line_column off
-    # source .config/kak/autoload/plugins/powerline/rc/themes/gruvbox.kak
-    powerline-theme gruvbox
-    powerline-separator triangle
-    powerline-start
+plug edit https://github.com/alexherbo2/edit.kak
+
+plug capitalize-selections https://github.com/alexherbo2/capitalize-selections.kak %{
+  map -docstring 'Capitalize selections' global normal <a-`> ': capitalize-selections<ret>'
 }
-
-# plug kakoune-smooth-scroll https;//github.com/caksoylar/kakoune-smooth-scroll {
-#     hook global WinCreate .* %{ hook -once window WinDisplay [^*].* smooth-scroll-enable }
-# }
-
-plug prelude https://github.com/alexherbo2/prelude.kak
 
 plug connect https://github.com/alexherbo2/connect.kak %{
-    # Modules
-    require-module connect-fzf
-    require-module connect-nnn
-    require-module connect-broot
+  # Modules
+  require-module connect-fzf
+  require-module connect-nnn
+  require-module connect-broot
 
-    hook global ModuleLoaded kitty %{
-          alias global popup kitty-terminal-tab # or kitty-terminal
-    }
-
-    # compatibility
-    # alias global repl-new kitty-repl
-
-    # Create a new window
-
-    # set-option global connect_environment %{
-    #     export SHELL="/usr/local/bin/fish --init-command=\"set -x EDITOR :edit; set -x VISUAL :edit\""
-    # }
+  # set-option global connect_environment %{
+  #     export SHELL="/usr/local/bin/fish --init-command=\"set -x EDITOR :edit; set -x VISUAL :edit\""
+  # }
 }
-map global normal <c-t> ': connect-terminal<ret>'
+
+plug current-word-highlighter https://github.com/alexherbo2/current-word-highlighter.kak %{
+    current-word-highlighter-enable
+}
+
+
+plug double-tap https://github.com/alexherbo2/double-tap.kak %{
+  # Type "jj" to leave insert mode:
+  double-tap-escape global j
+}
+
+plug execute-key https://github.com/alexherbo2/execute-key.kak
 
 plug explore https://github.com/alexherbo2/explore.kak %{
-    explore-enable
+  explore-enable
 
-    alias global explore-files fzf-files
-    alias global explore-buffers fzf-buffers
+  # Configure the file explorer
+  alias global explore-files fzf-files
+  alias global explore-buffers fzf-buffers
 }
 
-plug fzf https://github.com/andreyorst/fzf.kak 
-map global normal <c-p> ': fzf-mode<ret>'
+plug-old find https://github.com/occivink/kakoune-find
 
+plug-old kakoune-buffers https://github.com/delapouite/kakoune-buffers %{
+  # Suggested hook
 
-plug yank-ring https://github.com/alexherbo2/yank-ring.kak %{
-    require-module yank-ring-connect
+  hook global WinDisplay .* info-buffers
 
-    yank-ring-enable
+  # Suggested mappings
 
-    map global normal Y ': yank-ring<ret>'
+  map global user b ': enter-buffers-mode<ret>' -docstring 'buffers…'
+  map global user B ': enter-user-mode -lock buffers<ret>' -docstring 'buffers (lock)…'
+  map global user <a-b> ': pick-buffers<ret>' -docstring 'pick buffer…'
+
+  # Suggested aliases
+
+  alias global bd delete-buffer
+  alias global bf buffer-first
+  alias global bl buffer-last
+  alias global bo buffer-only
+  alias global bo! buffer-only-force
 }
 
-plug-old kakoune-sudo-write https://github.com/occivink/kakoune-sudo-write
+nop plug-old smooth-scroll https://github.com/caksoylar/kakoune-smooth-scroll %{
+     hook global WinCreate .* %{ hook -once window WinDisplay [^*].* smooth-scroll-enable }
+ }
+
+plug-old lsp https://github.com/kak-lsp/kak-lsp %{
+  set global lsp_cmd "kak-lsp -s %val{session} --config ~/.config/kak-lsp/kak-lsp.toml"
+
+  # uncomment to enable debugging
+  # set global lsp_cmd "kak-lsp -s %val{session} --config ~/.config/kak-lsp/kak-lsp.toml -vvv --log /tmp/kak-lsp.log"
+  # eval %sh{echo ${kak_opt_lsp_cmd} >> /tmp/kak-lsp.log}
+
+  # this is not necessary; the `lsp-enable-window` will take care of it
+  # eval %sh{${kak_opt_lsp_cmd} --kakoune -s $kak_session}
+
+  set global lsp_diagnostic_line_error_sign '║'
+  set global lsp_diagnostic_line_warning_sign '┊'
+
+  define-command ne -docstring 'go to next error/warning from lsp' %{ lsp-find-error --include-warnings }
+  define-command pe -docstring 'go to previous error/warning from lsp' %{ lsp-find-error --previous --include-warnings }
+  define-command ee -docstring 'go to current error/warning from lsp' %{ lsp-find-error --include-warnings; lsp-find-error --previous --include-warnings }
+
+  map global normal <#> ': enter-user-mode lsp<ret>' -docstring 'lsp'
+
+  # Snippets
+  # def -hidden insert-c-n %{
+  #      try %{
+  #             lsp-snippets-select-next-placeholders
+  #                exec '<a-;>d'
+  #      } catch %{
+  #             exec -with-hooks '<c-n>'
+  #      }
+  # }
+  # map global insert <c-n> "<a-;>: insert-c-n<ret>"
+
+  define-command lsp-restart -docstring 'restart lsp server' %{ lsp-stop; lsp-start }
+  hook global WinSetOption filetype=(c|cpp|cc|rust|python|java|latexi|markdown) %{
+    set-option window lsp_auto_highlight_references true
+    set-option window lsp_hover_anchor false
+    lsp-auto-hover-enable
+    echo -debug "Enabling LSP for filtetype %opt{filetype}"
+    lsp-enable-window
+  }
+
+  hook global WinSetOption filetype=python %{
+  #   set-option global lsp_server_configuration pyls.configurationSources=["flake8"]
+  }
+
+  hook global KakEnd .* lsp-exit
+}
+
+plug move-line https://github.com/alexherbo2/move-line.kak %{
+  map -docstring 'Move selected lines below' global normal <down> ': move-line-below<ret>'
+  map -docstring 'Move selected lines above' global normal <up> ': move-line-above<ret>'
+}
 
 plug-old number-toggle https://github.com/evanrelf/number-toggle.kak %{
     set-option global number_toggle_params -hlcursor
 }
 
-plug surround https://github.com/alexherbo2/surround.kak %{
-    ## Quoting
-    map -docstring 'Surround' global normal q ': enter-user-mode surround<ret>'
-    map -docstring 'Surround insert' global normal Q ': surround-enter-insert-mode<ret>'
-    map -docstring 'Surround (Replace)' global normal <a-q> ': surround-delete; enter-user-mode surround<ret>'
-
-    ## Move macros to ^
-    map -docstring 'Play macro' global normal ^ q
-    map -docstring 'Record macro' global normal <a-^> Q
+plug palette https://github.com/alexherbo2/palette.kak %{
+  palette-enable
 }
 
-plug auto-pairs https://github.com/alexherbo2/auto-pairs.kak %{
-    hook global WinCreate .* %{ auto-pairs-enable }
+plug objectify https://github.com/alexherbo2/objectify.kak
+
+plug out-of-view https://github.com/alexherbo2/out-of-view.kak %{
+  out-of-view-enable
+}
+
+plug-old pandoc git/pandoc.kak %{
+  set-option global pandoc_options "-d default"
+}
+
+nop plug powerline https://github.com/jdugan6240/powerline.kak %{
+    # set-option global powerline_format 'git bufname filetype mode_info line_column position'
+    # powerline-toggle line_column off
+  #   # source .config/kak/autoload/plugins/powerline/rc/themes/gruvbox.kak
+    powerline-theme gruvbox
+    powerline-separator triangle
+    powerline-start
+}
+
+plug prelude https://github.com/alexherbo2/prelude.kak
+
+plug replace-mode https://github.com/alexherbo2/replace-mode.kak %{
+  map -docstring 'Replace' global user r ': enter-replace-mode<ret>'
 }
 
 plug-old kakoune-show-matching-insert https://github.com/laelath/kakoune-show-matching-insert %{
@@ -183,7 +366,15 @@ plug search-doc https://github.com/jbomanson/search-doc.kak %{
     alias global sd search-doc
 }
 
-plug smarttab https://github.com/andreyorst/smarttab.kak %{
+plug search-highlighter https://github.com/alexherbo2/search-highlighter.kak %{
+  search-highlighter-enable
+}
+
+plug sleuth https://github.com/alexherbo2/sleuth.kak %{
+  sleuth-enable
+}
+
+nop plug smarttab https://github.com/andreyorst/smarttab.kak %{
     # when `backspace' is pressed, 4 spaces are deleted at once
     set-option global softtabstop 4
 
@@ -195,99 +386,30 @@ plug smarttab https://github.com/andreyorst/smarttab.kak %{
     hook global WinSetOption filetype=(c|cpp) smarttab
 }
 
-plug palette https://github.com/alexherbo2/palette.kak
+plug-old sudo-write https://github.com/occivink/kakoune-sudo-write
 
-# Key Mappings
-
-## Quit
-map global normal <c-q> ': quit<ret>'
-
-## quick safe
-map global user w -docstring 'safe file' ': w<ret>'
-
-## edit kakrc
-map global user <,> -docstring 'edit kakrc' ': edit "%val{config}/kakrc"<ret>'
-map global user <a-,> -docstring 'source kakrc' ': source "%val{config}/kakrc"<ret>'
-
-## source current buffer
-map global user <a-<> -docstring 'source current buffer' ': source "%val{buffile}<ret>'
-
-## jj to escape
-hook global InsertChar j %{ try %{
-  exec -draft hH <a-k>jj<ret> d
-  exec <esc>
-}}
-
-## alias for enter-user-mode
-alias global u enter-user-mode
-
-## commenting
-
-map global user c -docstring '(un-)comment line' ': comment-line<ret>'
-map global user C -docstring '(un-)comment block' ': comment-block<ret>'
-
-## Mac Clipboard
-hook global NormalKey y|d|c %{ nop %sh{
-      printf %s "$kak_main_reg_dquote" | pbcopy
-}}
-map global user P -docstring 'Paste above' '!pbpaste<ret>'
-map global user p -docstring 'Paste below' '<a-!>pbpaste<ret>'
-map global user R -docstring 'Replace' '|pbpaste<ret>'
-
-
-# IDE
-# (needs connect.kak)
-
-define-command ide -params 0..1 -docstring 'ide [session-name]: Turn Kakoune into an IDE' %{
-  # Session name
-  try %{
-    rename-session %arg{1}
-  }
-
-  # Main client
-  rename-client main
-  set-option global jumpclient main
-
-  # Tools client
-  new %{
-    rename-client tools
-    set-option global toolsclient tools
-  }
-
-  # Docs client
-  new %{
-    rename-client docs
-    set-option global docsclient docs
-  }
-
-  # Project drawer
-  broot
-
-  # Git
-  > lazygit
-
-  # Terminal
-  >
-
-  # get focus back
-  focus main
+plug surround https://github.com/alexherbo2/surround.kak %{
+    ## Quoting
+    map -docstring 'Surround' global normal q ': enter-user-mode surround<ret>'
+    map -docstring 'Surround insert' global normal Q ': surround-enter-insert-mode<ret>'
+    map -docstring 'Surround (Replace)' global normal <a-q> ': surround-delete; enter-user-mode surround<ret>'
 }
 
-# general Configuration
+plug terminal-mode https://github.com/alexherbo2/terminal-mode.kak
 
-    ##verbose autoinfo
-set-option -add global autoinfo normal
+plug text-objects https://github.com/alexherbo2/text-objects.kak
 
-## case insensitive search by default
-map global normal / "/(?i)"
+plug-old vertical-selection https://github.com/occivink/kakoune-vertical-selection
 
-# Appearance
+plug volatile-highlighter https://github.com/alexherbo2/volatile-highlighter.kak %{
+  volatile-highlighter-enable
+}
+plug yank-ring https://github.com/alexherbo2/yank-ring.kak %{
+  # Modules
+  require-module yank-ring-connect
 
-colorscheme gruvbox
+  # Enable yank-ring
+  yank-ring-enable
 
-add-highlighter global/ number-lines -relative -hlcursor
-add-highlighter global/ show-whitespaces
-
-add-highlighter global/ line '%val{cursor_line}' default,rgb:3c3735
-add-highlighter global/ column 81 default,red
-add-highlighter global/ wrap -indent -word -marker ' … '
+  map global normal Y ': yank-ring<ret>'
+}
