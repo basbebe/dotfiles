@@ -33,7 +33,6 @@ plug-core %{
   # https://en.wikipedia.org/wiki/Code_point
   set-option global modelinefmt '{yellow}%opt{out_of_view_status_line}{default} {{mode_info}} {magenta}%val{client}{default} at {yellow}%val{session}{default} on {green}%val{bufname}{default} {{context_info}} {cyan}U+%sh{printf ''%04x'' "$kak_cursor_char_value"}{default} {cyan}%val{cursor_line}{default}:{cyan}%val{cursor_char_column}{default}'
 
-
   # Verbose Autoinfo
   set-option -add global autoinfo normal
 
@@ -44,8 +43,6 @@ plug-core %{
   add-highlighter global/ line '%val{cursor_line}' default,rgb:3c3735
   add-highlighter global/ column 81 default,rgb:3c3836
   add-highlighter global/ wrap -indent -word
-
-
 
   # Scroll offset
   set-option global scrolloff 5,1
@@ -61,10 +58,16 @@ plug-core %{
     set-option window indentwidth 0
   }
 
-	# Windowing
+  # Python
+  hook global WinSetOption filetype=python %{
+    set-option global tabstop 4
+    set-option global indentwidth 4
+  }
+
+  # Windowing
   hook global ModuleLoaded kitty %{
-  alias global terminal kitty-terminal
-  alias global popup kitty-terminal # or kitty-terminal-tab
+    alias global terminal kitty-terminal
+    alias global popup kitty-terminal # or kitty-terminal-tab
   }
 
   # Tools
@@ -179,7 +182,7 @@ plug-core %{
   map -docstring 'Select all occurrences of the current selection set' global normal <a-percent> '*%s<ret>'
 
   # edit kakrc
-  map global user <,> -docstring 'edit kakrc' ': edit "%val{config}/kakrc"<ret>'
+  map global user <,> ': edit-kakoune<ret>'
 
   # alias for enter-user-mode
   alias global u enter-user-mode
@@ -223,9 +226,9 @@ plug connect https://github.com/alexherbo2/connect.kak %{
   require-module connect-nnn
   require-module connect-broot
 
-  # set-option global connect_environment %{
-  #     export SHELL="/usr/local/bin/fish --init-command=\"set -x EDITOR :edit; set -x VISUAL :edit\""
-  # }
+  set-option global connect_environment %{
+    # export SHELL="/usr/local/bin/fish --init-command=\"set -x EDITOR :edit; set -x VISUAL :edit\""
+  }
 }
 
 plug current-word-highlighter https://github.com/alexherbo2/current-word-highlighter.kak %{
@@ -404,12 +407,12 @@ plug-old vertical-selection https://github.com/occivink/kakoune-vertical-selecti
 plug volatile-highlighter https://github.com/alexherbo2/volatile-highlighter.kak %{
   volatile-highlighter-enable
 }
+
 plug yank-ring https://github.com/alexherbo2/yank-ring.kak %{
   # Modules
   require-module yank-ring-connect
 
   # Enable yank-ring
   yank-ring-enable
-
-  map global normal Y ': yank-ring<ret>'
+ map global normal Y ': yank-ring<ret>'
 }
