@@ -42,6 +42,12 @@ if status is-interactive
     set -x LESSOPEN "|/usr/local/bin/lesspipe.sh %s"
     set -x LESS_ADVANCED_PREPROCESSOR 1
 
+    # fzf
+    # this is already being set by PatrickF1/fzf.fish
+    # set -x FZF_DEFAULT_OPTS '--multi --layout=reverse --border --height=90% --preview-window=wrap --marker="*"'
+    bind --erase \cf
+    bind \ef __fzf_search_current_dir
+
     # ues Python3 as default
     abbr python python3
     abbr pip pip3
@@ -72,9 +78,9 @@ if status is-interactive
     abbr brewn 'brew info'
     abbr brewu 'brew update'
     abbr brewU 'brew upgrade'
-    
-    # Cask
-    abbr cask 'brew cask'
+
+    # lazygit
+    abbr lg lazygit
 
     # nnn
     # abbr nnn n
