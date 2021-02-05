@@ -144,6 +144,9 @@ plug-core %{
   # Git
   alias global G lazygit
 
+  # dotfiles
+  define-command -docstring 'open dotfiles with lazygit' dotfiles '> fish -c dotfiles'
+
   # Mappings ───────────────────────────────────────────────────────────────────
 
   # Big keys
