@@ -304,7 +304,7 @@
 		count: rgb(69, 133, 136) rgb(50, 48, 47)
 		dates: rgb(168, 153, 132) None
 		sparse: rgb(250, 189,47) None
-		content_extract: rgb(189, 174, 147) None Italic
+		content_extract: rgb(142, 192, 124) None Italic
 		content_match: rgb(250, 189, 47) None Bold
 		git_branch: rgb(250, 189, 47) None Italic
 		git_insertions: rgb(152, 151, 26) None
