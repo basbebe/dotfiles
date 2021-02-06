@@ -31,7 +31,7 @@ plug-core %{
   #
   # https://en.wikipedia.org/wiki/Unicode
   # https://en.wikipedia.org/wiki/Code_point
-  set-option global modelinefmt '{yellow}%opt{out_of_view_status_line}{default} {{mode_info}} {magenta}%val{client}{default} at {yellow}%val{session}{default} on {green}%val{bufname}{default} {{context_info}} {cyan}U+%sh{printf ''%04x'' "$kak_cursor_char_value"}{default} {cyan}%val{cursor_line}{default}:{cyan}%val{cursor_char_column}{default}'
+  # set-option global modelinefmt '{yellow}%opt{out_of_view_status_line}{default} {{mode_info}} {magenta}%val{client}{default} at {yellow}%val{session}{default} on {green}%val{bufname}{default} {{context_info}} {cyan}U+%sh{printf ''%04x'' "$kak_cursor_char_value"}{default} {cyan}%val{cursor_line}{default}:{cyan}%val{cursor_char_column}{default}'
 
   # Verbose Autoinfo
   set-option -add global autoinfo normal
@@ -60,8 +60,8 @@ plug-core %{
 
   # Python
   hook global WinSetOption filetype=python %{
-    set-option global tabstop 4
-    set-option global indentwidth 4
+    set-option window tabstop 4
+    set-option window indentwidth 4
   }
 
   # Windowing
@@ -181,14 +181,15 @@ plug-core %{
   # case insensitive search by default
   map global normal / "/(?i)"
 
+  # Paths
+  map -docstring 'Current buffer name' global prompt <a-?> '<c-r>%'
+  map -docstring 'Current buffer directory' global prompt <a-/> '%sh(dirname "$kak_bufname")<a-!>/'
+
   # Select all occurrences of the current selection set.
   map -docstring 'Select all occurrences of the current selection set' global normal <a-percent> '*%s<ret>'
 
   # edit kakrc
-  map global user <,> ': edit-kakoune<ret>'
-
-  # alias for enter-user-mode
-  alias global u enter-user-mode
+  map -docstring 'Open kakrc' global user <,> ': edit-kakoune<ret>'
 
   # commenting
   map global user c -docstring '(un-)comment line' ': comment-line<ret>'
@@ -201,13 +202,13 @@ plug-core %{
     }
   }
 
-  # Move macros to ^
-  map -docstring 'Play macro' global normal ^ q
-  map -docstring 'Record macro' global normal <a-^> Q
-
   map global user P -docstring 'Paste above' '!pbpaste<ret>'
   map global user p -docstring 'Paste below' '<a-!>pbpaste<ret>'
   map global user R -docstring 'Replace' '|pbpaste<ret>'
+
+  # Move macros to ^
+  map -docstring 'Play macro' global normal ^ q
+  map -docstring 'Record macro' global normal <a-^> Q
 
 }
 
@@ -255,6 +256,11 @@ plug explore https://github.com/alexherbo2/explore.kak %{
 }
 
 plug-old find https://github.com/occivink/kakoune-find
+
+plug jq https://github.com/alexherbo2/jq.kak %{
+  map -docstring 'jq' global user | ': jq-prompt<ret>'
+  map -docstring 'jq-selections' global user <a-|> ': jq-prompt-selections<ret>'
+}
 
 plug-old kakoune-buffers https://github.com/delapouite/kakoune-buffers %{
   # Suggested hook
@@ -349,13 +355,17 @@ plug-old pandoc git/pandoc.kak %{
   set-option global pandoc_options "-d default"
 }
 
-nop plug powerline https://github.com/jdugan6240/powerline.kak %{
-    # set-option global powerline_format 'git bufname filetype mode_info line_column position'
-    # powerline-toggle line_column off
-  #   # source .config/kak/autoload/plugins/powerline/rc/themes/gruvbox.kak
-    powerline-theme gruvbox
-    powerline-separator triangle
-    powerline-start
+plug powerline https://github.com/jdugan6240/powerline.kak %{
+  powerline-enable
+}
+hook global -once WinDisplay .* %{
+  #Configure powerline.kak as desired
+  # set-option global powerline_format 'git bufname filetype mode_info line_column position'
+  set-option global powerline_format 'git lsp bufname mode_info line_column client session filetype smarttab position'
+  set-option global powerline_shorten_bufname 'short'
+  set-option global powerline_position_minimap_format true
+  powerline-theme gruvbox
+  powerline-separator none
 }
 
 plug prelude https://github.com/alexherbo2/prelude.kak
@@ -380,9 +390,9 @@ plug sleuth https://github.com/alexherbo2/sleuth.kak %{
   sleuth-enable
 }
 
-nop plug smarttab https://github.com/andreyorst/smarttab.kak %{
-    # when `backspace' is pressed, 4 spaces are deleted at once
-    set-option global softtabstop 4
+plug smarttab https://github.com/andreyorst/smarttab.kak %{
+    # when `backspace' is pressed, 2 spaces are deleted at once
+    set-option global softtabstop 2
 
     # these languages will use `expandtab' behavior
     hook global WinSetOption filetype=.* expandtab
@@ -398,7 +408,7 @@ plug surround https://github.com/alexherbo2/surround.kak %{
     ## Quoting
     map -docstring 'Surround' global normal q ': enter-user-mode surround<ret>'
     map -docstring 'Surround insert' global normal Q ': surround-enter-insert-mode<ret>'
-    map -docstring 'Surround (Replace)' global normal <a-q> ': surround-delete; enter-user-mode surround<ret>'
+    # map -docstring 'Surround (Replace)' global normal <a-q> ': surround-delete; enter-user-mode surround<ret>'
 }
 
 plug terminal-mode https://github.com/alexherbo2/terminal-mode.kak
