@@ -58,8 +58,9 @@ plug-core %{
     set-option window indentwidth 0
   }
 
-  # Python
-  hook global WinSetOption filetype=python %{
+  # indentwidth 4 Spaces
+  # https://en.wikipedia.org/wiki/Indentation_(typesetting)#Indentation_in_programming
+  hook global WinSetOption filetype=(c#|f#|java|julia|kotlin|perl|php|python|rust)  %{
     set-option window tabstop 4
     set-option window indentwidth 4
   }
@@ -75,7 +76,6 @@ plug-core %{
   set-option global grepcmd 'rg --column --with-filename'
 
   # Commands ───────────────────────────────────────────────────────────────────
-
 
   # IDE
   # (needs connect.kak)
@@ -127,7 +127,6 @@ plug-core %{
 
   # User modes
   alias global u enter-user-mode
-
 
   # Quick editing
   define-command -docstring 'Open kakrc' edit-kakoune 'edit ~/.config/kak/kakrc'
@@ -239,7 +238,6 @@ plug current-word-highlighter https://github.com/alexherbo2/current-word-highlig
     current-word-highlighter-enable
 }
 
-
 plug double-tap https://github.com/alexherbo2/double-tap.kak %{
   # Type "jj" to leave insert mode:
   double-tap-escape global j
@@ -317,7 +315,7 @@ plug-old lsp https://github.com/kak-lsp/kak-lsp %{
   # map global insert <c-n> "<a-;>: insert-c-n<ret>"
 
   define-command lsp-restart -docstring 'restart lsp server' %{ lsp-stop; lsp-start }
-  hook global WinSetOption filetype=(c|cpp|cc|rust|python|java|latexi|markdown) %{
+  hook global WinSetOption filetype=(c|cpp|cc|rust|python|java|latex|markdown) %{
     set-option window lsp_auto_highlight_references true
     set-option window lsp_hover_anchor false
     lsp-auto-hover-enable
@@ -397,9 +395,9 @@ plug smarttab https://github.com/andreyorst/smarttab.kak %{
     # these languages will use `expandtab' behavior
     hook global WinSetOption filetype=.* expandtab
     # these languages will use `noexpandtab' behavior
-    hook global WinSetOption filetype=(makefile|gas) noexpandtab
+    hook global WinSetOption filetype=(c|gas|go|makefile) noexpandtab
     # these languages will use `smarttab' behavior
-    hook global WinSetOption filetype=(c|cpp) smarttab
+    # hook global WinSetOption filetype=(c|cpp) smarttab
 }
 
 plug-old sudo-write https://github.com/occivink/kakoune-sudo-write
