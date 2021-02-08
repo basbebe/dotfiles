@@ -26,12 +26,59 @@ plug-core %{
   colorscheme gruvbox
 
   # Status line
-  #
+
+  # helper to show git branch
+  declare-option str git_branch
+  define-command -hidden git-branch-update %{
+    set-option buffer git_branch %sh{
+      branch=$(cd "${kak_buffile%/*}" 2>/dev/null && git symbolic-ref --short HEAD 2>/dev/null)
+      [ $branch ] && printf ' %s' $branch
+    }
+  }
+  hook global WinDisplay .* git-branch-update
+
+  # helper to show percentage of current buffer
+  declare-option str modeline_buffer_position
+  define-command -hidden modeline-buffer-position-update %{
+    set-option window modeline_buffer_position %sh{
+      position="$(($kak_cursor_line * 100 / $kak_buf_line_count))%"
+        if [ ${position%%%} -ge 90 ]; then
+            position="⣀"
+        elif [ ${position%%%} -ge 75 ] && [ ${position%%%} -lt 90 ]; then
+            position="⣤"
+        elif [ ${position%%%} -ge 60 ] && [ ${position%%%} -lt 75 ]; then
+            position="⠤"
+        elif [ ${position%%%} -ge 45 ] && [ ${position%%%} -lt 60 ]; then
+            position="⠶"
+        elif [ ${position%%%} -ge 30 ] && [ ${position%%%} -lt 45 ]; then
+            position="⠒"
+        elif [ ${position%%%} -ge 15 ] && [ ${position%%%} -lt 30 ]; then
+            position="⠛"
+        elif [ ${position%%%} -lt 15 ]; then
+            position="⠉"
+        fi
+      printf $position
+    }
+  }
+  hook global NormalIdle .* modeline-buffer-position-update
+
+  # helper to show indentwidth
+  declare-option -hidden str modeline_indent
+  define-command -hidden modeline-indent-update %{
+    set-option buffer modeline_indent %sh{
+      if [ $kak_opt_indentwidth -eq 0 ]; then
+        printf ' '
+      else
+        printf '%s␣' $kak_opt_indentwidth
+      fi
+    }
+  }
+  hook global WinDisplay .* modeline-indent-update
+
   # Display Unicode code point in the status line.
-  #
   # https://en.wikipedia.org/wiki/Unicode
   # https://en.wikipedia.org/wiki/Code_point
-  # set-option global modelinefmt '{yellow}%opt{out_of_view_status_line}{default} {{mode_info}} {magenta}%val{client}{default} at {yellow}%val{session}{default} on {green}%val{bufname}{default} {{context_info}} {cyan}U+%sh{printf ''%04x'' "$kak_cursor_char_value"}{default} {cyan}%val{cursor_line}{default}:{cyan}%val{cursor_char_column}{default}'
+  set-option global modelinefmt '{magenta+i}%opt{git_branch} {bright-blue+u}%val{bufname}{default} %val{cursor_line}:%val{cursor_char_column} %opt{modeline_buffer_position}{default} {{context_info}} {{mode_info}} {StatusLineMode}%opt{out_of_view_status_line}{default} %opt{filetype} %opt{modeline_indent} {bright-cyan}%val{client}{bright-cyan+b}%val{session}'
 
   # Verbose Autoinfo
   set-option -add global autoinfo normal
@@ -60,10 +107,10 @@ plug-core %{
 
   # indentwidth 4 Spaces
   # https://en.wikipedia.org/wiki/Indentation_(typesetting)#Indentation_in_programming
-  hook global WinSetOption filetype=(c#|f#|java|julia|kotlin|perl|php|python|rust)  %{
+  hook global WinSetOption filetype=(fsharp|java|julia|kotlin|perl|php|python|rust)  %{
     set-option window tabstop 4
     set-option window indentwidth 4
-  }
+}
 
   # Windowing
   hook global ModuleLoaded kitty %{
@@ -170,7 +217,7 @@ plug-core %{
   map -docstring 'Find in buffer' global normal <c-f> '/(?i)\Q'
   map -docstring 'Find in buffer' global prompt <c-f> '<home>(?i)\Q<end>'
   map -docstring 'Open a new terminal window' global normal <c-n> ': connect-terminal<ret>'
-  map -docstring 'Open file' global normal <c-o> ':edit<space>'
+  map -docstring 'Open file' global normal <c-e> ':edit<space>'
   map -docstring 'Quit' global normal <c-q> ': quit<ret>'
   map -docstring 'Save buffer' global normal <c-s> ': write<ret>'
   map -docstring 'Open a new tab' global normal <c-t> ': new<ret>'
@@ -321,10 +368,11 @@ plug-old lsp https://github.com/kak-lsp/kak-lsp %{
     lsp-auto-hover-enable
     echo -debug "Enabling LSP for filtetype %opt{filetype}"
     lsp-enable-window
+    powerline-toggle-lsp on
   }
 
   hook global WinSetOption filetype=python %{
-  #   set-option global lsp_server_configuration pyls.configurationSources=["flake8"]
+    set-option global lsp_server_configuration pyls.configurationSources=["flake8"]
   }
 
   hook global KakEnd .* lsp-exit
@@ -353,18 +401,19 @@ plug-old pandoc git/pandoc.kak %{
   set-option global pandoc_options "-d default"
 }
 
-plug powerline https://github.com/jdugan6240/powerline.kak %{
+nop plug powerline https://github.com/jdugan6240/powerline.kak %{
   powerline-enable
 }
-hook global -once WinDisplay .* %{
-  #Configure powerline.kak as desired
-  # set-option global powerline_format 'git bufname filetype mode_info line_column position'
-  set-option global powerline_format 'git lsp bufname mode_info line_column client session filetype smarttab position'
-  set-option global powerline_shorten_bufname 'short'
-  set-option global powerline_position_minimap_format true
-  powerline-theme gruvbox
-  powerline-separator none
-}
+# hook global -once WinDisplay .* %{
+#   #Configure powerline.kak as desired
+#   # set-option global powerline_format 'git bufname filetype mode_info line_column position'
+#   set-option global powerline_format 'git lsp bufname mode_info out-of-view line_column client session filetype smarttab codepoint position'
+#   set-option global powerline_shorten_bufname 'short'
+#   set-option global powerline_position_minimap_format true
+#   powerline-theme gruvbox
+#   powerline-separator none
+#   powerline-toggle-lsp off
+# }
 
 plug prelude https://github.com/alexherbo2/prelude.kak
 
@@ -392,12 +441,12 @@ plug smarttab https://github.com/andreyorst/smarttab.kak %{
     # when `backspace' is pressed, 2 spaces are deleted at once
     set-option global softtabstop 2
 
-    # these languages will use `expandtab' behavior
     hook global WinSetOption filetype=.* expandtab
     # these languages will use `noexpandtab' behavior
-    hook global WinSetOption filetype=(c|gas|go|makefile) noexpandtab
+    # these languages will use `expandtab' behavior
+    hook global WinSetOption filetype=(gas|go|makefile) noexpandtab
     # these languages will use `smarttab' behavior
-    # hook global WinSetOption filetype=(c|cpp) smarttab
+    hook global WinSetOption filetype=(c|cpp) smarttab
 }
 
 plug-old sudo-write https://github.com/occivink/kakoune-sudo-write
