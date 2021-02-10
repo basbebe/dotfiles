@@ -25,61 +25,6 @@ plug-core %{
   # https://github.com/morhetz/gruvbox
   colorscheme gruvbox
 
-  # Status line
-
-  # helper to show git branch
-  declare-option str git_branch
-  define-command -hidden git-branch-update %{
-    set-option buffer git_branch %sh{
-      branch=$(cd "${kak_buffile%/*}" 2>/dev/null && git symbolic-ref --short HEAD 2>/dev/null)
-      [ $branch ] && printf ' %s' $branch
-    }
-  }
-  hook global WinDisplay .* git-branch-update
-
-  # helper to show percentage of current buffer
-  declare-option str modeline_buffer_position
-  define-command -hidden modeline-buffer-position-update %{
-    set-option window modeline_buffer_position %sh{
-      position="$(($kak_cursor_line * 100 / $kak_buf_line_count))%"
-        if [ ${position%%%} -ge 90 ]; then
-            position="⣀"
-        elif [ ${position%%%} -ge 75 ] && [ ${position%%%} -lt 90 ]; then
-            position="⣤"
-        elif [ ${position%%%} -ge 60 ] && [ ${position%%%} -lt 75 ]; then
-            position="⠤"
-        elif [ ${position%%%} -ge 45 ] && [ ${position%%%} -lt 60 ]; then
-            position="⠶"
-        elif [ ${position%%%} -ge 30 ] && [ ${position%%%} -lt 45 ]; then
-            position="⠒"
-        elif [ ${position%%%} -ge 15 ] && [ ${position%%%} -lt 30 ]; then
-            position="⠛"
-        elif [ ${position%%%} -lt 15 ]; then
-            position="⠉"
-        fi
-      printf $position
-    }
-  }
-  hook global NormalIdle .* modeline-buffer-position-update
-
-  # helper to show indentwidth
-  declare-option -hidden str modeline_indent
-  define-command -hidden modeline-indent-update %{
-    set-option buffer modeline_indent %sh{
-      if [ $kak_opt_indentwidth -eq 0 ]; then
-        printf ' '
-      else
-        printf '%s␣' $kak_opt_indentwidth
-      fi
-    }
-  }
-  hook global WinDisplay .* modeline-indent-update
-
-  # Display Unicode code point in the status line.
-  # https://en.wikipedia.org/wiki/Unicode
-  # https://en.wikipedia.org/wiki/Code_point
-  set-option global modelinefmt '{magenta+i}%opt{git_branch} {bright-blue+u}%val{bufname}{default} %val{cursor_line}:%val{cursor_char_column} %opt{modeline_buffer_position}{default} {{context_info}} {{mode_info}} {StatusLineMode}%opt{out_of_view_status_line}{default} %opt{filetype} %opt{modeline_indent} {bright-cyan}%val{client}{bright-cyan+b}%val{session}'
-
   # Verbose Autoinfo
   set-option -add global autoinfo normal
 
@@ -186,6 +131,13 @@ plug-core %{
 
   # Aliases
   alias global ek edit-kakoune
+
+  # Buffers
+  alias global bd delete-buffer
+  alias global bf buffer-first
+  alias global bl buffer-last
+  alias global bo buffer-only
+  alias global bo! buffer-only-force
 
   # Git
   alias global G lazygit
@@ -317,19 +269,7 @@ plug-old kakoune-buffers https://github.com/delapouite/kakoune-buffers %{
   map global user b ': enter-buffers-mode<ret>' -docstring 'buffers…'
   map global user B ': enter-user-mode -lock buffers<ret>' -docstring 'buffers (lock)…'
   map global user <a-b> ': pick-buffers<ret>' -docstring 'pick buffer…'
-
-  # Suggested aliases
-
-  alias global bd delete-buffer
-  alias global bf buffer-first
-  alias global bl buffer-last
-  alias global bo buffer-only
-  alias global bo! buffer-only-force
 }
-
-nop plug-old smooth-scroll https://github.com/caksoylar/kakoune-smooth-scroll %{
-     hook global WinCreate .* %{ hook -once window WinDisplay [^*].* smooth-scroll-enable }
- }
 
 plug-old lsp https://github.com/kak-lsp/kak-lsp %{
   set global lsp_cmd "kak-lsp -s %val{session} --config ~/.config/kak-lsp/kak-lsp.toml"
@@ -368,7 +308,6 @@ plug-old lsp https://github.com/kak-lsp/kak-lsp %{
     lsp-auto-hover-enable
     echo -debug "Enabling LSP for filtetype %opt{filetype}"
     lsp-enable-window
-    powerline-toggle-lsp on
   }
 
   hook global WinSetOption filetype=python %{
@@ -376,6 +315,45 @@ plug-old lsp https://github.com/kak-lsp/kak-lsp %{
   }
 
   hook global KakEnd .* lsp-exit
+}
+
+plug manual-indent https://github.com/alexherbo2/manual-indent.kak %{
+  # Manual indent
+  hook global WinCreate .* %{
+    manual-indent-enable
+  }
+
+  # Remove filetype hooks
+  hook global WinSetOption filetype=.* %{
+    manual-indent-remove-filetype-hooks
+  }
+}
+
+plug modeline-extras git/modeline-extras.kak %{
+  # enable Nerd Font symbols
+  set-option global modeline_nerdfont true
+
+  # enable options
+  modeline-buffer-position-enable
+  modeline-git-branch-enable
+  modeline-indent-enable
+  modeline-lsp-enable
+  # modeline-codepoint-enable
+
+  # Git branch + Filename
+  set-option global modelinefmt '{magenta+i}%opt{modeline_git_branch} {bright-blue+u}%val{bufname}{default}'
+  # Position 
+  set-option -add global modelinefmt ' %val{cursor_line}:%val{cursor_char_column} %opt{modeline_buffer_position}{default}'
+  # Context Info + Mode Info
+  set-option -add global modelinefmt ' {{context_info}} {{mode_info}}'
+  # out-of-view
+  set-option -add global modelinefmt ' {StatusLineMode}%opt{out_of_view_status_line}{default}'
+  # lsp
+  set-option -add global modelinefmt ' {DiagnosticError}%opt{modeline_lsp_err}{DiagnosticWarning}%opt{modeline_lsp_warn}{default}'
+  # Filetype + Indentwidth
+  set-option -add global modelinefmt ' %opt{filetype} %opt{modeline_indent}'
+  # client@session
+  set-option -add global modelinefmt ' {bright-cyan}%val{client}{bright-cyan+b}%val{session}'
 }
 
 plug move-line https://github.com/alexherbo2/move-line.kak %{
@@ -387,42 +365,24 @@ plug-old number-toggle https://github.com/evanrelf/number-toggle.kak %{
     set-option global number_toggle_params -hlcursor
 }
 
-plug palette https://github.com/alexherbo2/palette.kak %{
-  palette-enable
-}
-
 plug objectify https://github.com/alexherbo2/objectify.kak
 
 plug out-of-view https://github.com/alexherbo2/out-of-view.kak %{
   out-of-view-enable
 }
 
+plug palette https://github.com/alexherbo2/palette.kak %{
+  palette-enable
+}
+
 plug-old pandoc git/pandoc.kak %{
   set-option global pandoc_options "-d default"
 }
-
-nop plug powerline https://github.com/jdugan6240/powerline.kak %{
-  powerline-enable
-}
-# hook global -once WinDisplay .* %{
-#   #Configure powerline.kak as desired
-#   # set-option global powerline_format 'git bufname filetype mode_info line_column position'
-#   set-option global powerline_format 'git lsp bufname mode_info out-of-view line_column client session filetype smarttab codepoint position'
-#   set-option global powerline_shorten_bufname 'short'
-#   set-option global powerline_position_minimap_format true
-#   powerline-theme gruvbox
-#   powerline-separator none
-#   powerline-toggle-lsp off
-# }
 
 plug prelude https://github.com/alexherbo2/prelude.kak
 
 plug replace-mode https://github.com/alexherbo2/replace-mode.kak %{
   map -docstring 'Replace' global user r ': enter-replace-mode<ret>'
-}
-
-plug-old kakoune-show-matching-insert https://github.com/laelath/kakoune-show-matching-insert %{
-    add-highlighter global/ ranges show_matching_insert
 }
 
 plug search-doc https://github.com/jbomanson/search-doc.kak %{
@@ -437,16 +397,25 @@ plug sleuth https://github.com/alexherbo2/sleuth.kak %{
   sleuth-enable
 }
 
-plug smarttab https://github.com/andreyorst/smarttab.kak %{
-    # when `backspace' is pressed, 2 spaces are deleted at once
-    set-option global softtabstop 2
+# nop plug smarttab https://github.com/andreyorst/smarttab.kak %{
+#     # when `backspace' is pressed, 2 spaces are deleted at once
+#     set-option global softtabstop 2
 
-    hook global WinSetOption filetype=.* expandtab
-    # these languages will use `noexpandtab' behavior
-    # these languages will use `expandtab' behavior
-    hook global WinSetOption filetype=(gas|go|makefile) noexpandtab
-    # these languages will use `smarttab' behavior
-    hook global WinSetOption filetype=(c|cpp) smarttab
+#     hook global WinSetOption filetype=.* expandtab
+#     # these languages will use `noexpandtab' behavior
+#     # these languages will use `expandtab' behavior
+#     hook global WinSetOption filetype=(gas|go|makefile) noexpandtab
+#     # these languages will use `smarttab' behavior
+#     hook global WinSetOption filetype=(c|cpp) smarttab
+# }
+
+nop plug-old smooth-scroll https://github.com/caksoylar/kakoune-smooth-scroll %{
+     hook global WinCreate .* %{ hook -once window WinDisplay [^*].* smooth-scroll-enable }
+}
+
+plug split-object https://github.com/alexherbo2/split-object.kak %{
+  # Add text objects to the `s` command:
+  map -docstring 'Split object' global prompt <a-i> '<esc>: enter-user-mode split-object<ret>'
 }
 
 plug-old sudo-write https://github.com/occivink/kakoune-sudo-write
