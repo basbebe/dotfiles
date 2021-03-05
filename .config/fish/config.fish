@@ -6,18 +6,20 @@
 #
 
 # PATH
-set -px PATH /usr/local/sbin $HOME/.local/bin
+fish_add_path --global --path --move /usr/local/sbin
+fish_add_path --global --path --move /usr/local/bin
+fish_add_path --global --path --move ~/.local/bin
 
 # Rust
-set -ax PATH $HOME/.cargo/bin
+fish_add_path --global --path --append ~/.cargo/bin
 
 # Java…
 set -x JAVA_HOME (/usr/libexec/java_home)
-set -ax  PATH $JAVA_HOME/bin
+fish_add_path --global --path --append $JAVA_HOME/bin
 
 # util-linux
-set -ax PATH /usr/local/opt/util-linux/bin
-set -ax PATH /usr/local/opt/util-linux/sbin
+fish_add_path --global --path --append /usr/local/opt/util-linux/bin
+fish_add_path --global --path --append /usr/local/opt/util-linux/sbin
 
 # SSH via gpg-agent
 set -x GPG_TTY (tty)
@@ -30,7 +32,7 @@ if status is-interactive
     # fish_vi_key_bindings
 
     # Defaults
-    if test -z $LANG
+    if set -q $LANG
         set -x LANG 'de_DE.UTF-8'
     end
     set -x EDITOR kak
@@ -50,7 +52,7 @@ if status is-interactive
 
     # ues Python3 as default
     abbr python python3
-    abbr pip pip3
+    # abbr pip pip3
 
     # use neovim
     abbr vi nvim
@@ -58,10 +60,10 @@ if status is-interactive
 
     # kakoune
     abbr kk kittykak
-    
+
     # exa
     alias exa 'exa --icons'
-    abbr ls 'exa'
+    abbr ls exa
     abbr ll 'exa -l'
     abbr la 'exa -a'
     abbr lla 'exa -la'
@@ -84,7 +86,8 @@ if status is-interactive
 
     # nnn
     # abbr nnn n
-    set -x NNN_OPTS 'acDEFx'
+    set -x GUI 1
+    set -x NNN_OPTS acDEFx
     set -x NNN_OPENER "$HOME/.config/nnn/plugins/nuke"
     set -x NNN_BMS 'd:~/Documents;u:~/'
     set -x NNN_PLUG 'c:fzcd;f:finder;o:fzopen;O:-_launch $nnn*;p:preview-tui;d:diffs;t:nmount;v:imgview;g:-_git diff;l:-_git log;z:-_|zathura $nnn*'
@@ -99,12 +102,12 @@ if status is-interactive
     end
 
     # publish fish_private_mode
-    if test -n "$fish_private_mode"
+    if set -q fish_private_mode
         set -x FISH_PRIVATE_MODE $fish_private_mode
     end
 
     # Starship prompt
-    if type -q starship 
+    if type -q starship
         starship init fish | source
     end
 
