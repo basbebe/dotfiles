@@ -20,6 +20,7 @@
 -   [fd] -- find replacement
 -   [fzf] -- Fuzzy Finder
 -   [delta] -- viewer for git and diff output
+-   [abduco] -- session management
 -   [util-linux] -- Linux utilities for macOS
 
 ## Other useful Programs
@@ -58,6 +59,7 @@ https://www.atlassian.com/git/tutorials/dotfiles
   [fd]: https://github.com/sharkdp/fd
   [fzf]: https://github.com/junegunn/fzf
   [delta]: https://github.com/dandavison/delta
+  [abduco]: https://github.com/martanne/abduco/
   [util-linux]: https://github.com/karelzak/util-linux
   [pandoc]: https://pandoc.org/
   [mupdf]: https://mupdf.com/
