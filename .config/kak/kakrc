@@ -187,6 +187,11 @@ plug-core %{
     # Select all occurrences of the current selection set.
     map -docstring 'Select all occurrences of the current selection set' global normal <a-percent> '*%s<ret>'
 
+    # Indent the current selection with <tab>
+    map global insert <tab> '<a-;><gt>'
+    # De-indent the current selection with <s-tab>
+    map global insert <s-tab> '<a-;><lt>'
+
     # Allow cycling to the next/previous candidate with <tab> and <s-tab> when completing a word
     hook global InsertCompletionShow .* %{
             try %{
@@ -371,7 +376,7 @@ plug-core %{
 # Plugins ──────────────────────────────────────────────────────────────────────
 
 plug auto-pairs https://github.com/alexherbo2/auto-pairs.kak %{
-        auto-pairs-enable
+    auto-pairs-enable
 }
 
 plug edit https://github.com/alexherbo2/edit.kak
@@ -380,7 +385,7 @@ plug capitalize-selections https://github.com/alexherbo2/capitalize-selections.k
     map -docstring 'Capitalize selections' global normal <a-`> ': capitalize-selections<ret>'
 }
 
-plug connect https://github.com/alexherbo2/connect.kak %{
+plug connect https://github.com/kakounedotcom/connect.kak %{
     # Modules
     require-module connect-fzf
     require-module connect-nnn
@@ -392,7 +397,7 @@ plug connect https://github.com/alexherbo2/connect.kak %{
 }
 
 plug current-word-highlighter https://github.com/alexherbo2/current-word-highlighter.kak %{
-        current-word-highlighter-enable
+    current-word-highlighter-enable
 }
 
 plug double-tap https://github.com/alexherbo2/double-tap.kak %{
@@ -410,7 +415,11 @@ plug explore https://github.com/alexherbo2/explore.kak %{
     alias global explore-buffers fzf-buffers
 }
 
+plug-old extra-filtetypes https://github.com/kakoune-editor/kakoune-extra-filetypes
+
 plug-old find https://github.com/occivink/kakoune-find
+
+plug-old inc-dec https://gitlab.com/Screwtapello/kakoune-inc-dec
 
 plug jq https://github.com/alexherbo2/jq.kak %{
     map -docstring 'jq' global user | ': jq-prompt<ret>'
@@ -430,7 +439,7 @@ plug-old kakoune-buffers https://github.com/delapouite/kakoune-buffers %{
 }
 
 plug-old lsp https://github.com/kak-lsp/kak-lsp %{
-    # set global lsp_cmd "kak-lsp -s %val{session} --config ~/.config/kak-lsp/kak-lsp.toml"
+    set global lsp_cmd "kak-lsp -s %val{session} --config ~/.config/kak-lsp/kak-lsp.toml"
 
     # uncomment to enable debugging
     # set global lsp_cmd "kak-lsp -s %val{session} --config ~/.config/kak-lsp/kak-lsp.toml -vvv --log /tmp/kak-lsp.log"
@@ -448,7 +457,7 @@ plug-old lsp https://github.com/kak-lsp/kak-lsp %{
 
     set-option global lsp_auto_highlight_references true
     set global lsp_hover_anchor true
-    # echo -debug "Enabling LSP for filtetype %opt{filetype}"
+    echo -debug "Enabling LSP for filtetype %opt{filetype}"
 
     hook global WinSetOption filetype=(c|cpp|cc|rust|python|java|latex|markdown) %{
         lsp-auto-hover-enable
@@ -462,7 +471,7 @@ plug-old lsp https://github.com/kak-lsp/kak-lsp %{
     hook global KakEnd .* lsp-exit
 }
 
-plug manual-indent https://github.com/alexherbo2/manual-indent.kak %{
+nop plug manual-indent https://github.com/alexherbo2/manual-indent.kak %{
     # Manual indent
     hook global WinCreate .* %{
         manual-indent-enable
@@ -487,7 +496,7 @@ plug modeline-extras git/modeline-extras.kak %{
 
     # Git branch + Filename
     set-option global modelinefmt '{magenta+i}%opt{modeline_git_branch} {bright-blue+u}%val{bufname}{default}'
-    # Position 
+    # Position
     set-option -add global modelinefmt ' %val{cursor_line}:%val{cursor_char_column} %opt{modeline_buffer_position}{default}'
     # Context Info + Mode Info
     set-option -add global modelinefmt ' {{context_info}} {{mode_info}}'
@@ -520,14 +529,14 @@ plug palette https://github.com/alexherbo2/palette.kak %{
     palette-enable
 }
 
-plug-old pandoc git/pandoc.kak %{
-    set-option global pandoc_options "-d default"
+plug pandoc git/pandoc.kak %{
+    set-option global pandoc_options '-d default'
 }
 
-plug prelude https://github.com/alexherbo2/prelude.kak
+plug prelude https://github.com/kakounedotcom/prelude.kak
 
 plug replace-mode https://github.com/alexherbo2/replace-mode.kak %{
-    map -docstring 'Replace' global user r ': enter-replace-mode<ret>'
+    map -docstring 'Replace mode' global user r ': enter-replace-mode<ret>'
 }
 
 plug search-doc https://github.com/jbomanson/search-doc.kak %{
@@ -537,6 +546,8 @@ plug search-doc https://github.com/jbomanson/search-doc.kak %{
 plug search-highlighter https://github.com/alexherbo2/search-highlighter.kak %{
     search-highlighter-enable
 }
+
+plug-old shellcheck https://gitlab.com/Screwtapello/kakoune-shellcheck
 
 plug sleuth https://github.com/alexherbo2/sleuth.kak %{
     sleuth-enable
