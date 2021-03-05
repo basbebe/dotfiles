@@ -35,6 +35,7 @@ plug-core %{
     add-highlighter global/ line '%val{cursor_line}' default,rgb:3c3735
     add-highlighter global/ column 81 default,rgb:3c3836
     add-highlighter global/ wrap -indent -word
+    add-highlighter global/ regex \h+$ 0:Error
 
     # Scroll offset
     set-option global scrolloff 5,1
@@ -47,14 +48,14 @@ plug-core %{
     # Filetype-specific
     # Makefile
     hook global WinSetOption filetype=makefile %{
-        set-option buffer indentwidth 0
+        set-option window indentwidth 0
     }
 
     # indentwidth 4 Spaces
     # https://en.wikipedia.org/wiki/Indentation_(typesetting)#Indentation_in_programming
     hook global WinSetOption filetype=(fish|fsharp|java|julia|kak|kotlin|perl|php|python|rust)  %{
-        set-option buffer tabstop 4
-        set-option buffer indentwidth 4
+        set-option window tabstop 4
+        set-option window indentwidth 4
     }
 
     # Windowing
@@ -186,6 +187,19 @@ plug-core %{
     # Select all occurrences of the current selection set.
     map -docstring 'Select all occurrences of the current selection set' global normal <a-percent> '*%s<ret>'
 
+    # Allow cycling to the next/previous candidate with <tab> and <s-tab> when completing a word
+    hook global InsertCompletionShow .* %{
+            try %{
+                execute-keys -draft 'h<a-K>\h<ret>'
+            map window insert <tab> <c-n>
+            map window insert <s-tab> <c-p>
+        }
+    }
+    hook global InsertCompletionHide .* %{
+        unmap window insert <tab> <c-n>
+        unmap window insert <s-tab> <c-p>
+    }
+
     # edit kakrc
     map -docstring 'Open kakrc' global user <,> ': edit-kakoune<ret>'
 
@@ -193,22 +207,166 @@ plug-core %{
     map global user c -docstring '(un-)comment line' ': comment-line<ret>'
     map global user C -docstring '(un-)comment block' ': comment-block<ret>'
 
-    # Mac Clipboard
-    hook global NormalKey y|d|c %{
-        nop %sh{
-            printf %s "$kak_main_reg_dquote" | pbcopy
-        }
+    # Set of mappings to copy/paste data to/from the system clipboard
+    define-command -hidden oob-clipboard-copy %{
+        execute-keys <a-|> %sh{
+            if command -v xsel >/dev/null; then
+                printf 'xsel -ib'
+            elif command -v xclip >/dev/null; then
+                printf 'xclip -i'
+            elif command -v pbcopy >/dev/null; then
+                printf 'pbcopy'
+            fi
+        } <ret>
     }
-
-    map global user P -docstring 'Paste above' '!pbpaste<ret>'
-    map global user p -docstring 'Paste below' '<a-!>pbpaste<ret>'
-    map global user R -docstring 'Replace' '|pbpaste<ret>'
+    define-command -hidden oob-clipboard-paste-before %{
+        execute-keys ! %sh{
+            if command -v xsel >/dev/null; then
+                printf 'xsel -ob'
+            elif command -v xclip >/dev/null; then
+                printf 'xclip -o'
+            elif command -v pbcopy >/dev/null; then
+                printf 'pbpaste'
+            fi
+        } <ret>
+    }
+    define-command -hidden oob-clipboard-paste-after %{
+        execute-keys <a-!> %sh{
+            if command -v xsel >/dev/null; then
+                printf 'xsel -ob'
+            elif command -v xclip >/dev/null; then
+                printf 'xclip -o'
+            elif command -v pbcopy >/dev/null; then
+                printf 'pbpaste'
+            fi
+        } <ret>
+    }
+    define-command -hidden oob-clipboard-replace %{
+        execute-keys | %sh{
+            if command -v xsel >/dev/null; then
+                printf 'xsel -ob'
+            elif command -v xclip >/dev/null; then
+                printf 'xclip -o'
+            elif command -v pbcopy >/dev/null; then
+                printf 'pbpaste'
+            fi
+        } <ret>
+    }
+    hook global NormalKey y oob-clipboard-copy
+    map global user p -docstring 'Paste after from System Clipboard' ': oob-clipboard-paste-after<ret>'
+    map global user P -docstring 'Paste before from System Clipboard' ': oob-clipboard-paste-before<ret>'
+    map global user R -docstring 'Replace from System Clipboard' ': oob-clipboard-replace<ret>'
 
     # Move macros to ^
     map -docstring 'Play macro' global normal ^ q
     map -docstring 'Record macro' global normal <a-^> Q
 
+    # Minimal set of readline mappings
+    map -docstring "move the cursor to the start of the line"        global insert <c-a> '<a-;>gh'
+    map -docstring "move the cursor to the end of the line"          global insert <c-e> '<esc>glli'
+    map -docstring "delete the character under the anchor"           global insert <c-d> '<a-;>c'
+    map -docstring "delete from the cursor to the start of the line" global insert <c-u> '<esc>h<a-h>c'
+    map -docstring "delete from the cursor to the end of the line"   global insert <c-k> '<esc><a-l>c'
+    map -docstring "delete until the next word boundary"             global insert <a-d> '<esc>ec'
+    map -docstring "delete until the previous word boundary"         global insert <c-w> '<esc>bc'
+    map -docstring "paste before the cursor"                         global insert <c-y> '<esc>Pi'
+
+    # spell checking
+    declare-user-mode spell
+    map global spell d ': set-option current spell_lang de; spell<ret>' -docstring 'German check'
+    map global spell e ': set-option current spell_lang en; spell<ret>' -docstring 'Englisch check'
+    map global spell n ': spell-next<ret>_: enter-user-mode spell<ret>' -docstring 'next'
+    map global spell r ': spell-replace<ret>' -docstring 'replace'
+    map global spell a ': spell-add; spell<ret>' -docstring 'add to dictionary'
+    map global spell c ': spell-clear<ret>' -docstring 'clear'
+    hook global ModeChange push:[^:]*:next-key\[user.spell\] %{
+            hook -once -always window NormalIdle .* spell-clear
+    }
+
+    map global user s ': enter-user-mode spell<ret>' -docstring 'enter spell mode'
+
+    # Linting & Formatting —————————————————————————————————————————————————————
+
+    hook global WinSetOption filetype=fish %{
+        set-option window lintcmd 'fish -n'
+        set-option window formatcmd 'fish_indent'
+    }
+
+    hook global WinSetOption filetype=haskell %{
+        set-option window lintcmd 'hlint'
+    }
+
+    hook global BufSetOption filetype=json %{
+        set-option buffer formatcmd "jq --indent %opt{tabstop} ."
+    }
+
+    hook global BufSetOption filetype=(css|javascipt|yaml) %{
+        set-option buffer formatcmd "prettier --stdin-filepath=%val{buffile}"
+    }
+
+    # handled by lsp
+    # hook global BufSetOption filetype=(java) %{
+    #     set-option buffer formatcmd "prettier --plugin=/usr/local/lib/node_modules/prettier-plugin-java/ --stdin-filepath=%val{buffile}"
+    # }
+
+    # handled by spellcheck.kak
+    # hook global WinSetOption filetype=sh %{
+    #     set-option window lintcmd 'shellcheck'
+    # }
+
+    hook global WinSetOption filetype=python %{
+        set-option window lintcmd "flake8 --filename='*' --format='%%(path)s:%%(row)d:%%(col)d: error: %%(text)s' --ignore=E121,E123,E126,E226,E24,E704,W503,W504,E501,E221,E127,E128,E129,F405"
+    }
+
+    hook global BufSetOption filetype=rust %{
+        set-option buffer formatcmd 'rustfmt'
+    }
+
+    # text files
+    hook global WinSetOption filetype=(asciidoc|fountain|latex|markdown|plain) %{
+        set-option window lintcmd "proselint"
+        # (?<=^[-]{3}\n)(.*^)(header-includes:)(?=.*^[-|.]{3}\n)
+        set-option window formatcmd "pandoc -f %opt{filetype} -t %opt{filetype}-fenced_code_attributes --standalone --reference-links"
+    }
+
+    # Enable automatic formatting
+    hook global BufWritePre .* %{
+        evaluate-commands %sh{
+            # if [ -n "$kak_opt_formatcmd" ]; then
+            #     echo format-buffer
+            # fi
+        }
+        # lsp-formatting-sync
+    }
+
+    hook global BufWritePost .* %{
+        evaluate-commands %sh{
+            if [ -n "$kak_opt_lintcmd" ]; then
+                echo lint-buffer
+            fi
+        }
+    }
+
+    # Git ——————————————————————————————————————————————————————————————————————
+
+    # update git gutter on write
+    # enable flag-lines hl for git diff
+    hook global WinCreate .* %{
+        add-highlighter window/git-diff flag-lines Default git_diff_flags
+    }
+    # trigger update diff if inside git dir
+    hook global BufOpenFile .* %{
+        evaluate-commands -draft %sh{
+            cd $(dirname "$kak_buffile")
+            if [ "$(git rev-parse --git-dir 2>/dev/null)" ]; then
+                for hook in WinCreate BufReload BufWritePost; do
+                    printf "hook buffer -group git-update-diff %s .* 'git update-diff'\n" "$hook"
+                done
+            fi
+        }
+    }
 }
+
 
 # Plugins ──────────────────────────────────────────────────────────────────────
 
