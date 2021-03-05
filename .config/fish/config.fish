@@ -35,11 +35,20 @@ if status is-interactive
     if set -q $LANG
         set -x LANG 'de_DE.UTF-8'
     end
-    set -x EDITOR kak
-    set -x VISUAL kak
-    set -x PAGER 'less -iR'
+
+    # kakoune.cr
+    set -x EDITOR 'kcr edit'
+    set -x VISUAL 'kcr edit'
+    abbr k 'kcr edit'
+    abbr K 'kcr-fzf-shell'
+    abbr ks 'kcr shell --session'
+    abbr kl 'kcr list'
+    abbr a 'kcr attach'
+    abbr : 'kcr send'
+    abbr :cat 'kcr cat --raw'
 
     # Less
+    set -x PAGER 'less -iR'
     set -x LESS '-g -i -M -R -S -w -z-4'
     set -x LESSOPEN "|/usr/local/bin/lesspipe.sh %s"
     set -x LESS_ADVANCED_PREPROCESSOR 1
@@ -95,11 +104,8 @@ if status is-interactive
     set -x NNN_ARCHIVE "\\.(7z|bz2|gz|tar|tgz|zip)"
     set -x NNN_COLORS '#6d8ed6af;4235'
 
-    # connect.kak
-    if test -n "$IN_KAKOUNE_CONNECT"
-        set -x EDITOR :edit
-        set -x VISUAL :edit
-    end
+    # abduco
+    abbr ssha ssh-abduco
 
     # publish fish_private_mode
     if set -q fish_private_mode

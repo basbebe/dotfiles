@@ -372,7 +372,6 @@ plug-core %{
     }
 }
 
-
 # Plugins ──────────────────────────────────────────────────────────────────────
 
 plug auto-pairs https://github.com/alexherbo2/auto-pairs.kak %{
@@ -601,3 +600,17 @@ plug yank-ring https://github.com/alexherbo2/yank-ring.kak %{
     yank-ring-enable
     map global normal Y ': yank-ring<ret>'
 }
+
+# kakoune.cr
+# https://github.com/alexherbo2/kakoune.cr
+evaluate-commands %sh{
+  kcr init kakoune
+}
+
+# Mappings
+map -docstring 'New client' global normal <c-t> ': new<ret>'
+map -docstring 'New terminal' global normal <c-n> ': connect-terminal<ret>'
+map -docstring 'Open files' global normal <c-f> ': + kcr-fzf-files<ret>'
+map -docstring 'Open buffers' global normal <c-b> ': + kcr-fzf-buffers<ret>'
+map -docstring 'Open files by content' global normal <c-g> ': + kcr-fzf-grep<ret>'
+map -docstring 'Open lazygit' global normal <c-l> ': + lazygit<ret>'

@@ -7,7 +7,7 @@
 -   [Starship prompt]
 -   [Kakoune code editor]
     -   [kak.plug] -- plugin manager for Kakoune editor
-    -   [connect.kak] -- Connect a program to Kakoune clients
+    -   [kakoune.cr] -- command line tool for Kakoune
     -   [kak-lsp] -- Kakoune Language Server Protocol Client
     -   [kakmerge] -- merge tool for Kakoune
 -   [neovim]
@@ -45,7 +45,7 @@ https://www.atlassian.com/git/tutorials/dotfiles
   [Starship prompt]: https://starship.rs/
   [Kakoune code editor]: https://kakoune.org/
   [kak.plug]: https://github.com/alexherbo2/plug.kak
-  [connect.kak]: https://github.com/kakounedotcom/connect.kak
+  [kakoune.cr]: https://github.com/alexherbo2/kakoune.cr
   [kak-lsp]: https://github.com/kak-lsp/kak-lsp
   [kakmerge]: https://github.com/lenormf/kakmerge
   [neovim]: https://neovim.io/
