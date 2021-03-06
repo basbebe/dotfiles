@@ -3,30 +3,30 @@
 ## Configured Applications
 
 -   [fish]
-    -   [Fisher] -- package manager for fish shell
+    -   [Fisher] – package manager for fish shell
 -   [Starship prompt]
 -   [Kakoune code editor]
-    -   [kak.plug] -- plugin manager for Kakoune editor
-    -   [kakoune.cr] -- command line tool for Kakoune
-    -   [kak-lsp] -- Kakoune Language Server Protocol Client
-    -   [kakmerge] -- merge tool for Kakoune
+    -   [kak.plug] – plugin manager for Kakoune editor
+    -   [kakoune.cr] – command line tool for Kakoune
+    -   [kak-lsp] – Kakoune Language Server Protocol Client
+    -   [kakmerge] – merge tool for Kakoune
 -   [neovim]
-    -   [dein.vim] -- vim Plugin Manager
--   [exa] -- ls replacement
--   [nnn] -- file manager
--   [broot] -- file picker
--   [bat] -- cat replacement
--   [ripgrep] -- grep replacement
--   [fd] -- find replacement
--   [fzf] -- Fuzzy Finder
--   [delta] -- viewer for git and diff output
--   [abduco] -- session management
+    -   [dein.vim] – vim Plugin Manager
+-   [exa] – ls replacement
+-   [nnn] – file manager
+-   [broot] – file picker
+-   [bat] – cat replacement
+-   [ripgrep] – grep replacement
+-   [fd] – find replacement
+-   [fzf] – Fuzzy Finder
+-   [delta] – viewer for git and diff output
+-   [abduco] – session management
 
 ## Other useful Programs
 
--   [pandoc] -- Markdown Converter
--   [mupdf] -- PDF Viewer & Converter
--   [zathura] -- PDF Viewer
+-   [pandoc] – Markdown Converter
+-   [mupdf] – PDF Viewer & Converter
+-   [zathura] – PDF Viewer
 
 ## Resources
 

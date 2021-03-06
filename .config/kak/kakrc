@@ -331,7 +331,7 @@ plug-core %{
     hook global WinSetOption filetype=(asciidoc|fountain|latex|markdown|plain) %{
         set-option window lintcmd "proselint"
         # (?<=^[-]{3}\n)(.*^)(header-includes:)(?=.*^[-|.]{3}\n)
-        set-option window formatcmd "pandoc -f %opt{filetype} -t %opt{filetype}-fenced_code_attributes --standalone --reference-links"
+        set-option window formatcmd "pandoc -f %opt{filetype} -t %opt{filetype}-fenced_code_attributes-smart --standalone --reference-links"
     }
 
     # Enable automatic formatting
