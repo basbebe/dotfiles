@@ -13,7 +13,7 @@ truncation_length = 2
 fish_style_pwd_dir_length = 1
 
 
-[docker]
+[docker_context]
 symbol = " "
 
 [elixir]
@@ -27,9 +27,6 @@ symbol = " "
 
 [golang]
 symbol = " "
-
-[haskell]
-symbol = " "
 
 [hg_branch]
 symbol = " "
