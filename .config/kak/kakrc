@@ -7,7 +7,6 @@ plug plug https://github.com/alexherbo2/plug.kak %{
     # Install plugins and build them.
     define-command plug-upgrade -docstring 'plug-upgrade' %{
         plug-install
-        plug-execute connect make install
         plug-execute lsp cargo build --release --locked
     }
 }
@@ -71,7 +70,6 @@ plug-core %{
     # Commands ───────────────────────────────────────────────────────────────────
 
     # IDE
-    # (needs connect.kak)
 
     define-command ide -params 0..1 -docstring 'ide [session-name]: Turn Kakoune into an IDE' %{
         # Session name
@@ -169,7 +167,6 @@ plug-core %{
     map -docstring 'Alternate buffer' global normal <c-a> ga
     map -docstring 'Find in buffer' global normal <c-f> '/(?i)\Q'
     map -docstring 'Find in buffer' global prompt <c-f> '<home>(?i)\Q<end>'
-    map -docstring 'Open a new terminal window' global normal <c-n> ': connect-terminal<ret>'
     map -docstring 'Open file' global normal <c-e> ':edit<space>'
     map -docstring 'Quit' global normal <c-q> ': quit<ret>'
     map -docstring 'Save buffer' global normal <c-s> ': write<ret>'
@@ -384,17 +381,6 @@ plug capitalize-selections https://github.com/alexherbo2/capitalize-selections.k
     map -docstring 'Capitalize selections' global normal <a-`> ': capitalize-selections<ret>'
 }
 
-plug connect https://github.com/kakounedotcom/connect.kak %{
-    # Modules
-    require-module connect-fzf
-    require-module connect-nnn
-    require-module connect-broot
-
-    set-option global connect_environment %{
-        # export SHELL="/usr/local/bin/fish --init-command=\"set -x EDITOR :edit; set -x VISUAL :edit\""
-    }
-}
-
 plug current-word-highlighter https://github.com/alexherbo2/current-word-highlighter.kak %{
     current-word-highlighter-enable
 }
@@ -410,8 +396,8 @@ plug explore https://github.com/alexherbo2/explore.kak %{
     explore-enable
 
     # Configure the file explorer
-    alias global explore-files fzf-files
-    alias global explore-buffers fzf-buffers
+    define-command explore-files -params .. '+ kcr-fzf-files %arg{@}'
+    define-command explore-buffers -params .. '+ kcr-fzf-buffers %arg{@}'
 }
 
 plug-old extra-filtetypes https://github.com/kakoune-editor/kakoune-extra-filetypes
@@ -592,10 +578,7 @@ plug volatile-highlighter https://github.com/alexherbo2/volatile-highlighter.kak
     volatile-highlighter-enable
 }
 
-plug yank-ring https://github.com/alexherbo2/yank-ring.kak %{
-    # Modules
-    require-module yank-ring-connect
-
+nop  plug yank-ring https://github.com/alexherbo2/yank-ring.kak %{
     # Enable yank-ring
     yank-ring-enable
     map global normal Y ': yank-ring<ret>'
