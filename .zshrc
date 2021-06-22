@@ -1,7 +1,5 @@
-# Source Prezto.
-if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
-  source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
-fi
+#test
+export zenv="zshrc"
 
 # iterm2 integration
 # export ITERM2_SQUELCH_MARK=1
@@ -11,14 +9,6 @@ test -e ${HOME}/.iterm2_shell_integration.zsh && source ${HOME}/.iterm2_shell_in
 export GPG_TTY="$(tty)"
 export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
 gpgconf --launch gpg-agent
-
-# spaceship prompt
-
-# SPACESHIP_CHAR_PREFIX="$(iterm2_prompt_mark) "
-# SPACESHIP_VI_MODE_PREFIX="$(iterm2_prompt_mark) "
-SPACESHIP_CHAR_SYMBOL_ROOT="#"
-SPACESHIP_DIR_TRUNC_PREFIX="…/"
-spaceship_vi_mode_enable
 
 #use python3 as default
 alias python='python3'
@@ -72,9 +62,6 @@ n ()
 # manage dotfiles
 alias dotfiles='git --git-dir=/$HOME/.dotfiles/ --work-tree=/$HOME'
 compdef dotfiles='git'
-
-# conflict between git merge and graphicsmagic
-unalias gm
 
 # fzf
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
