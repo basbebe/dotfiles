@@ -1,474 +1,361 @@
-# Preamble
-require-module plug
+# Preamble —————————————————————————————————————————————————————————————————————
 
-# Let plug.kak manage itself.
-plug plug https://github.com/alexherbo2/plug.kak %{
-    # Upgrade plugins
-    # Install plugins and build them.
-    define-command plug-upgrade -docstring 'plug-upgrade' %{
-        plug-install
-        plug-execute lsp cargo build --release --locked
-    }
+try %sh{
+    kcr init kakoune
+    kak-lsp --kakoune --session "$kak_session"
 }
 
-plug-core %{
-    # Options ────────────────────────────────────────────────────────────────────
+try lsp-enable
 
-    # User interface
-    set-option -add global ui_options ncurses_status_on_top=yes
-    set-option -add global ui_options ncurses_assistant=cat
-    set-option -add global ui_options ncurses_set_title=no
+# Options ——————————————————————————————————————————————————————————————————————
 
-    # Color scheme
-    # Gruvbox theme for Kakoune
-    # https://github.com/morhetz/gruvbox
-    colorscheme gruvbox
+# UI
+set-option -add global ui_options ncurses_status_on_top=yes
+set-option -add global ui_options ncurses_assistant=cat
+set-option -add global ui_options ncurses_set_title=no
+delete-scratch-message
 
-    # Verbose Autoinfo
-    # set-option -add global autoinfo normal
+# Color scheme
+# Gruvbox theme for Kakoune
+# https://github.com/morhetz/gruvbox
+colorscheme gruvbox
 
-    # Highlighters
-    add-highlighter global/ number-lines -relative -hlcursor
-    add-highlighter global/show-matching show-matching
-    add-highlighter global/show-whitespaces show-whitespaces
-    add-highlighter global/ line '%val{cursor_line}' default,rgb:3c3735
-    add-highlighter global/ column 81 default,rgb:3c3836
-    add-highlighter global/ wrap -indent -word
-    add-highlighter global/ regex \h+$ 0:Error
+# Verbose Autoinfo
+# set-option -add global autoinfo normal
 
-    # Scroll offset
-    set-option global scrolloff 5,1
+# Indentation
+# Indent with 2 spaces and make tabs 2 spaces wide.
+set-indent global 2
+enable-detect-indent
+enable-auto-indent
 
-    # Indentation
-    # Indent with 2 spaces and make tabs 2 spaces wide.
-    set-option global tabstop 2
-    set-option global indentwidth 2
+# Filetype-specific
+# Makefile
+hook global WinSetOption filetype=makefile %{
+    set-option window indentwidth 0
+}
 
-    # Filetype-specific
-    # Makefile
-    hook global WinSetOption filetype=makefile %{
-        set-option window indentwidth 0
-    }
+# indentwidth 4 Spaces
+# https://en.wikipedia.org/wiki/Indentation_(typesetting)#Indentation_in_programming
+hook global WinSetOption filetype=(fish|fsharp|java|julia|kak|kotlin|perl|php|python|rust)  %{
+    set-indent window 4
+}
 
-    # indentwidth 4 Spaces
-    # https://en.wikipedia.org/wiki/Indentation_(typesetting)#Indentation_in_programming
-    hook global WinSetOption filetype=(fish|fsharp|java|julia|kak|kotlin|perl|php|python|rust)  %{
-        set-option window tabstop 4
-        set-option window indentwidth 4
-    }
+# Auto-pairing of characters
+enable-auto-pairs
 
-    # Windowing
-    hook global ModuleLoaded kitty %{
-        alias global terminal kitty-terminal
-        alias global popup kitty-terminal # or kitty-terminal-tab
-    }
+# Disable indentation hooks
+# set-option global disabled_hooks '(?!auto)(?!detect)\K(.+)-(trim-indent|insert|indent)'
 
-    # Tools
-    set-option global makecmd 'make -j 8'
-    set-option global grepcmd 'rg --column --with-filename'
+# Highlighters
+add-highlighter global/ number-lines -relative -hlcursor
+add-highlighter global/show-matching show-matching
+add-highlighter global/ line '%val{cursor_line}' default,rgb:3c3735
+add-highlighter global/ column 81 default,rgb:3c3836
+add-highlighter global/ wrap -indent -word
+add-highlighter global/ regex \h+$ 0:Error
 
-    # Commands ───────────────────────────────────────────────────────────────────
+# Show selections
+show-selected-text
 
-    # IDE
+# Show whitespaces
+add-highlighter -override global/show-whitespaces show-whitespaces
+add-highlighter -override global/show-trailing-whitespaces regex '\h+$' '0:red+f'
+# add-highlighter -override global/show-non-breaking-spaces regex ' +' '0:red+f'
 
-    define-command ide -params 0..1 -docstring 'ide [session-name]: Turn Kakoune into an IDE' %{
-        # Session name
+# Show characters
+add-highlighter -override global/show-unicode-2013 regex '–' '0:green+f'
+add-highlighter -override global/show-unicode-2014 regex '—' '0:green+bf'
+add-highlighter -override global/show-math-symbols regex '[−×]' '0:cyan+f'
+add-highlighter -override global/show-limit regex '(?S)^.{79}[=-─┈]\K\n' '0:green+f'
+
+# Scroll offset
+set-option global scrolloff 5,1
+
+# Clipboard
+synchronize-clipboard
+synchronize-buffer-directory-name-with-register d
+
+# Tools
+set-option global makecmd 'make -j 8'
+set-option global grepcmd 'rg --column --with-filename'
+
+# Windowing
+hook global ModuleLoaded kitty %{
+    alias global terminal kitty-terminal
+    alias global popup kitty-terminal # or kitty-terminal-tab
+}
+
+# Allow cycling to the next/previous candidate with <tab> and <s-tab> when completing a word
+hook global InsertCompletionShow .* %{
         try %{
-            rename-session %arg{1}
+            execute-keys -draft 'h<a-K>\h<ret>'
+        map window insert <tab> <c-n>
+        map window insert <s-tab> <c-p>
     }
+}
+hook global InsertCompletionHide .* %{
+    unmap window insert <tab> <c-n>
+    unmap window insert <s-tab> <c-p>
+}
 
-        # Main client
-        rename-client main
-        set-option global jumpclient main
 
-        # Tools client
-        new %{
-            rename-client tools
-            set-option global toolsclient tools
+# Commands ——————————————————————————————————————————————————————————————————————
+
+# Quick editing
+define-command -docstring 'Open kakrc' edit-kakoune 'edit ~/.config/kak/kakrc'
+define-command -docstring 'Open tmux.conf' edit-tmux 'edit ~/.tmux.conf'
+define-command -docstring 'Open kitty.conf' edit-kitty 'edit ~/.config/kitty/kitty.conf'
+define-command -docstring 'Open config.fish' edit-fish 'edit ~/.config/fish/config.fish'
+define-command -docstring 'Open gitconfig' edit-git 'edit ~/.gitconfig'
+define-command -docstring 'Open broot/conf.toml' edit-broot 'edit ~/.config/broot/conf.hjson'
+define-command -docstring 'Open starship.toml' edit-starship 'edit ~/.config/starship.toml'
+
+# lazygit
+# https://github.com/jesseduffield/lazygit
+define-command lazygit -params .. -docstring 'Open lazygit' %{
+    + lazygit %arg{@}
+}
+
+# dotfiles
+define-command -docstring 'open dotfiles with lazygit' dotfiles '> fish -c dotfiles'
+
+# Aliases ——————————————————————————————————————————————————————————————————————
+
+# Aliases
+alias global ek edit-kakoune
+
+# Buffers
+alias global bd delete-buffer
+
+# Git
+alias global lg lazygit
+
+# Mappings —————————————————————————————————————————————————————————————————————
+
+# Normal mode ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈
+
+# Hot reloading
+map -docstring 'reload kakrc' global normal <F5> ':source-kakrc; echo reloaded kakrc<ret>'
+
+# Editing
+map -docstring 'save' global normal <c-s> ':write; echo saved<ret>'
+map -docstring 'quit' global normal <c-q> ':quit<ret>'
+map -docstring 'close buffer' global normal <c-w> ':delete-buffer<ret>'
+map -docstring 'last buffer' global normal <c-a> ga
+map -docstring 'Write and quit' global normal <c-x> ': write-quit<ret>'
+
+# Search
+# map -docstring 'search' global normal f ':search<ret>'
+# map -docstring 'jump backward' global normal F <c-o>
+
+# Selection primitives
+map -docstring 'enter insert mode with main selection' global normal ^ ':enter-insert-mode-with-main-selection<ret>'
+map -docstring 'select next word' global normal w ':select-next-word<ret>'
+map -docstring 'surround' global normal q ':surround<ret>'
+# map -docstring 'select objects' global normal S ':select-objects<ret>'
+map -docstring 'select all occurrences of current selection' global normal <a-L> ':select-highlights<ret>'
+map -docstring 'move line down' global normal <down> ':move-lines-down<ret>'
+map -docstring 'move line up' global normal <up> ':move-lines-up<ret>'
+
+# Tools
+map -docstring 'math' global normal = ':math<ret>'
+
+# Windowing
+map -docstring 'new client' global normal <c-t> ':new<ret>'
+map -docstring 'terminal' global normal <c-n> ':connect-terminal<ret>'
+map -docstring 'file explorer' global normal <c-e> ":> fish -ic 'n .'<ret>"
+map -docstring 'file picker' global normal <c-f> ':+ kcr-fzf-files<ret>'
+map -docstring 'buffer picker' global normal <c-b> ':+ kcr-fzf-buffers<ret>'
+map -docstring 'grep picker' global normal <c-g> ':+ kcr-fzf-grep<ret>'
+# map -docstring 'git' global normal <c-l> ':+ gitui<ret>'
+map -docstring 'git' global normal <c-l> ':+ lazygit<ret>'
+
+
+# case insensitive search by default
+map global normal / "/(?i)"
+
+# Move macros to ^
+# map -docstring 'Play macro' global normal ^ q
+# map -docstring 'Record macro' global normal <a-^> Q
+
+# Insert mode ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈
+
+map -docstring 'indent' global insert <tab> '<a-;><a-gt>'
+map -docstring 'deindent' global insert <s-tab> '<a-;><lt>'
+
+hook global InsertChar j %{ try %{
+    exec -draft hH <a-k>jj<ret> d
+      exec <esc>
+}}
+
+# Minimal set of readline mappings
+map -docstring "move the cursor to the start of the line"        global insert <c-a> '<a-;>gh'
+map -docstring "move the cursor to the end of the line"          global insert <c-e> '<esc>glli'
+map -docstring "delete the character under the anchor"           global insert <c-d> '<a-;>c'
+map -docstring "delete from the cursor to the start of the line" global insert <c-u> '<esc>h<a-h>c'
+map -docstring "delete from the cursor to the end of the line"   global insert <c-k> '<esc><a-l>c'
+map -docstring "delete until the next word boundary"             global insert <a-d> '<esc>ec'
+map -docstring "delete until the previous word boundary"         global insert <c-w> '<esc>bc'
+map -docstring "paste before the cursor"                         global insert <c-y> '<esc>Pi'
+
+# View mode ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈
+
+map -docstring 'view mode' global normal v V
+map -docstring 'show palette' global view p '<esc>:show-palette<ret>'
+
+# User mode ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈
+
+# spell checking
+map global user s ': enter-user-mode spell<ret>' -docstring 'enter spell mode'
+declare-user-mode spell
+map global spell d ': set-option current spell_lang de; spell<ret>' -docstring 'German check'
+map global spell e ': set-option current spell_lang en; spell<ret>' -docstring 'Englisch check'
+map global spell n ': spell-next<ret>_: enter-user-mode spell<ret>' -docstring 'next'
+map global spell r ': spell-replace<ret>' -docstring 'replace'
+map global spell a ': spell-add; spell<ret>' -docstring 'add to dictionary'
+map global spell c ': spell-clear<ret>' -docstring 'clear'
+hook global ModeChange push:[^:]*:next-key\[user.spell\] %{
+        hook -once -always window NormalIdle .* spell-clear
+}
+
+# edit kakrc
+map -docstring 'Open kakrc' global user <,> ': edit-kakoune<ret>'
+
+# commenting
+map global user c -docstring '(un-)comment line' ': comment-line<ret>'
+map global user C -docstring '(un-)comment block' ': comment-block<ret>'
+
+# Linting & Formatting —————————————————————————————————————————————————————————
+
+hook global WinSetOption filetype=fish %{
+    set-option window lintcmd 'fish -n'
+    set-option window formatcmd 'fish_indent'
+}
+
+hook global WinSetOption filetype=haskell %{
+    set-option window lintcmd 'hlint'
+}
+
+hook global BufSetOption filetype=json %{
+    set-option buffer formatcmd "jq --indent %opt{tabstop} ."
+}
+
+hook global BufSetOption filetype=(css|javascipt|yaml) %{
+    set-option buffer formatcmd "prettier --stdin-filepath=%val{buffile}"
+}
+
+# handled by lsp
+# hook global BufSetOption filetype=(java) %{
+#     set-option buffer formatcmd "prettier --plugin=/usr/local/lib/node_modules/prettier-plugin-java/ --stdin-filepath=%val{buffile}"
+# }
+
+# handled by spellcheck.kak
+# hook global WinSetOption filetype=sh %{
+#     set-option window lintcmd 'shellcheck'
+# }
+
+hook global WinSetOption filetype=python %{
+    set-option window lintcmd "flake8 --filename='*' --format='%%(path)s:%%(row)d:%%(col)d: error: %%(text)s' --ignore=E121,E123,E126,E226,E24,E704,W503,W504,E501,E221,E127,E128,E129,F405"
+}
+
+hook global BufSetOption filetype=rust %{
+    set-option buffer formatcmd 'rustfmt'
+}
+
+# text files
+hook global WinSetOption filetype=(asciidoc|fountain|latex|markdown|plain) %{
+    set-option window lintcmd "proselint"
+    # (?<=^[-]{3}\n)(.*^)(header-includes:)(?=.*^[-|.]{3}\n)
+    set-option window formatcmd "pandoc -f %opt{filetype} -t %opt{filetype}-fenced_code_attributes-smart --standalone --reference-links"
+}
+
+# Enable automatic formatting
+hook global BufWritePre .* %{
+    evaluate-commands %sh{
+        # if [ -n "$kak_opt_formatcmd" ]; then
+        #     echo format-buffer
+        # fi
     }
+    # lsp-formatting-sync
+}
 
-        # Docs client
-        new %{
-            rename-client docs
-            set-option global docsclient docs
-    }
-
-        # Project drawer
-        broot
-
-        # Git
-    > lazygit
-
-        # Terminal
-    >
-
-        # get focus back
-        focus main
-    }
-
-    # lazygit
-    # https://github.com/jesseduffield/lazygit
-    define-command lazygit -params .. -docstring 'Open lazygit' %{
-        + lazygit %arg{@}
-    }
-
-    alias global lg lazygit
-
-    # Aliases ────────────────────────────────────────────────────────────────────
-
-    # User modes
-    alias global u enter-user-mode
-
-    # Quick editing
-    define-command -docstring 'Open kakrc' edit-kakoune 'edit ~/.config/kak/kakrc'
-    define-command -docstring 'Open tmux.conf' edit-tmux 'edit ~/.tmux.conf'
-    define-command -docstring 'Open kitty.conf' edit-kitty 'edit ~/.config/kitty/kitty.conf'
-    define-command -docstring 'Open config.fish' edit-fish 'edit ~/.config/fish/config.fish'
-    define-command -docstring 'Open gitconfig' edit-git 'edit ~/.gitconfig'
-    define-command -docstring 'Open broot/conf.toml' edit-broot 'edit ~/.config/broot/conf.hjson'
-    define-command -docstring 'Open starship.toml' edit-starship 'edit ~/.config/starship.toml'
-
-    # Aliases
-    alias global ek edit-kakoune
-
-    # Buffers
-    alias global bd delete-buffer
-    alias global bf buffer-first
-    alias global bl buffer-last
-    alias global bo buffer-only
-    alias global bo! buffer-only-force
-
-    # Git
-    alias global G lazygit
-
-    # dotfiles
-    define-command -docstring 'open dotfiles with lazygit' dotfiles '> fish -c dotfiles'
-
-    # Mappings ───────────────────────────────────────────────────────────────────
-
-    # Big keys
-    # [Enter] [Backspace] [Tab] [Alt-Tab]
-    map -docstring 'Enter command prompt' global normal <ret> :
-    map -docstring 'Reduce selections to their cursor' global normal <backspace> ';'
-    map -docstring 'Swap selections cursor and anchor' global normal <tab> '<a-;>'
-    map -docstring 'Ensure selection cursor is after anchor' global normal <a-tab> '<a-:>'
-
-    # Keep the jump functionality on Enter for grep and make.
-    hook global WinSetOption filetype=grep %{
-        map -docstring 'grep-jump' window normal <ret> ': grep-jump<ret>'
-    }
-
-    hook global WinSetOption filetype=make %{
-        map -docstring 'make-jump' window normal <ret> ': make-jump<ret>'
-    }
-
-    # Control keys
-    # [C-a] [C-f] [C-n] [C-o] [C-q] [C-s] [C-t] [C-w] [C-x]
-    map -docstring 'Alternate buffer' global normal <c-a> ga
-    map -docstring 'Find in buffer' global normal <c-f> '/(?i)\Q'
-    map -docstring 'Find in buffer' global prompt <c-f> '<home>(?i)\Q<end>'
-    map -docstring 'Open file' global normal <c-e> ':edit<space>'
-    map -docstring 'Quit' global normal <c-q> ': quit<ret>'
-    map -docstring 'Save buffer' global normal <c-s> ': write<ret>'
-    map -docstring 'Open a new tab' global normal <c-t> ': new<ret>'
-    map -docstring 'Terminal' global normal <c-w> ': enter-user-mode terminal<ret>'
-    map -docstring 'Write and quit' global normal <c-x> ': write-quit<ret>'
-
-    # case insensitive search by default
-    map global normal / "/(?i)"
-
-    # Paths
-    map -docstring 'Current buffer name' global prompt <a-?> '<c-r>%'
-    map -docstring 'Current buffer directory' global prompt <a-/> '%sh(dirname "$kak_bufname")<a-!>/'
-
-    # Select all occurrences of the current selection set.
-    map -docstring 'Select all occurrences of the current selection set' global normal <a-percent> '*%s<ret>'
-
-    # Indent the current selection with <tab>
-    map global insert <tab> '<a-;><gt>'
-    # De-indent the current selection with <s-tab>
-    map global insert <s-tab> '<a-;><lt>'
-
-    # Allow cycling to the next/previous candidate with <tab> and <s-tab> when completing a word
-    hook global InsertCompletionShow .* %{
-            try %{
-                execute-keys -draft 'h<a-K>\h<ret>'
-            map window insert <tab> <c-n>
-            map window insert <s-tab> <c-p>
-        }
-    }
-    hook global InsertCompletionHide .* %{
-        unmap window insert <tab> <c-n>
-        unmap window insert <s-tab> <c-p>
-    }
-
-    # edit kakrc
-    map -docstring 'Open kakrc' global user <,> ': edit-kakoune<ret>'
-
-    # commenting
-    map global user c -docstring '(un-)comment line' ': comment-line<ret>'
-    map global user C -docstring '(un-)comment block' ': comment-block<ret>'
-
-    # Set of mappings to copy/paste data to/from the system clipboard
-    define-command -hidden oob-clipboard-copy %{
-        execute-keys <a-|> %sh{
-            if command -v xsel >/dev/null; then
-                printf 'xsel -ib'
-            elif command -v xclip >/dev/null; then
-                printf 'xclip -i'
-            elif command -v pbcopy >/dev/null; then
-                printf 'pbcopy'
-            fi
-        } <ret>
-    }
-    define-command -hidden oob-clipboard-paste-before %{
-        execute-keys ! %sh{
-            if command -v xsel >/dev/null; then
-                printf 'xsel -ob'
-            elif command -v xclip >/dev/null; then
-                printf 'xclip -o'
-            elif command -v pbcopy >/dev/null; then
-                printf 'pbpaste'
-            fi
-        } <ret>
-    }
-    define-command -hidden oob-clipboard-paste-after %{
-        execute-keys <a-!> %sh{
-            if command -v xsel >/dev/null; then
-                printf 'xsel -ob'
-            elif command -v xclip >/dev/null; then
-                printf 'xclip -o'
-            elif command -v pbcopy >/dev/null; then
-                printf 'pbpaste'
-            fi
-        } <ret>
-    }
-    define-command -hidden oob-clipboard-replace %{
-        execute-keys | %sh{
-            if command -v xsel >/dev/null; then
-                printf 'xsel -ob'
-            elif command -v xclip >/dev/null; then
-                printf 'xclip -o'
-            elif command -v pbcopy >/dev/null; then
-                printf 'pbpaste'
-            fi
-        } <ret>
-    }
-    hook global NormalKey y oob-clipboard-copy
-    map global user p -docstring 'Paste after from System Clipboard' ': oob-clipboard-paste-after<ret>'
-    map global user P -docstring 'Paste before from System Clipboard' ': oob-clipboard-paste-before<ret>'
-    map global user R -docstring 'Replace from System Clipboard' ': oob-clipboard-replace<ret>'
-
-    # Move macros to ^
-    map -docstring 'Play macro' global normal ^ q
-    map -docstring 'Record macro' global normal <a-^> Q
-
-    # Minimal set of readline mappings
-    map -docstring "move the cursor to the start of the line"        global insert <c-a> '<a-;>gh'
-    map -docstring "move the cursor to the end of the line"          global insert <c-e> '<esc>glli'
-    map -docstring "delete the character under the anchor"           global insert <c-d> '<a-;>c'
-    map -docstring "delete from the cursor to the start of the line" global insert <c-u> '<esc>h<a-h>c'
-    map -docstring "delete from the cursor to the end of the line"   global insert <c-k> '<esc><a-l>c'
-    map -docstring "delete until the next word boundary"             global insert <a-d> '<esc>ec'
-    map -docstring "delete until the previous word boundary"         global insert <c-w> '<esc>bc'
-    map -docstring "paste before the cursor"                         global insert <c-y> '<esc>Pi'
-
-    # spell checking
-    declare-user-mode spell
-    map global spell d ': set-option current spell_lang de; spell<ret>' -docstring 'German check'
-    map global spell e ': set-option current spell_lang en; spell<ret>' -docstring 'Englisch check'
-    map global spell n ': spell-next<ret>_: enter-user-mode spell<ret>' -docstring 'next'
-    map global spell r ': spell-replace<ret>' -docstring 'replace'
-    map global spell a ': spell-add; spell<ret>' -docstring 'add to dictionary'
-    map global spell c ': spell-clear<ret>' -docstring 'clear'
-    hook global ModeChange push:[^:]*:next-key\[user.spell\] %{
-            hook -once -always window NormalIdle .* spell-clear
-    }
-
-    map global user s ': enter-user-mode spell<ret>' -docstring 'enter spell mode'
-
-    # Linting & Formatting —————————————————————————————————————————————————————
-
-    hook global WinSetOption filetype=fish %{
-        set-option window lintcmd 'fish -n'
-        set-option window formatcmd 'fish_indent'
-    }
-
-    hook global WinSetOption filetype=haskell %{
-        set-option window lintcmd 'hlint'
-    }
-
-    hook global BufSetOption filetype=json %{
-        set-option buffer formatcmd "jq --indent %opt{tabstop} ."
-    }
-
-    hook global BufSetOption filetype=(css|javascipt|yaml) %{
-        set-option buffer formatcmd "prettier --stdin-filepath=%val{buffile}"
-    }
-
-    # handled by lsp
-    # hook global BufSetOption filetype=(java) %{
-    #     set-option buffer formatcmd "prettier --plugin=/usr/local/lib/node_modules/prettier-plugin-java/ --stdin-filepath=%val{buffile}"
-    # }
-
-    # handled by spellcheck.kak
-    # hook global WinSetOption filetype=sh %{
-    #     set-option window lintcmd 'shellcheck'
-    # }
-
-    hook global WinSetOption filetype=python %{
-        set-option window lintcmd "flake8 --filename='*' --format='%%(path)s:%%(row)d:%%(col)d: error: %%(text)s' --ignore=E121,E123,E126,E226,E24,E704,W503,W504,E501,E221,E127,E128,E129,F405"
-    }
-
-    hook global BufSetOption filetype=rust %{
-        set-option buffer formatcmd 'rustfmt'
-    }
-
-    # text files
-    hook global WinSetOption filetype=(asciidoc|fountain|latex|markdown|plain) %{
-        set-option window lintcmd "proselint"
-        # (?<=^[-]{3}\n)(.*^)(header-includes:)(?=.*^[-|.]{3}\n)
-        set-option window formatcmd "pandoc -f %opt{filetype} -t %opt{filetype}-fenced_code_attributes-smart --standalone --reference-links"
-    }
-
-    # Enable automatic formatting
-    hook global BufWritePre .* %{
-        evaluate-commands %sh{
-            # if [ -n "$kak_opt_formatcmd" ]; then
-            #     echo format-buffer
-            # fi
-        }
-        # lsp-formatting-sync
-    }
-
-    hook global BufWritePost .* %{
-        evaluate-commands %sh{
-            if [ -n "$kak_opt_lintcmd" ]; then
-                echo lint-buffer
-            fi
-        }
-    }
-
-    # Git ——————————————————————————————————————————————————————————————————————
-
-    # update git gutter on write
-    # enable flag-lines hl for git diff
-    hook global WinCreate .* %{
-        add-highlighter window/git-diff flag-lines Default git_diff_flags
-    }
-    # trigger update diff if inside git dir
-    hook global BufOpenFile .* %{
-        evaluate-commands -draft %sh{
-            cd $(dirname "$kak_buffile")
-            if [ "$(git rev-parse --git-dir 2>/dev/null)" ]; then
-                for hook in WinCreate BufReload BufWritePost; do
-                    printf "hook buffer -group git-update-diff %s .* 'git update-diff'\n" "$hook"
-                done
-            fi
-        }
+hook global BufWritePost .* %{
+    evaluate-commands %sh{
+        if [ -n "$kak_opt_lintcmd" ]; then
+            echo lint-buffer
+        fi
     }
 }
 
-# Plugins ──────────────────────────────────────────────────────────────────────
+# Git ——————————————————————————————————————————————————————————————————————————
 
-plug auto-pairs https://github.com/alexherbo2/auto-pairs.kak %{
-    auto-pairs-enable
+# update git gutter on write
+# enable flag-lines hl for git diff
+hook global WinCreate .* %{
+    add-highlighter window/git-diff flag-lines Default git_diff_flags
 }
-
-plug edit https://github.com/alexherbo2/edit.kak
-
-plug capitalize-selections https://github.com/alexherbo2/capitalize-selections.kak %{
-    map -docstring 'Capitalize selections' global normal <a-`> ': capitalize-selections<ret>'
-}
-
-plug current-word-highlighter https://github.com/alexherbo2/current-word-highlighter.kak %{
-    current-word-highlighter-enable
-}
-
-plug double-tap https://github.com/alexherbo2/double-tap.kak %{
-    # Type "jj" to leave insert mode:
-    double-tap-escape global j
-}
-
-plug execute-key https://github.com/alexherbo2/execute-key.kak
-
-plug explore https://github.com/alexherbo2/explore.kak %{
-    explore-enable
-
-    # Configure the file explorer
-    define-command explore-files -params .. '+ kcr-fzf-files %arg{@}'
-    define-command explore-buffers -params .. '+ kcr-fzf-buffers %arg{@}'
-}
-
-plug-old extra-filtetypes https://github.com/kakoune-editor/kakoune-extra-filetypes
-
-plug-old find https://github.com/occivink/kakoune-find
-
-plug-old inc-dec https://gitlab.com/Screwtapello/kakoune-inc-dec
-
-plug jq https://github.com/alexherbo2/jq.kak %{
-    map -docstring 'jq' global user | ': jq-prompt<ret>'
-    map -docstring 'jq-selections' global user <a-|> ': jq-prompt-selections<ret>'
-}
-
-plug-old kakoune-buffers https://github.com/delapouite/kakoune-buffers %{
-    # Suggested hook
-
-    hook global WinDisplay .* info-buffers
-
-    # Suggested mappings
-
-    map global user b ': enter-buffers-mode<ret>' -docstring 'buffers…'
-    map global user B ': enter-user-mode -lock buffers<ret>' -docstring 'buffers (lock)…'
-    map global user <a-b> ': pick-buffers<ret>' -docstring 'pick buffer…'
-}
-
-plug-old lsp https://github.com/kak-lsp/kak-lsp %{
-    set global lsp_cmd "kak-lsp -s %val{session} --config ~/.config/kak-lsp/kak-lsp.toml"
-
-    # uncomment to enable debugging
-    # set global lsp_cmd "kak-lsp -s %val{session} --config ~/.config/kak-lsp/kak-lsp.toml -vvv --log /tmp/kak-lsp.log"
-    # eval %sh{echo ${kak_opt_lsp_cmd} >> /tmp/kak-lsp.log}
-
-    # set global lsp_diagnostic_line_error_sign '║'
-    # set global lsp_diagnostic_line_warning_sign '┊'
-
-    define-command lsp-restart -docstring 'restart lsp server' %{ lsp-stop; lsp-start }
-    define-command ne -docstring 'go to next error/warning from lsp' %{ lsp-find-error --include-warnings }
-    define-command pe -docstring 'go to previous error/warning from lsp' %{ lsp-find-error --previous --include-warnings }
-    define-command ee -docstring 'go to current error/warning from lsp' %{ lsp-find-error --include-warnings; lsp-find-error --previous --include-warnings }
-
-    map global normal <#> ': enter-user-mode lsp<ret>' -docstring 'lsp'
-
-    set-option global lsp_auto_highlight_references true
-    set global lsp_hover_anchor true
-    echo -debug "Enabling LSP for filtetype %opt{filetype}"
-
-    hook global WinSetOption filetype=(c|cpp|cc|rust|python|java|latex|markdown) %{
-        lsp-auto-hover-enable
-        lsp-enable-window
+# trigger update diff if inside git dir
+hook global BufOpenFile .* %{
+    evaluate-commands -draft %sh{
+        cd $(dirname "$kak_buffile")
+        if [ "$(git rev-parse --git-dir 2>/dev/null)" ]; then
+            for hook in WinCreate BufReload BufWritePost; do
+                printf "hook buffer -group git-update-diff %s .* 'git update-diff'\n" "$hook"
+            done
+        fi
     }
-
-    hook global WinSetOption filetype=python %{
-        set-option global lsp_server_configuration pyls.configurationSources=["flake8"]
-    }
-
-    hook global KakEnd .* lsp-exit
 }
 
-nop plug manual-indent https://github.com/alexherbo2/manual-indent.kak %{
-    # Manual indent
-    hook global WinCreate .* %{
-        manual-indent-enable
-    }
+# LSP ——————————————————————————————————————————————————————————————————————————
 
-    # Remove filetype hooks
-    # hook global WinSetOption filetype=.* %{
-    #   manual-indent-remove-filetype-hooks
-    # }
+set global lsp_cmd "kak-lsp -s %val{session} --config ~/.config/kak-lsp/kak-lsp.toml"
+
+# uncomment to enable debugging
+# set global lsp_cmd "kak-lsp -s %val{session} --config ~/.config/kak-lsp/kak-lsp.toml -vvv --log /tmp/kak-lsp.log"
+# eval %sh{echo ${kak_opt_lsp_cmd} >> /tmp/kak-lsp.log}
+
+# set global lsp_diagnostic_line_error_sign '║'
+# set global lsp_diagnostic_line_warning_sign '┊'
+
+define-command lsp-restart -docstring 'restart lsp server' %{ lsp-stop; lsp-start }
+define-command ne -docstring 'go to next error/warning from lsp' %{ lsp-find-error --include-warnings }
+define-command pe -docstring 'go to previous error/warning from lsp' %{ lsp-find-error --previous --include-warnings }
+define-command ee -docstring 'go to current error/warning from lsp' %{ lsp-find-error --include-warnings; lsp-find-error --previous --include-warnings }
+
+map global normal <#> ': enter-user-mode lsp<ret>' -docstring 'lsp'
+
+set-option global lsp_auto_highlight_references true
+set global lsp_hover_anchor true
+echo -debug "Enabling LSP for filtetype %opt{filetype}"
+
+hook global WinSetOption filetype=(c|cpp|cc|rust|python|java|latex|markdown) %{
+    lsp-auto-hover-enable
+    lsp-enable-window
 }
 
-plug modeline-extras git/modeline-extras.kak %{
+hook global WinSetOption filetype=python %{
+    set-option global lsp_server_configuration pyls.configurationSources=["flake8"]
+}
+
+hook global KakEnd .* lsp-exit
+
+# Plugins ——————————————————————————————————————————————————————————————————————
+
+evaluate-commands %sh{
+    plugins="$kak_config/plugins"
+    mkdir -p "$plugins"
+    [ ! -e "$plugins/plug.kak" ] && \
+        git clone -q https://github.com/andreyorst/plug.kak.git "$plugins/plug.kak"
+    printf "%s\n" "source '$plugins/plug.kak/rc/plug.kak'"
+}
+plug "andreyorst/plug.kak" branch "fix-load-path" noload
+
+plug  "https://github.com/kakoune-editor/kakoune-extra-filetypes"
+
+plug "https://github.com/occivink/kakoune-find"
+
+plug "modeline-extras.kak" load-path "~/git/modeline-extras.kak" demand modeline-extras %{
     # enable Nerd Font symbols
     set-option global modeline_nerdfont true
 
@@ -486,7 +373,7 @@ plug modeline-extras git/modeline-extras.kak %{
     # Context Info + Mode Info
     set-option -add global modelinefmt ' {{context_info}} {{mode_info}}'
     # out-of-view
-    set-option -add global modelinefmt ' {StatusLineMode}%opt{out_of_view_status_line}{default}'
+    # set-option -add global modelinefmt ' {StatusLineMode}%opt{out_of_view_status_line}{default}'
     # lsp
     set-option -add global modelinefmt ' {DiagnosticError}%opt{modeline_lsp_err}{DiagnosticWarning}%opt{modeline_lsp_warn}{default}'
     # Filetype + Indentwidth
@@ -495,105 +382,36 @@ plug modeline-extras git/modeline-extras.kak %{
     set-option -add global modelinefmt ' {bright-cyan}%val{client}{bright-cyan+b}%val{session}'
 }
 
-plug move-line https://github.com/alexherbo2/move-line.kak %{
-    map -docstring 'Move selected lines below' global normal <down> ': move-line-below<ret>'
-    map -docstring 'Move selected lines above' global normal <up> ': move-line-above<ret>'
-}
-
-plug-old number-toggle https://github.com/evanrelf/number-toggle.kak %{
+plug "https://github.com/evanrelf/number-toggle.kak" defer number-toggle %{
     set-option global number_toggle_params -hlcursor
 }
 
-plug objectify https://github.com/alexherbo2/objectify.kak
-
-plug out-of-view https://github.com/alexherbo2/out-of-view.kak %{
-    out-of-view-enable
-}
-
-plug palette https://github.com/alexherbo2/palette.kak %{
-    palette-enable
-}
-
-plug pandoc git/pandoc.kak %{
+plug "pandoc.kak" load-path "~/git/pandoc.kak" defer pandoc %{
     set-option global pandoc_options '-d default'
 }
 
-plug prelude https://github.com/kakounedotcom/prelude.kak
+plug "https://gitlab.com/Screwtapello/kakoune-shellcheck"
 
-plug replace-mode https://github.com/alexherbo2/replace-mode.kak %{
-    map -docstring 'Replace mode' global user r ': enter-replace-mode<ret>'
+plug "caksoylar/kakoune-smooth-scroll" config %{
+    set-option global scroll_keys_normal <c-f> <c-d> <c-u> <pageup> <pagedown> ( ) m M <a-semicolon> <percent> n <a-n> N <a-N> u U <a-u> <a-U>
 }
 
-plug search-doc https://github.com/jbomanson/search-doc.kak %{
-    alias global sd search-doc
+plug "https://gitlab.com/Screwtapello/kakoune-state-save" config %{
+    # Starting
+    hook global KakBegin .* %{
+        state-save-reg-load colon
+        state-save-reg-load pipe
+        state-save-reg-load slash
+    }
+
+    # Quitting
+    hook global KakEnd .* %{
+    state-save-reg-save colon
+    state-save-reg-save pipe
+    state-save-reg-save slash
+    }
 }
 
-plug search-highlighter https://github.com/alexherbo2/search-highlighter.kak %{
-    search-highlighter-enable
-}
+plug "https://github.com/occivink/kakoune-sudo-write"
 
-plug-old shellcheck https://gitlab.com/Screwtapello/kakoune-shellcheck
-
-plug sleuth https://github.com/alexherbo2/sleuth.kak %{
-    sleuth-enable
-}
-
-# nop plug smarttab https://github.com/andreyorst/smarttab.kak %{
-#     # when `backspace' is pressed, 2 spaces are deleted at once
-#     set-option global softtabstop 2
-
-#     hook global WinSetOption filetype=.* expandtab
-#     # these languages will use `noexpandtab' behavior
-#     # these languages will use `expandtab' behavior
-#     hook global WinSetOption filetype=(gas|go|makefile) noexpandtab
-#     # these languages will use `smarttab' behavior
-#     hook global WinSetOption filetype=(c|cpp) smarttab
-# }
-
-nop plug-old smooth-scroll https://github.com/caksoylar/kakoune-smooth-scroll %{
-     hook global WinCreate .* %{ hook -once window WinDisplay [^*].* smooth-scroll-enable }
-}
-
-plug split-object https://github.com/alexherbo2/split-object.kak %{
-    # Add text objects to the `s` command:
-    map -docstring 'Split object' global prompt <a-i> '<esc>: enter-user-mode split-object<ret>'
-}
-
-plug-old sudo-write https://github.com/occivink/kakoune-sudo-write
-
-plug surround https://github.com/alexherbo2/surround.kak %{
-    ## Quoting
-    map -docstring 'Surround' global normal q ': enter-user-mode surround<ret>'
-    map -docstring 'Surround insert' global normal Q ': surround-enter-insert-mode<ret>'
-    # map -docstring 'Surround (Replace)' global normal <a-q> ': surround-delete; enter-user-mode surround<ret>'
-}
-
-plug terminal-mode https://github.com/alexherbo2/terminal-mode.kak
-
-plug text-objects https://github.com/alexherbo2/text-objects.kak
-
-plug-old vertical-selection https://github.com/occivink/kakoune-vertical-selection
-
-plug volatile-highlighter https://github.com/alexherbo2/volatile-highlighter.kak %{
-    volatile-highlighter-enable
-}
-
-nop  plug yank-ring https://github.com/alexherbo2/yank-ring.kak %{
-    # Enable yank-ring
-    yank-ring-enable
-    map global normal Y ': yank-ring<ret>'
-}
-
-# kakoune.cr
-# https://github.com/alexherbo2/kakoune.cr
-evaluate-commands %sh{
-  kcr init kakoune
-}
-
-# Mappings
-map -docstring 'New client' global normal <c-t> ': new<ret>'
-map -docstring 'New terminal' global normal <c-n> ': connect-terminal<ret>'
-map -docstring 'Open files' global normal <c-f> ': + kcr-fzf-files<ret>'
-map -docstring 'Open buffers' global normal <c-b> ': + kcr-fzf-buffers<ret>'
-map -docstring 'Open files by content' global normal <c-g> ': + kcr-fzf-grep<ret>'
-map -docstring 'Open lazygit' global normal <c-l> ': + lazygit<ret>'
+plug "https://github.com/occivink/kakoune-vertical-selection"
