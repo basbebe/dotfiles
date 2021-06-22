@@ -39,7 +39,7 @@
         # "vim mode"
         #
         #
-        # modal: true
+        modal: true
 
 	###############################################################
 	# Whether to mark the selected line with a triangle
