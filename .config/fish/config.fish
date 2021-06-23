@@ -47,7 +47,7 @@ if status is-interactive
     abbr kl 'kcr list'
     abbr a 'kcr attach'
     abbr : 'kcr send'
-    abbr :cd 'kcr send cd ($PWD)'
+    abbr :cd 'kcr send cd $PWD'
     abbr cd: 'cd (kcr get --raw --shell pwd)'
     abbr :br 'kcr-fzf-shell --working-directory . broot'
     abbr :n 'kcr-fzf-shell --working-directory . nnn'
