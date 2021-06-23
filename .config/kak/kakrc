@@ -72,7 +72,7 @@ add-highlighter -override global/show-trailing-whitespaces regex '\h+$' '0:red+f
 add-highlighter -override global/show-unicode-2013 regex '–' '0:green+f'
 add-highlighter -override global/show-unicode-2014 regex '—' '0:green+bf'
 add-highlighter -override global/show-math-symbols regex '[−×]' '0:cyan+f'
-add-highlighter -override global/show-limit regex '(?S)^.{79}[=-─–]\K\n' '0:green+f'
+add-highlighter -override global/show-limit regex '(?S)^.{79}[=+-–─┈]\K\n' '0:green+f'
 
 # Scroll offset
 set-option global scrolloff 5,1
@@ -124,6 +124,15 @@ define-command lazygit -params .. -docstring 'Open lazygit' %{
 
 # dotfiles
 define-command -docstring 'open dotfiles with lazygit' dotfiles '> fish -c dotfiles'
+
+# Autoload files
+define-command -docstring 'rebuild kakoune autoload files' rebuild-autoload %{
+    nop %sh{
+        rm -rf "$kak_config/autoload/standard-library"
+        mkdir -p "$kak_config/autoload"
+        ln -s "$kak_runtime/autoload" "$kak_config/autoload/standard-library"
+    }
+}
 
 # Aliases ——————————————————————————————————————————————————————————————————————
 
