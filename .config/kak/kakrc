@@ -72,7 +72,7 @@ add-highlighter -override global/show-trailing-whitespaces regex '\h+$' '0:red+f
 add-highlighter -override global/show-unicode-2013 regex '–' '0:green+f'
 add-highlighter -override global/show-unicode-2014 regex '—' '0:green+bf'
 add-highlighter -override global/show-math-symbols regex '[−×]' '0:cyan+f'
-add-highlighter -override global/show-limit regex '(?S)^.{79}[=-─┈]\K\n' '0:green+f'
+add-highlighter -override global/show-limit regex '(?S)^.{79}[=-─–]\K\n' '0:green+f'
 
 # Scroll offset
 set-option global scrolloff 5,1
@@ -138,7 +138,7 @@ alias global lg lazygit
 
 # Mappings —————————————————————————————————————————————————————————————————————
 
-# Normal mode ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈
+# Normal mode ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
 # Hot reloading
 map -docstring 'reload kakrc' global normal <F5> ':source-kakrc; echo reloaded kakrc<ret>'
@@ -184,7 +184,7 @@ map global normal / "/(?i)"
 # map -docstring 'Play macro' global normal ^ q
 # map -docstring 'Record macro' global normal <a-^> Q
 
-# Insert mode ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈
+# Insert mode ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
 map -docstring 'indent' global insert <tab> '<a-;><a-gt>'
 map -docstring 'deindent' global insert <s-tab> '<a-;><lt>'
@@ -204,12 +204,12 @@ map -docstring "delete until the next word boundary"             global insert <
 map -docstring "delete until the previous word boundary"         global insert <c-w> '<esc>bc'
 map -docstring "paste before the cursor"                         global insert <c-y> '<esc>Pi'
 
-# View mode ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈
+# View mode ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
 map -docstring 'view mode' global normal v V
 map -docstring 'show palette' global view p '<esc>:show-palette<ret>'
 
-# User mode ┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈┈
+# User mode ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
 # spell checking
 map global user s ': enter-user-mode spell<ret>' -docstring 'enter spell mode'
@@ -230,6 +230,9 @@ map -docstring 'Open kakrc' global user <,> ': edit-kakoune<ret>'
 # commenting
 map global user c -docstring '(un-)comment line' ': comment-line<ret>'
 map global user C -docstring '(un-)comment block' ': comment-block<ret>'
+
+# UI toggles
+map global user -docstring "UI mode" u ': enter-user-mode ui<ret>'
 
 # Linting & Formatting —————————————————————————————————————————————————————————
 
@@ -347,80 +350,4 @@ hook global KakEnd .* lsp-exit
 
 # Plugins ——————————————————————————————————————————————————————————————————————
 
-evaluate-commands %sh{
-    plugins="$kak_config/plugins"
-    mkdir -p "$plugins"
-    [ ! -e "$plugins/plug.kak" ] && \
-        git clone -q https://github.com/andreyorst/plug.kak.git "$plugins/plug.kak"
-    printf "%s\n" "source '$plugins/plug.kak/rc/plug.kak'"
-}
-plug "andreyorst/plug.kak" noload
-
-plug  "https://github.com/kakoune-editor/kakoune-extra-filetypes"
-
-plug "https://github.com/occivink/kakoune-find"
-
-plug "modeline-extras.kak" load-path "~/git/modeline-extras.kak" demand modeline-extras %{
-    # enable Nerd Font symbols
-    set-option global modeline_nerdfont true
-
-    # enable options
-    modeline-buffer-position-enable
-    modeline-git-branch-enable
-    modeline-indent-enable
-    modeline-lsp-enable
-    # modeline-codepoint-enable
-
-    # Git branch + Filename
-    set-option global modelinefmt '{magenta+i}%opt{modeline_git_branch} {bright-blue+u}%val{bufname}{default}'
-    # Position
-    set-option -add global modelinefmt ' %val{cursor_line}:%val{cursor_char_column} %opt{modeline_buffer_position}{default}'
-    # Context Info + Mode Info
-    set-option -add global modelinefmt ' {{context_info}} {{mode_info}}'
-    # out-of-view
-    # set-option -add global modelinefmt ' {StatusLineMode}%opt{out_of_view_status_line}{default}'
-    # lsp
-    set-option -add global modelinefmt ' {DiagnosticError}%opt{modeline_lsp_err}{DiagnosticWarning}%opt{modeline_lsp_warn}{default}'
-    # Filetype + Indentwidth
-    set-option -add global modelinefmt ' %opt{filetype} %opt{modeline_indent}'
-    # client@session
-    set-option -add global modelinefmt ' {bright-cyan}%val{client}{bright-cyan+b}%val{session}'
-}
-
-plug "https://github.com/evanrelf/number-toggle.kak" defer number-toggle %{
-    set-option global number_toggle_params -hlcursor
-}
-
-plug "pandoc.kak" load-path "~/git/pandoc.kak" defer pandoc %{
-    set-option global pandoc_options '-d default'
-}
-
-plug "https://gitlab.com/Screwtapello/kakoune-shellcheck"
-
-plug "caksoylar/kakoune-smooth-scroll" config %{
-    set-option global scroll_keys_normal <c-f> <c-d> <c-u> <pageup> <pagedown> ( ) m M <a-semicolon> <percent> n <a-n> N <a-N> u U <a-u> <a-U>
-}
-
-plug "https://gitlab.com/Screwtapello/kakoune-state-save" config %{
-    # Starting
-    hook global KakBegin .* %{
-        state-save-reg-load colon
-        state-save-reg-load pipe
-        state-save-reg-load slash
-    }
-
-    # Quitting
-    hook global KakEnd .* %{
-    state-save-reg-save colon
-    state-save-reg-save pipe
-    state-save-reg-save slash
-    }
-}
-
-plug "https://github.com/occivink/kakoune-sudo-write"
-
-plug "delapouite/kakoune-text-objects" %{
-    text-object-map
-}
-
-plug "https://github.com/occivink/kakoune-vertical-selection"
+source "~/.config/kak/plugins.kak"

@@ -1,3 +1,39 @@
 [submodule ".config/bat/themes/gruvbox"]
 	path = .config/bat/themes/gruvbox
 	url = https://github.com/peaceant/gruvbox
+[submodule ".config/kak/plugins/kakoune-extra-filetypes"]
+	path = .config/kak/plugins/kakoune-extra-filetypes
+	url = https://github.com/kakoune-editor/kakoune-extra-filetypes
+[submodule ".config/kak/plugins/kakoune-find"]
+	path = .config/kak/plugins/kakoune-find
+	url = https://github.com/occivink/kakoune-find
+[submodule ".config/kak/plugins/number-toggle.kak"]
+	path = .config/kak/plugins/number-toggle.kak
+	url = https://github.com/evanrelf/number-toggle.kak
+[submodule ".config/kak/plugins/kakoune-shellcheck"]
+	path = .config/kak/plugins/kakoune-shellcheck
+	url = https://gitlab.com/Screwtapello/kakoune-shellcheck
+[submodule ".config/kak/plugins/kakoune-smooth-scroll"]
+	path = .config/kak/plugins/kakoune-smooth-scroll
+	url = https://github.com/caksoylar/kakoune-smooth-scroll
+[submodule ".config/kak/plugins/kakoune-state-save"]
+	path = .config/kak/plugins/kakoune-state-save
+	url = https://gitlab.com/Screwtapello/kakoune-state-save
+[submodule ".config/kak/plugins/kakoune-sudo-write"]
+	path = .config/kak/plugins/kakoune-sudo-write
+	url = https://github.com/occivink/kakoune-sudo-write
+[submodule ".config/kak/plugins/kakoune-text-objects"]
+	path = .config/kak/plugins/kakoune-text-objects
+	url = https://github.com/Delapouite/kakoune-text-objects
+[submodule ".config/kak/plugins/kakoune-vertical-selection"]
+	path = .config/kak/plugins/kakoune-vertical-selection
+	url = https://github.com/occivink/kakoune-vertical-selection
+[submodule ".config/kak/plugins/todo.kak"]
+	path = .config/kak/plugins/todo.kak
+	url = https://github.com/kkga/todo.kak
+[submodule ".config/kak/plugins/ui.kak"]
+	path = .config/kak/plugins/ui.kak
+	url = https://github.com/kkga/ui.kak
+[submodule ".config/kak/plugins/scrollbar.kak"]
+	path = .config/kak/plugins/scrollbar.kak
+	url = https://github.com/sawdust-and-diamonds/scrollbar.kak
