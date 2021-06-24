@@ -297,6 +297,7 @@ hook global BufWritePre .* %{
     # lsp-formatting-sync
 }
 
+# Enable automatic linting
 hook global BufWritePost .* %{
     evaluate-commands %sh{
         if [ -n "$kak_opt_lintcmd" ]; then
