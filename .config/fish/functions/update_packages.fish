@@ -1,10 +1,21 @@
 function update_packages --description='updates package manager and other utilities'
     set emph_color yellow -i
 
+    # dotfiles
+    if type -q dotfiles
+        set_color $emph_color
+        printf '\n%s\n\n' 'updating dotfiles submodules'
+        set_color normal
+        # dotfiles pull
+        # dotfiles submodule sync --recursive
+        dotfiles submodule update --init --recursive
+        dotfiles submodule update --recursive --remote
+    end
+
     # Homebrew
     if type -q brew
         set_color $emph_color
-        printf '%s\n\n' 'updating Homebrew'
+        printf '\n%s\n\n' 'updating Homebrew'
         set_color normal
         brew update
         brew upgrade
