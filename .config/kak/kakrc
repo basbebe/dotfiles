@@ -135,10 +135,10 @@ define-command lazygit -params .. -docstring 'Open lazygit' %{
 define-command -docstring 'open yadm with lazygit' yadm '> fish -c yadm'
 
 # nnn
-define-command -dosctring 'open nnn window' nnn '> fish -ic nnn .'
+define-command -docstring 'open nnn window' nnn '> fish -ic nnn .'
 
 # broot
-define-command -dosctring 'open broot window' broot '> broot'
+define-command -docstring 'open broot window' broot '> broot'
 
 # Aliases ——————————————————————————————————————————————————————————————————————
 
