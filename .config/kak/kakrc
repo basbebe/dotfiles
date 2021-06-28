@@ -134,6 +134,12 @@ define-command lazygit -params .. -docstring 'Open lazygit' %{
 # yadm
 define-command -docstring 'open yadm with lazygit' yadm '> fish -c yadm'
 
+# nnn
+define-command -dosctring 'open nnn window' nnn '> fish -ic nnn .'
+
+# broot
+define-command -dosctring 'open broot window' broot '> broot'
+
 # Aliases ——————————————————————————————————————————————————————————————————————
 
 # Aliases
@@ -144,6 +150,12 @@ alias global bd delete-buffer
 
 # Git
 alias global lg lazygit
+
+# n
+alias global n nnn
+
+# br
+alias global br broot
 
 # Mappings —————————————————————————————————————————————————————————————————————
 
@@ -180,7 +192,7 @@ map -docstring 'math' global normal = ':math<ret>'
 # Windowing
 map -docstring 'new client' global normal <c-t> ':new<ret>'
 map -docstring 'terminal' global normal <c-n> ':connect-terminal<ret>'
-map -docstring 'file explorer' global normal <c-e> ":> fish -ic 'n .'<ret>"
+map -docstring 'file explorer' global normal <c-e> ":> fish -ic 'nnn .'<ret>"
 map -docstring 'file picker' global normal <c-f> ':+ kcr-fzf-files<ret>'
 map -docstring 'buffer picker' global normal <c-b> ':+ kcr-fzf-buffers<ret>'
 map -docstring 'grep picker' global normal <c-g> ':+ kcr-fzf-grep<ret>'
