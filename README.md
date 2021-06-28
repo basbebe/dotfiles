@@ -22,6 +22,8 @@
 -   [fd] – find replacement
 -   [fzf] – Fuzzy Finder
 -   [delta] – viewer for git and diff output
+-   [bottom] – Yet another cross-platform graphical process/system
+    monitor
 -   [abduco] – session management
 -   [util-linux] – Linux utilities for macOS
 
@@ -62,6 +64,7 @@ This repository is being managed using [yadm]
   [fd]: https://github.com/sharkdp/fd
   [fzf]: https://github.com/junegunn/fzf
   [delta]: https://github.com/dandavison/delta
+  [bottom]: https://github.com/ClementTsang/bottom
   [abduco]: https://github.com/martanne/abduco/
   [util-linux]: https://github.com/karelzak/util-linux
   [pandoc]: https://pandoc.org/
