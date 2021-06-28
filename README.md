@@ -1,4 +1,4 @@
-# .dotfiles
+# dotfiles
 
 ## Configured Applications
 
@@ -12,6 +12,7 @@
     -   [kakmerge] – merge tool for Kakoune
 -   [neovim]
     -   [dein.vim] – vim Plugin Manager
+-   [yadm] – Yet Another Dotfiles Manager
 -   [topgrade] – Upgrade everything
 -   [exa] – ls replacement
 -   [nnn] – file manager
@@ -39,8 +40,7 @@
 
 ------------------------------------------------------------------------
 
-This repository has been created by following this tuorial:
-https://www.atlassian.com/git/tutorials/dotfiles
+This repository is being managed using [yadm]
 
   [fish]: https://fishshell.com/
   [Fisher]: https://github.com/jorgebucaran/fisher
@@ -52,6 +52,7 @@ https://www.atlassian.com/git/tutorials/dotfiles
   [kakmerge]: https://github.com/lenormf/kakmerge
   [neovim]: https://neovim.io/
   [dein.vim]: https://github.com/Shougo/dein.vim
+  [yadm]: https://yadm.io
   [topgrade]: https://github.com/r-darwish/topgrade
   [exa]: https://the.exa.website/
   [nnn]: https://github.com/jarun/nnn

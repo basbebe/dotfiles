@@ -61,7 +61,8 @@
 "pip3 global" = "pip3 install --upgrade pip"
 "pip3 packages" = "pip-review --user --auto"
 "pip3 packages global" = "pip-review --auto"
-"dotfiles submodules" = "dotfiles submodule update --init --recursive && dotfiles submodule update --recursive --remote"
+"yadm status" = "bash -c 'if command -v yadm &> /dev/null; then yadm status; fi'"
+"yadm submodules" = "yadm submodule update --init --recursive && yadm submodule update --recursive --remote"
 
 [brew]
 #greedy_cask = true

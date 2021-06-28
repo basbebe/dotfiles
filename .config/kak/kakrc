@@ -131,8 +131,8 @@ define-command lazygit -params .. -docstring 'Open lazygit' %{
     + lazygit %arg{@}
 }
 
-# dotfiles
-define-command -docstring 'open dotfiles with lazygit' dotfiles '> fish -c dotfiles'
+# yadm
+define-command -docstring 'open yadm with lazygit' yadm '> fish -c yadm'
 
 # Aliases ——————————————————————————————————————————————————————————————————————
 
