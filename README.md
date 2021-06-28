@@ -12,6 +12,7 @@
     -   [kakmerge] – merge tool for Kakoune
 -   [neovim]
     -   [dein.vim] – vim Plugin Manager
+-   [topgrade] – Upgrade everything
 -   [exa] – ls replacement
 -   [nnn] – file manager
 -   [broot] – file picker
@@ -51,6 +52,7 @@ https://www.atlassian.com/git/tutorials/dotfiles
   [kakmerge]: https://github.com/lenormf/kakmerge
   [neovim]: https://neovim.io/
   [dein.vim]: https://github.com/Shougo/dein.vim
+  [topgrade]: https://github.com/r-darwish/topgrade
   [exa]: https://the.exa.website/
   [nnn]: https://github.com/jarun/nnn
   [broot]: https://dystroy.org/broot/
