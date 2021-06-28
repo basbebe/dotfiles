@@ -58,6 +58,10 @@
 # Custom commands
 [commands]
 #"Python Environment" = "~/dev/.env/bin/pip install -i https://pypi.python.org/simple -U --upgrade-strategy eager jupyter"
+"pip3 global" = "pip3 install --upgrade pip"
+"pip3 packages" = "pip-review --user --auto"
+"pip3 packages global" = "pip-review --auto"
+"dotfiles submodules" = "dotfiles submodule update --init --recursive && dotfiles submodule update --recursive --remote"
 
 [brew]
 #greedy_cask = true
