@@ -12,6 +12,15 @@ try %sh{
 
 try lsp-enable
 
+# upgrade Autoload files
+define-command -docstring 'rebuild kakoune autoload files' rebuild-autoload %{
+    nop %sh{
+        rm -rf "$kak_config/autoload/standard-library"
+        mkdir -p "$kak_config/autoload"
+        ln -s "$kak_runtime/autoload" "$kak_config/autoload/standard-library"
+    }
+}
+
 # Options ——————————————————————————————————————————————————————————————————————
 
 # UI
@@ -125,15 +134,6 @@ define-command lazygit -params .. -docstring 'Open lazygit' %{
 # dotfiles
 define-command -docstring 'open dotfiles with lazygit' dotfiles '> fish -c dotfiles'
 
-# Autoload files
-define-command -docstring 'rebuild kakoune autoload files' rebuild-autoload %{
-    nop %sh{
-        rm -rf "$kak_config/autoload/standard-library"
-        mkdir -p "$kak_config/autoload"
-        ln -s "$kak_runtime/autoload" "$kak_config/autoload/standard-library"
-    }
-}
-
 # Aliases ——————————————————————————————————————————————————————————————————————
 
 # Aliases
@@ -167,10 +167,12 @@ map -docstring 'Write and quit' global normal <c-x> ': write-quit<ret>'
 map -docstring 'enter insert mode with main selection' global normal ^ ':enter-insert-mode-with-main-selection<ret>'
 map -docstring 'select next word' global normal w ':select-next-word<ret>'
 map -docstring 'surround' global normal q ':surround<ret>'
-# map -docstring 'select objects' global normal S ':select-objects<ret>'
+map -docstring 'select objects' global normal S ':select-objects<ret>'
 map -docstring 'select all occurrences of current selection' global normal <a-L> ':select-highlights<ret>'
 map -docstring 'move line down' global normal <down> ':move-lines-down<ret>'
 map -docstring 'move line up' global normal <up> ':move-lines-up<ret>'
+map -docstring 'move line down' global normal <c-j> ':move-lines-down<ret>'
+map -docstring 'move line up' global normal <c-k> ':move-lines-up<ret>'
 
 # Tools
 map -docstring 'math' global normal = ':math<ret>'
@@ -195,13 +197,14 @@ map global normal / "/(?i)"
 
 # Insert mode ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
-map -docstring 'indent' global insert <tab> '<a-;><a-gt>'
-map -docstring 'deindent' global insert <s-tab> '<a-;><lt>'
-
+# jj to exit
 hook global InsertChar j %{ try %{
     exec -draft hH <a-k>jj<ret> d
       exec <esc>
 }}
+
+map -docstring 'indent' global insert <tab> '<a-;><a-gt>'
+map -docstring 'deindent' global insert <s-tab> '<a-;><lt>'
 
 # Minimal set of readline mappings
 map -docstring "move the cursor to the start of the line"        global insert <c-a> '<a-;>gh'

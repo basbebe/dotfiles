@@ -48,9 +48,9 @@ hook global WinCreate .* %{ scrollbar-enable }
 
 source "~/.config/kak/plugins/kakoune-shellcheck/shellcheck.kak"
 
-# source "~/.config/kak/plugins/kakoune-smooth-scroll/smooth-scroll.kak"
-# set-option global scroll_keys_normal <c-f> <c-d> <c-u> <pageup> <pagedown> ( ) m M <a-semicolon> <percent> n <a-n> N <a-N> u U <a-u> <a-U>
-# hook global WinCreate [^*].* %{ hook -once window WinDisplay .* smooth-scroll-enable }
+source "~/.config/kak/plugins/kakoune-smooth-scroll/smooth-scroll.kak"
+set-option global scroll_keys_normal <c-f> <c-d> <c-u> <pageup> <pagedown> ( ) m M <a-semicolon> <percent> n <a-n> N <a-N> u U <a-u> <a-U>
+hook global WinCreate [^*].* %{ hook -once window WinDisplay .* smooth-scroll-enable }
 
 source "~/.config/kak/plugins/kakoune-state-save/state-save.kak"    # Starting
 hook global KakBegin .* %{
