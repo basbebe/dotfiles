@@ -68,7 +68,7 @@ if status is-interactive
     bind --erase \cf
     bind \ef __fzf_search_current_dir
 
-    # ues Python3 as default
+    # use Python3 as default
     abbr python python3
     # abbr pip pip3
 

@@ -30,6 +30,7 @@
 ## Other useful Programs
 
 -   [pandoc] – Markdown Converter
+-   [rectangle] – move and resize windows on macOS
 -   [mupdf] – PDF Viewer & Converter
 -   [zathura] – PDF Viewer
 -   [entr] – run arbitrary commands when files change
@@ -69,6 +70,7 @@ This repository is being managed using [yadm]
   [abduco]: https://github.com/martanne/abduco/
   [util-linux]: https://github.com/karelzak/util-linux
   [pandoc]: https://pandoc.org/
+  [rectangle]: https://github.com/rxhanson/Rectangle
   [mupdf]: https://mupdf.com/
   [zathura]: https://pwmt.org/projects/zathura/
   [entr]: https://github.com/eradman/entr
