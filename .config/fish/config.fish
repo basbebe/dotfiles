@@ -28,6 +28,9 @@ gpgconf --launch gpg-agent
 
 if status is-interactive
 
+    # remove greeting
+        set fish_greeting
+
     #enable vim key bindings
     # fish_vi_key_bindings
 
@@ -103,7 +106,6 @@ if status is-interactive
     abbr lg lazygit
 
     # nnn
-    # abbr nnn n
     set -x GUI 1
     set -x NNN_OPTS acDEFx
     set -x NNN_OPENER "$HOME/.config/nnn/plugins/nuke"
