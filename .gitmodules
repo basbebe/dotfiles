@@ -37,3 +37,6 @@
 [submodule ".config/kak/plugins/kakoune-table"]
 	path = .config/kak/plugins/kakoune-table
 	url = https://gitlab.com/listentolist/kakoune-table.git
+[submodule ".config/kak/plugins/active-window.kak"]
+	path = .config/kak/plugins/active-window.kak
+	url = https://github.com/greenfork/active-window.kak

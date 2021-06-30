@@ -1,5 +1,7 @@
 # Plugins ——————————————————————————————————————————————————————————————————————
 
+source "~/.config/kak/plugins/active-window.kak/rc/active-window.kak"
+
 # source "~/.config/kak/plugins/kakoune-extra-filetypes/"
 
 # source "~/.config/kak/plugins/kakoune-find/find.kak"
