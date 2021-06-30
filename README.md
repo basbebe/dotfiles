@@ -32,6 +32,7 @@
 -   [pandoc] – Markdown Converter
 -   [mupdf] – PDF Viewer & Converter
 -   [zathura] – PDF Viewer
+-   [entr] – run arbitrary commands when files change
 
 ## Resources
 
@@ -70,3 +71,4 @@ This repository is being managed using [yadm]
   [pandoc]: https://pandoc.org/
   [mupdf]: https://mupdf.com/
   [zathura]: https://pwmt.org/projects/zathura/
+  [entr]: https://github.com/eradman/entr
