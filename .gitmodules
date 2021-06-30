@@ -34,3 +34,6 @@
 [submodule ".config/kak/plugins/scrollbar.kak"]
 	path = .config/kak/plugins/scrollbar.kak
 	url = https://github.com/sawdust-and-diamonds/scrollbar.kak
+[submodule ".config/kak/plugins/kakoune-table"]
+	path = .config/kak/plugins/kakoune-table
+	url = https://gitlab.com/listentolist/kakoune-table.git

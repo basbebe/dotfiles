@@ -69,6 +69,19 @@ hook global KakEnd .* %{
 
 source "~/.config/kak/plugins/kakoune-sudo-write/sudo-write.kak"
 
+source "~/.config/kak/plugins/kakoune-table/table.kak"
+# suggested mappings
+
+# map global user t ": evaluate-commands -draft table-align<ret>" -docstring "align table"
+
+# map global user t ": table-enable<ret>" -docstring "enable table mode"
+# map global user T ": table-disable<ret>" -docstring "disable table mode"
+
+# map global user t ": table-toggle<ret>" -docstring "toggle table mode"
+
+map global user t ": enter-user-mode table<ret>" -docstring "table"
+map global user T ": enter-user-mode -lock table<ret>" -docstring "table (lock)"
+
 source "~/.config/kak/plugins/kakoune-text-objects/text-objects.kak"
 text-object-map
 
