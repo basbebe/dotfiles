@@ -177,7 +177,7 @@ map -docstring 'Write and quit' global normal <c-x> ': write-quit<ret>'
 
 # Selection primitives
 map -docstring 'enter insert mode with main selection' global normal ^ ':enter-insert-mode-with-main-selection<ret>'
-map -docstring 'select next word' global normal w ':select-next-word<ret>'
+# map -docstring 'select next word' global normal w ':select-next-word<ret>'
 map -docstring 'surround' global normal q ':surround<ret>'
 map -docstring 'select objects' global normal S ':select-objects<ret>'
 map -docstring 'select all occurrences of current selection' global normal <a-L> ':select-highlights<ret>'
