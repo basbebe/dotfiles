@@ -20,6 +20,9 @@ if [ "$system_type" = "Darwin" ]; then
   if [ -f "$HOME/.Brewfile" ]; then
     echo "Updating homebrew bundle"
     brew bundle --global
+    brew services start skhd
+    brew services start yabai
+    brew services start spacebar
   fi
 
 fi

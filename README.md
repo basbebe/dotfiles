@@ -25,12 +25,18 @@
 -   [bottom] – Yet another cross-platform graphical process/system
     monitor
 -   [abduco] – session management
+
+### macOS
+
+-   [Karabiner-Elements] – keyboard customizer for macOS
+-   [yabai] – tiling window manager
+    -   [skhd] – simple hotkey daemon for macOS
+    -   [spacebar] – minimal status bar for macOS
 -   [util-linux] – Linux utilities for macOS
 
 ## Other useful Programs
 
 -   [pandoc] – Markdown Converter
--   [rectangle] – move and resize windows on macOS
 -   [mupdf] – PDF Viewer & Converter
 -   [zathura] – PDF Viewer
 -   [entr] – run arbitrary commands when files change
@@ -68,6 +74,10 @@ This repository is being managed using [yadm]
   [delta]: https://github.com/dandavison/delta
   [bottom]: https://github.com/ClementTsang/bottom
   [abduco]: https://github.com/martanne/abduco/
+  [Karabiner-Elements]: https://karabiner-elements.pqrs.org/
+  [yabai]: https://github.com/koekeishiya/yabai/wiki/Commands#message-passing-interface
+  [skhd]: https://github.com/koekeishiya/skhd
+  [spacebar]: https://github.com/cmacrae/spacebar
   [util-linux]: https://github.com/karelzak/util-linux
   [pandoc]: https://pandoc.org/
   [rectangle]: https://github.com/rxhanson/Rectangle
