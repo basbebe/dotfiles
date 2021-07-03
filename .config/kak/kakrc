@@ -124,6 +124,9 @@ define-command -docstring 'Open config.fish' edit-fish 'edit ~/.config/fish/conf
 define-command -docstring 'Open gitconfig' edit-git 'edit ~/.gitconfig'
 define-command -docstring 'Open broot/conf.toml' edit-broot 'edit ~/.config/broot/conf.hjson'
 define-command -docstring 'Open starship.toml' edit-starship 'edit ~/.config/starship.toml'
+define-command -docstring 'Open yabairc' edit-yabai 'edit ~/.config/yabai/yabairc'
+define-command -docstring 'Open skhdrc' edit-skhd 'edit ~/.config/skhd/skhdrc'
+define-command -docstring 'Open spacebarrc' edit-spacebar 'edit ~/.config/spacebar/spacebarrc'
 
 # lazygit
 # https://github.com/jesseduffield/lazygit

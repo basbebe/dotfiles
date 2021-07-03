@@ -35,8 +35,8 @@ hyper - 0x21 : yabai -m window --focus prev || yabai -m window --focus last
 0x41 : yabai -m window --focus stack.prev || yabai -m window --focus stack.last
 
 # focus space (SIP enabled - managed by system)
-# hyper - k : osascript -e 'tell application "System Events" to key code 124 using control down'
-# hyper - j : osascript -e 'tell application "System Events" to key code 123 using control down'
+# hyper - n : osascript -e 'tell application "System Events" to key code 45 using control down'
+# hyper - p : osascript -e 'tell application "System Events" to key code 35 using control down'
 
 # focus screen
 # hyper - h : { yabai -m display --focus next && yabai -m window --focus last; } || \
