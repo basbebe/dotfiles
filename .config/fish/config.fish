@@ -21,23 +21,23 @@ fish_add_path --global --path --append $JAVA_HOME/bin
 fish_add_path --global --path --append /usr/local/opt/util-linux/bin
 fish_add_path --global --path --append /usr/local/opt/util-linux/sbin
 
-# SSH via gpg-agent
-set -x GPG_TTY (tty)
-set -x SSH_AUTH_SOCK (gpgconf --list-dirs agent-ssh-socket)
-gpgconf --launch gpg-agent
-
 if status is-interactive
 
+    # SSH via gpg-agent
+    set -x GPG_TTY (tty)
+    set -x SSH_AUTH_SOCK (gpgconf --list-dirs agent-ssh-socket)
+    gpgconf --launch gpg-agent
+
     # remove greeting
-        set fish_greeting
+    set fish_greeting
 
     #enable vim key bindings
     # fish_vi_key_bindings
 
     # Defaults
-    if set -q $LANG
-        set -x LANG 'de_DE.UTF-8'
-    end
+    # if set -q $LANG
+        # set -x LANG 'de_DE.UTF-8'
+    # end
 
     # kakoune.cr
     set -x EDITOR 'kcr edit'
