@@ -40,3 +40,6 @@
 [submodule ".config/kak/plugins/active-window.kak"]
 	path = .config/kak/plugins/active-window.kak
 	url = https://github.com/greenfork/active-window.kak
+[submodule "/Users/bastian/.hammerspoon/stackline"]
+	path = /Users/bastian/.hammerspoon/stackline
+	url = https://github.com/AdamWagner/stackline.git

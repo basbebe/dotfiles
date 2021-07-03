@@ -30,8 +30,12 @@
 
 -   [Karabiner-Elements] – keyboard customizer for macOS
 -   [yabai] – tiling window manager
-    -   [skhd] – simple hotkey daemon for macOS
+    -   [skhd] – simple hotkey daemon for macOS\
+        (don’t forget to [switch shell])
     -   [spacebar] – minimal status bar for macOS
+    -   [stackline] – visualize yabai window stacks
+        -   [Hammerspoon] – macOS desktop automation with Lua
+    -   [limelight] – yabai border for when SIP is enabled
 -   [util-linux] – Linux utilities for macOS
 
 ## Other useful Programs
@@ -77,10 +81,13 @@ This repository is being managed using [yadm]
   [Karabiner-Elements]: https://karabiner-elements.pqrs.org/
   [yabai]: https://github.com/koekeishiya/yabai/wiki/Commands#message-passing-interface
   [skhd]: https://github.com/koekeishiya/skhd
+  [switch shell]: https://github.com/koekeishiya/skhd/issues/42
   [spacebar]: https://github.com/cmacrae/spacebar
+  [stackline]: https://github.com/AdamWagner/stackline
+  [Hammerspoon]: https://github.com/Hammerspoon/hammerspoon
+  [limelight]: https://github.com/koekeishiya/limelight
   [util-linux]: https://github.com/karelzak/util-linux
   [pandoc]: https://pandoc.org/
-  [rectangle]: https://github.com/rxhanson/Rectangle
   [mupdf]: https://mupdf.com/
   [zathura]: https://pwmt.org/projects/zathura/
   [entr]: https://github.com/eradman/entr

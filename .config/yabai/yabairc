@@ -59,10 +59,10 @@ yabai -m config active_window_border_color    0xff775759
 
 # general space settings
 yabai -m config layout                       bsp
-yabai -m config top_padding                  12
-yabai -m config bottom_padding               12
-yabai -m config left_padding                 12
-yabai -m config right_padding                12
+yabai -m config top_padding                  8
+yabai -m config bottom_padding               8
+yabai -m config left_padding                 8
+yabai -m config right_padding                8
 yabai -m config window_gap                   06
 
 # spacebar
@@ -77,6 +77,10 @@ yabai -m rule --add app="^Keka$" sticky=on layer=above manage=off
 yabai -m rule --add app="^Disk Utility$" sticky=on layer=above manage=off
 yabai -m rule --add app="^System Information$" sticky=on layer=above manage=off
 yabai -m rule --add app="^Activity Monitor$" sticky=on layer=above manage=off
+
+# adapt padding to state of stacks
+yabai -m signal --add event=window_created action="~/.config/yabai/refresh.sh"
+yabai -m signal --add event=window_destroyed action="~/.config/yabai/refresh.sh"
 
 # kill any existing limelight process if one exists, before we launch a new one
 killall limelight &> /dev/null
