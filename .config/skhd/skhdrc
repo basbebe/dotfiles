@@ -30,11 +30,11 @@ hyper - l : yabai -m window --focus east || \
 hyper - 0x1E : yabai -m window --focus next || yabai -m window --focus first
 hyper - 0x21 : yabai -m window --focus prev || yabai -m window --focus last
 
-# focus space
 # cycle through stack (hyper + ,. - karabiner trick)
 0x5F : yabai -m window --focus stack.next || yabai -m window --focus stack.first
 0x41 : yabai -m window --focus stack.prev || yabai -m window --focus stack.last
 
+# cycle space
 hyper - n : yabai -m space --focus next || yabai -m space --focus first
 hyper - p : yabai -m space --focus prev || yabai -m space --focus last
 
@@ -43,6 +43,9 @@ hyper - p : yabai -m space --focus prev || yabai -m space --focus last
 #   { yabai -m display --focus first && yabai -m window --focus last; }
 # hyper - l : { yabai -m display --focus prev && yabai -m window --focus last; } || \
 #   { yabai -m display --focus last && yabai -m window --focus last; }
+
+# go to last space
+hyper - g : yabai -m space --focus recent
 
 # go to space
 hyper - 1 : yabai -m space --focus 1
@@ -61,6 +64,9 @@ hyper - 0 : yabai -m space --focus 0
 
 # toggle float
 ctrl + alt - space : yabai -m window --toggle float
+
+# toggle sticky
+ctrl + alt - s : yabai -m window --toggle sticky && yabai -m window --toggle topmost
 
 # toggle split (;)
 ctrl + alt - 0x29 : yabai -m window --toggle split
@@ -126,11 +132,17 @@ ctrl + alt + cmd - l : { yabai -m window --display prev  &&  yabai -m display --
 
 # spaces ———————————————————————————————————————————————————————————————————————
 
-# create new space
-shift + ctrl + alt - c : yabai -m space --create
+# create new space and follow focus
+shift + ctrl + alt - c : yabai -m space --create && \
+  index="$(yabai -m query --spaces --display | jq 'map(select(."native-fullscreen" == 0))[-1].index')" && \
+  yabai -m space --focus "${index}"
 
 # destroy space
 shift + ctrl + alt - x : yabai -m space --destroy
+
+# switch space layout
+shift + ctrl + alt - s : yabai -m space --layout stack
+shift + ctrl + alt - b : yabai -m space --layout bsp
 
 # cycle space
 shift + ctrl + alt - n : yabai -m space --move next || yabai -m space --move first
