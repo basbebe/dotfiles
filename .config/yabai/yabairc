@@ -11,8 +11,8 @@
 # see this wiki page for information:
 #  - https://github.com/koekeishiya/yabai/wiki/Installing-yabai-(latest-release)
 #
-# sudo yabai --load-sa
-# yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
+sudo yabai --load-sa
+yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
 
 # custom space names / icons
 yabai -m space 1 --label 
@@ -35,14 +35,14 @@ yabai -m config auto_balance                 off
 yabai -m config mouse_drop_action            swap
 
 ## WTIH SIP DISABLED
-# yabai -m config window_shadow                float
+yabai -m config window_shadow                float
 # yabai -m config window_opacity               off
 # yabai -m config window_opacity_duration      0.0
 # yabai -m config active_window_opacity        1.0
 # yabai -m config normal_window_opacity        0.90
 # yabai -m config mouse_follows_focus          off
 # yabai -m config focus_follows_mouse          off
-# yabai -m config mouse_modifier               fn
+yabai -m config mouse_modifier                 fn
 # yabai -m config mouse_action1                move
 # yabai -m config mouse_action2                resize
 
@@ -50,11 +50,11 @@ yabai -m config mouse_drop_action            swap
 yabai -m config window_border off
 
 ## WTIH SIP DISABLED (Limelight build into Yabai, enable it here)
-# yabai -m config window_border               on
-# yabai -m config window_border_width         3
-yabai -m config active_window_border_color    0xff775759
-# yabai -m config normal_window_border_color  0xff555555
-# yabai -m config insert_feedback_color       0xffd75f5f
+yabai -m config window_border               on
+yabai -m config window_border_width         3
+yabai -m config active_window_border_color  0xff775759
+yabai -m config normal_window_border_color  0xff555555
+yabai -m config insert_feedback_color       0xffd75f5f
 
 
 # general space settings
@@ -72,18 +72,21 @@ yabai -m config external_bar all:26:0
 yabai -m rule --add app="^System Preferences$" sticky=on layer=above manage=off
 yabai -m rule --add app="^Karabiner-Elements$" sticky=on layer=above manage=off
 yabai -m rule --add app="^Karabiner-EventViewer$" sticky=on layer=above manage=off
-# yabai -m rule --add app="^Finder$" sticky=on layer=above manage=off
+yabai -m rule --add app="^Finder$" sticky=on layer=above manage=off
 yabai -m rule --add app="^Keka$" sticky=on layer=above manage=off
 yabai -m rule --add app="^Disk Utility$" sticky=on layer=above manage=off
 yabai -m rule --add app="^System Information$" sticky=on layer=above manage=off
 yabai -m rule --add app="^Activity Monitor$" sticky=on layer=above manage=off
+yabai -m rule --add app=VLC manage=off
+yabai -m rule --add app=Calculator manage=off
+yabai -m rule --add app=KeePassXC sticky=on layer=above manage=off
 
 # adapt padding to state of stacks
 yabai -m signal --add event=window_created action="~/.config/yabai/refresh.sh"
 yabai -m signal --add event=window_destroyed action="~/.config/yabai/refresh.sh"
 
 # kill any existing limelight process if one exists, before we launch a new one
-killall limelight &> /dev/null
-limelight &> /dev/null &
+# killall limelight &> /dev/null
+# limelight &> /dev/null &
 
 echo "yabai configuration loaded.."

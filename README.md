@@ -35,7 +35,6 @@
     -   [spacebar] – minimal status bar for macOS
     -   [stackline] – visualize yabai window stacks
         -   [Hammerspoon] – macOS desktop automation with Lua
-    -   [limelight] – yabai border for when SIP is enabled
 -   [util-linux] – Linux utilities for macOS
 
 ## Other useful Programs
@@ -85,7 +84,6 @@ This repository is being managed using [yadm]
   [spacebar]: https://github.com/cmacrae/spacebar
   [stackline]: https://github.com/AdamWagner/stackline
   [Hammerspoon]: https://github.com/Hammerspoon/hammerspoon
-  [limelight]: https://github.com/koekeishiya/limelight
   [util-linux]: https://github.com/karelzak/util-linux
   [pandoc]: https://pandoc.org/
   [mupdf]: https://mupdf.com/
