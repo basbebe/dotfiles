@@ -97,7 +97,7 @@ set-option global grepcmd 'rg --column --with-filename'
 # Windowing
 hook global ModuleLoaded kitty %{
     alias global terminal kitty-terminal
-    alias global popup kitty-terminal # or kitty-terminal-tab
+    alias global popup kitty-terminal-popup
 }
 
 # Allow cycling to the next/previous candidate with <tab> and <s-tab> when completing a word
@@ -142,6 +142,12 @@ define-command -docstring 'open nnn window' nnn '> fish -ic nnn .'
 
 # broot
 define-command -docstring 'open broot window' broot '> broot'
+
+# kitty popup
+define-command -docstring 'kitty-terminal-popup <program> [arguments]: create a new terminal as an kitty OS window (title: popup)' \
+    kitty-terminal-popup -override -params .. -shell-completion %{
+        nop %sh{ kitty --single-instance --title "popup" "$@" }
+    }
 
 # Aliases ——————————————————————————————————————————————————————————————————————
 
