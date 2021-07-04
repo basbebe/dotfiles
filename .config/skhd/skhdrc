@@ -1,3 +1,5 @@
+#! /bin/env sh
+
 # if you're having troubles finding key codes for a key just type skhd --observe in a terminal and type a key. Pretty cool! Or just check the wiki.
 # https://github.com/koekeishiya/skhd/issues/1
 
@@ -20,11 +22,11 @@ ctrl + alt + cmd - r : launchctl kickstart -k "gui/${UID}/homebrew.mxcl.yabai"
 hyper - j : yabai -m window --focus south
 hyper - k : yabai -m window --focus north
 hyper - h : yabai -m window --focus west || \
-  { yabai -m display --focus next  && yabai -m window --focus last ; } || \
-  { yabai -m display --focus first && yabai -m window --focus last ; }
+            { yabai -m display --focus next  || yabai -m display --focus first ; \
+              yabai -m window --focus last ; }
 hyper - l : yabai -m window --focus east || \
-  { yabai -m display --focus prev && yabai -m window --focus first ; } || \
-  { yabai -m display --focus last && yabai -m window --focus first ; }
+            { yabai -m display --focus prev || yabai -m display --focus last ; \
+              yabai -m window --focus first ; }
 
 # cycle through windows ([])
 hyper - 0x1E : yabai -m window --focus next || yabai -m window --focus first
@@ -66,7 +68,8 @@ hyper - 0 : yabai -m space --focus 0
 ctrl + alt - space : yabai -m window --toggle float
 
 # toggle sticky
-ctrl + alt - s : yabai -m window --toggle sticky && yabai -m window --toggle topmost
+ctrl + alt - s : yabai -m window --toggle sticky ; \
+                 yabai -m window --toggle topmost ;
 
 # toggle split (;)
 ctrl + alt - 0x29 : yabai -m window --toggle split
@@ -126,16 +129,16 @@ ctrl + alt + cmd - 0x2C : yabai -m window --toggle float; yabai -m window --togg
 
 # move window across display
 ctrl + alt + cmd - h : { yabai -m window --display next && yabai -m display --focus next ; } || \
-  { yabai -m window --display first && yabai -m display --focus first ; }
+                       { yabai -m window --display first && yabai -m display --focus first ; }
 ctrl + alt + cmd - l : { yabai -m window --display prev && yabai -m display --focus prev ; } || \
-  { yabai -m window --display last && yabai -m display --focus last ; }
+                       { yabai -m window --display last && yabai -m display --focus last ; }
 
 # spaces ———————————————————————————————————————————————————————————————————————
 
 # create new space and follow focus
 shift + ctrl + alt - c : yabai -m space --create && \
-  index="$(yabai -m query --spaces --display | jq 'map(select(."native-fullscreen" == 0))[-1].index')" && \
-  yabai -m space --focus "${index}"
+                         index="$(yabai -m query --spaces --display | jq 'map(select(."native-fullscreen" == 0))[-1].index')" && \
+                         yabai -m space --focus "${index}"
 
 # destroy space
 shift + ctrl + alt - x : yabai -m space --destroy
@@ -156,9 +159,9 @@ shift + ctrl + alt - l : yabai -m space --display prev || yabai -m space --displ
 # ctrl + alt + cmd - n : yabai -m window --space next && osascript -e 'tell application "System Events" to key code 45 using {shift down, control down, option down, command down}'
 # ctrl + alt + cmd - p : yabai -m window --space prev && osascript -e 'tell application "System Events" to key code 35 using {shift down, control down, option down, command down}'
 ctrl + alt + cmd - n : { yabai -m window --space next && yabai -m space --focus next ; } || \
-  { yabai -m window --space first && yabai -m space --focus first ; }
+                       { yabai -m window --space first && yabai -m space --focus first ; }
 ctrl + alt + cmd - p : { yabai -m window --space prev && yabai -m space --focus prev ; } || \
-  { yabai -m window --space last && yabai -m space --focus last ; }
+                       { yabai -m window --space last && yabai -m space --focus last ; }
 
 # move window to space and follow
 # ctrl + alt + cmd - 1 : yabai -m window --space 1 && osascript -e 'tell application "System Events" to key code 18 using control down'
