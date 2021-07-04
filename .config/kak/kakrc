@@ -89,6 +89,11 @@ set-option global scrolloff 5,1
 # Clipboard
 synchronize-clipboard
 synchronize-buffer-directory-name-with-register d
+hook global RegisterModified '"' %{
+    nop %sh{
+        printf %s "$kak_main_reg_dquote" | pbcopy
+    }
+}
 
 # Tools
 set-option global makecmd 'make -j 8'
@@ -211,29 +216,8 @@ map -docstring 'git' global normal <c-l> ':+ lazygit<ret>'
 # case insensitive search by default
 map global normal / "/(?i)"
 
-hook global NormalKey y|d|c %{
-    nop %sh{
-        printf %s "$kak_main_reg_dquote" | xsel --input --clipboard
-    }
-}
-
+# delete line
 map global normal D     ';<a-l>d'
-map global normal <a-d> ';<a-h>d'
-
-evaluate-commands %sh{
-    copy="xsel --input --clipboard"
-    paste="xsel --output --clipboard"
-    printf \
-    "map global normal -docstring 'Paste (after) from clipboard' p '!%s<ret>'\n" "$paste"
-    printf \
-    "map global normal -docstring 'Paste (before) from clipboard' P '<a-!>%s<ret>'\n" "$paste"
-    #printf \
-    #"map global normal -docstring 'Replace selection with system clipboard' R '|%s<ret>'" "$paste"
-    printf \
-    "map global normal -docstring 'Copy to system clipboard' y '<a-|>%s<ret>'\n" "$copy"
-    printf \
-    "map global normal -docstring 'Copy to EOL to system clipboard' Y '<a-l><a-|>%s<ret><a-;>;'\n" "$copy"
-}
 
 # Move macros to ^
 # map -docstring 'Play macro' global normal ^ q
@@ -289,6 +273,11 @@ map global user C -docstring '(un-)comment block' ': comment-block<ret>'
 
 # UI toggles
 map global user -docstring "UI mode" u ': enter-user-mode ui<ret>'
+
+# pasting from clipboard
+map global user -docstring "paste over from system clipboard" R '\| pbpaste<ret>'
+map global user -docstring "paste after from clipboard" p '\<a-!> pbpaste<ret>'
+map global user -docstring "paste before from clipboard" P '\! pbpaste<ret>'
 
 # Linting & Formatting —————————————————————————————————————————————————————————
 
