@@ -43,6 +43,3 @@
 [submodule ".hammerspoon/stackline"]
 	path = .hammerspoon/stackline
 	url = https://github.com/AdamWagner/stackline.git
-[submodule ".config/ubersicht/simple-bar"]
-	path = .config/ubersicht/simple-bar
-	url = https://github.com/Jean-Tinland/simple-bar

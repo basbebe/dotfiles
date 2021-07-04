@@ -32,8 +32,7 @@
 -   [yabai] – tiling window manager
     -   [skhd] – simple hotkey daemon for macOS\
         (don’t forget to [switch shell])
-    -   [simple-bar] – yabai status bar widget for Übersicht
-        -   [Übersicht] – widgets for macOS
+    -   [spacebar] – minimal status bar for macOS
     -   [stackline] – visualize yabai window stacks
         -   [Hammerspoon] – macOS desktop automation with Lua
 -   [util-linux] – Linux utilities for macOS
@@ -82,8 +81,7 @@ This repository is being managed using [yadm]
   [yabai]: https://github.com/koekeishiya/yabai/wiki/Commands#message-passing-interface
   [skhd]: https://github.com/koekeishiya/skhd
   [switch shell]: https://github.com/koekeishiya/skhd/issues/42
-  [simple-bar]: https://github.com/Jean-Tinland/simple-bar
-  [Übersicht]: https://github.com/felixhageloh/uebersicht
+  [spacebar]: https://github.com/cmacrae/spacebar
   [stackline]: https://github.com/AdamWagner/stackline
   [Hammerspoon]: https://github.com/Hammerspoon/hammerspoon
   [util-linux]: https://github.com/karelzak/util-linux
