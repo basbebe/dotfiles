@@ -9,7 +9,7 @@
 
 # open terminal
 # hyper - return : /Applications/kitty.app/Contents/MacOS/kitty
-hyper - return : kitty --single-instance --directory=$HOME
+hyper - return : kitty --single-instance --directory=$HOME --listen-on=unix:/tmp/kitty_listen
 
 # shortcuts ————————————————————————————————————————————————————————————————————
 

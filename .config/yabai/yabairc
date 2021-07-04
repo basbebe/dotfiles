@@ -75,7 +75,7 @@ yabai -m rule --add app="Preferences" sticky=on layer=above manage=off border=of
 yabai -m rule --add app=VLC manage=off border=off
 yabai -m rule --add app=Calculator manage=off border=off
 yabai -m rule --add app=KeePassXC sticky=on layer=above manage=off border=off
-yabai -m rule --add app="Yubico\ Authenticator" sticky=on layer=above manage=off border=off
+yabai -m rule --add app="^Yubi" sticky=on layer=above manage=off border=off
 yabai -m rule --add app="ColorNavigator\ 7" sticky=on layer=above manage=off border=off
 
 # show popups on top
@@ -103,7 +103,7 @@ yabai -m space 7 --label 
 yabai -m space 8 --label 
 
 yabai -m space 9 --label OS
-yabai -m rule --add app="System\ Preferences" space=^"OS"
+# yabai -m rule --add app="System\ Preferences" space=^"OS"
 yabai -m rule --add app="Keka" space=^"OS"
 yabai -m rule --add app="Home" space=^"OS"
 yabai -m rule --add app="Karabiner-EventsViewer" space=^"OS"
@@ -117,7 +117,8 @@ yabai -m space 10 --label sec --display $mon_laptop
 
 
 # spacebar
-yabai -m config external_bar all:26:0
+spacebar_height=$(spacebar -m config height)
+yabai -m config external_bar all:${spacebar_height}:0
 
 
 # adapt padding to state of stacks
