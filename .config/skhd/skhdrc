@@ -83,10 +83,10 @@ ctrl + alt - 0x2A : yabai -m space --toggle padding; yabai -m space --toggle gap
 
 # swap window ([])
 ctrl + alt - 0x1E : yabai -m window --swap next || yabai -m window --swap first
-ctrl + alt - j : yabai -m window --warp south || yabai -m window --toggle split
 ctrl + alt - 0x21 : yabai -m window --swap prev || yabai -m window --swap last
 
 # move window across screen
+ctrl + alt - j : yabai -m window --warp south || yabai -m window --toggle split
 ctrl + alt - k : yabai -m window --warp north || yabai -m window --toggle split
 ctrl + alt - h : yabai -m window --warp west || yabai -m window --toggle split
 ctrl + alt - l : yabai -m window --warp east || yabai -m window --toggle split
@@ -127,7 +127,7 @@ ctrl + alt + cmd - 0x2C : yabai -m window --toggle float; yabai -m window --togg
 # move window across display
 ctrl + alt + cmd - h : { yabai -m window --display next && yabai -m display --focus next ; } || \
   { yabai -m window --display first && yabai -m display --focus first ; }
-ctrl + alt + cmd - l : { yabai -m window --display prev  &&  yabai -m display --focus prev ; } || \
+ctrl + alt + cmd - l : { yabai -m window --display prev && yabai -m display --focus prev ; } || \
   { yabai -m window --display last && yabai -m display --focus last ; }
 
 # spaces ———————————————————————————————————————————————————————————————————————
