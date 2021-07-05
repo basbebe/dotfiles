@@ -3,8 +3,8 @@
 # if you're having troubles finding key codes for a key just type skhd --observe in a terminal and type a key. Pretty cool! Or just check the wiki.
 # https://github.com/koekeishiya/skhd/issues/1
 
-# hyper : shift + ctrl + alt + option
-# meh : shift + ctrl + alt
+# hyper : meh + option
+# meh : meh
 
 # launch apps ——————————————————————————————————————————————————————————————————
 
@@ -134,10 +134,10 @@ ctrl + alt + cmd - 0x1E : yabai -m window --stack next
 ctrl + alt + cmd - 0x21 : yabai -m window --stack prev
 
 # move window into stack
-# shift + ctrl + alt - k : yabai -m window --stack north
-# shift + ctrl + alt - j : yabai -m window --stack south
-# shift + ctrl + alt - h : yabai -m window --stack west
-# shift + ctrl + alt - l : yabai -m window --stack east
+# meh - k : yabai -m window --stack north
+# meh - j : yabai -m window --stack south
+# meh - h : yabai -m window --stack west
+# meh - l : yabai -m window --stack east
 
 # unstack window (/)
 ctrl + alt + cmd - 0x2C : yabai -m window --toggle float; yabai -m window --toggle float
@@ -153,24 +153,24 @@ ctrl + alt + cmd - l : { yabai -m window --display prev && yabai -m display --fo
 # spaces –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
 # create new space and follow focus
-shift + ctrl + alt - c : yabai -m space --create && \
+meh - c : yabai -m space --create && \
                          index="$(yabai -m query --spaces --display | jq 'map(select(."native-fullscreen" == 0))[-1].index')" && \
                          yabai -m space --focus "${index}"
 
 # destroy space
-shift + ctrl + alt - x : yabai -m space --destroy
+meh - x : yabai -m space --destroy
 
 # switch space layout
-shift + ctrl + alt - s : yabai -m space --layout stack
-shift + ctrl + alt - b : yabai -m space --layout bsp
+meh - s : yabai -m space --layout stack
+meh - b : yabai -m space --layout bsp
 
 # cycle space
-shift + ctrl + alt - n : yabai -m space --move next || yabai -m space --move first
-shift + ctrl + alt - p : yabai -m space --move prev || yabai -m space --move last
+meh - n : yabai -m space --move next || yabai -m space --move first
+meh - p : yabai -m space --move prev || yabai -m space --move last
 
 # move space to window
-shift + ctrl + alt - h : yabai -m space --display next || yabai -m space --display first
-shift + ctrl + alt - l : yabai -m space --display prev || yabai -m space --display last
+meh - h : yabai -m space --display next || yabai -m space --display first
+meh - l : yabai -m space --display prev || yabai -m space --display last
 
 # move window to next space
 # ctrl + alt + cmd - n : yabai -m window --space next && osascript -e 'tell application "System Events" to key code 45 using {shift down, control down, option down, command down}'
