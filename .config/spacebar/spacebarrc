@@ -26,6 +26,7 @@ spacebar -m config title                       on
 spacebar -m config spaces                      on
 spacebar -m config space_icon                  •
 # spacebar -m config space_icon_strip                     
+# spacebar -m config space_icon_strip            $(while true ; do yabai -m query --spaces | jq -r '.[] | .label' ; sleep 5 ; done)
 spacebar -m config space_icon_strip            $(yabai -m query --spaces | jq -r '.[] | .label')
 spacebar -m config spaces_for_all_displays     on
 

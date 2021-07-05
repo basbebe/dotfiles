@@ -1,0 +1,13 @@
+### miscellaneous
+# hyper when held, escape when tapped
+# any - caps_lock    : cmd + alt + ctrl - left_shift : escape
+# alt - c            : escape, c            # change for iterm2 shortcut
+hyper - hyphen     : cmd + alt - eject    # sleep
+hyper - equal_sign : ctrl + shift - eject # sleep display
+# cmd - m            : vk_none              # disable minimize
+# cmd - h            : vk_none              # disable hide
+
+### yabai
+# keycodes can be found at /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Carbon.framework/Versions/A/Frameworks/HIToolbox.framework/Versions/A/Headers/Events.h
+hyper - comma         : keypad_comma      # 0x41
+hyper - period        : keypad_period     # 0x5F, disable sysdiagnose

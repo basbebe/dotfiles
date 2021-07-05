@@ -78,14 +78,15 @@ yabai -m rule --add app=KeePassXC sticky=on layer=above manage=off border=off
 yabai -m rule --add app="^Yubi" sticky=on layer=above manage=off border=off
 yabai -m rule --add app="ColorNavigator\ 7" sticky=on layer=above manage=off border=off
 
-# show popups on top
+# show scratchpads and popups on top
+yabai -m rule --add title="^scratchpad" sticky=on layer=above grid=4:4:1:1:2:2
 yabai -m rule --add title="popup" sticky=on layer=above grid=4:4:1:1:2:2
 
 # lable spaces and assign apps
 
 yabai -m space 2 --label web
 yabai -m rule --add app="^Firefox*" space="^web"
-yabai -m rule --add app="^Tor*" space="^web"
+yabai -m rule --add app="^Tor*" space="^web" manage=off
 yabai -m rule --add app="^Chromium*" space="^web"
 yabai -m rule --add app="^Safari*" space="^web"
 
@@ -112,8 +113,8 @@ yabai -m rule --add app="SoftRAID" space=^"OS"
 yabai -m rule --add app="Disk Utility" space=^"OS"
 
 # send ext space to laptop monitor
-mon_laptop=${yabai -m query --displays | jq '.[] | select(.uuid=="1FF8F5E7-4684-FAAF-396B-715F8AE0AA7F").index'}
-yabai -m space 10 --label sec --display $mon_laptop
+# mon_laptop=${yabai -m query --displays | jq '.[] | select(.uuid=="1FF8F5E7-4684-FAAF-396B-715F8AE0AA7F").index'}
+# yabai -m space 10 --label sec --display $mon_laptop
 
 
 # spacebar
@@ -125,6 +126,7 @@ yabai -m config external_bar all:${spacebar_height}:0
 yabai -m signal --add event=window_created action="~/.config/yabai/refresh.sh"
 yabai -m signal --add event=window_destroyed action="~/.config/yabai/refresh.sh"
 
+# yabai -m signal --add event=window_destroyed action="~/.config/yabai/window-focus-on-destroy.sh $YABAI_WINDOW_ID"
 
 # kill any existing limelight process if one exists, before we launch a new one
 # killall limelight &> /dev/null
