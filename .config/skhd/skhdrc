@@ -13,9 +13,9 @@
 hyper - return : SHELL=/usr/local/bin/fish kitty --single-instance --directory=$HOME --listen-on=unix:/tmp/kitty_listen
 
 # scratchpads
-hyper - e : SCRATCHPAD_TITLE="scratchpad_editor" ~/.local/bin/scratchpad "kcr shell --session master kcr attach"
-hyper - t : SCRATCHPAD_TITLE="scratchpad_terminal" ~/.local/bin/scratchpad
-hyper - r : SCRATCHPAD_TITLE="scratchpad_calc" ~/.local/bin/scratchpad "r -q --no-save"
+hyper - e : SCRATCHPAD_TITLE="scratchpad_editor" ~/.config/skhd/scratchpad.sh "kcr shell --session master kcr attach"
+hyper - t : SCRATCHPAD_TITLE="scratchpad_terminal" ~/.config/skhd/scratchpad.sh
+hyper - r : SCRATCHPAD_TITLE="scratchpad_calc" ~/.config/skhd/scratchpad.sh "r -q --no-save"
 
 # new finder window
 hyper - f : open ~
