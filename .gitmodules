@@ -43,3 +43,6 @@
 [submodule ".hammerspoon/stackline"]
 	path = .hammerspoon/stackline
 	url = https://github.com/AdamWagner/stackline.git
+[submodule ".config/mpv/scripts/.config/mpv/scripts/mpv-playlist-navigator"]
+	path = .config/mpv/scripts/.config/mpv/scripts/mpv-playlist-navigator
+	url = git@github.com:drogers141/mpv-playlist-navigator.git
