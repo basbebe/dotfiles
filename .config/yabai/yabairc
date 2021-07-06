@@ -12,13 +12,13 @@ yabai -m config layout bsp
 yabai -m config window_placement second_child
 
 # Set all padding and gaps (default: 0)
-yabai -m config top_padding    8
-yabai -m config bottom_padding 8
-yabai -m config left_padding   8
-yabai -m config right_padding  8
-yabai -m config window_gap     8
+yabai -m config top_padding    12
+yabai -m config bottom_padding 12
+yabai -m config left_padding   12
+yabai -m config right_padding  12
+yabai -m config window_gap     12
 
-# borders and colors
+#
 yabai -m config window_border               on
 yabai -m config window_border_width         3
 yabai -m config active_window_border_color  0xff775759
@@ -26,7 +26,7 @@ yabai -m config normal_window_border_color  0xff555555
 yabai -m config insert_feedback_color       0xFFBF616A
 
 # on or off (default: off)
-yabai -m config auto_balance off
+yabai -m config auto_balance on
 
 # Floating point value between 0 and 1 (default: 0.5)
 yabai -m config split_ratio 0.5
@@ -44,10 +44,10 @@ yabai -m config mouse_action2 resize
 yabai -m config mouse_drop_action stack
 
 # set focus follows mouse mode (default: off, options: off, autoraise, autofocus)
-yabai -m config focus_follows_mouse off
+yabai -m config focus_follows_mouse autoraise
 
 # set mouse follows focus mode (default: off)
-yabai -m config mouse_follows_focus off
+yabai -m config mouse_follows_focus on
 
 # floating windows are always on top (default: off)
 yabai -m config window_topmost off
@@ -56,80 +56,58 @@ yabai -m config window_topmost off
 yabai -m config window_shadow float
 
 # window opacity (default: off)
-yabai -m config window_opacity off
+yabai -m config window_opacity               on
 # yabai -m config window_opacity_duration      0.0
-# yabai -m config active_window_opacity        1.0
-# yabai -m config normal_window_opacity        0.90
-
-# turn off manage and border for various apps
-yabai -m rule --add app="^System Preferences$" sticky=on layer=above manage=off border=off
-yabai -m rule --add app="^Karabiner-Elements$" sticky=on layer=above manage=off border=off
-yabai -m rule --add app="^Karabiner-EventViewer$" sticky=on layer=above manage=off border=off
-yabai -m rule --add app="^Finder$" manage=off border=off
-yabai -m rule --add app="^Keka$" sticky=on layer=above manage=off border=off
-yabai -m rule --add app="^Disk Utility$" sticky=on layer=above manage=off border=off
-yabai -m rule --add app="^SoftRAID$" sticky=on layer=above manage=off border=off
-yabai -m rule --add app="^System Information$" sticky=on layer=above manage=off border=off
-yabai -m rule --add app="^Activity Monitor$" sticky=on layer=above manage=off border=off
-yabai -m rule --add app="Preferences" sticky=on layer=above manage=off border=off
-yabai -m rule --add app=VLC manage=off border=off
-yabai -m rule --add app=Calculator manage=off border=off
-yabai -m rule --add app=KeePassXC sticky=on layer=above manage=off border=off
-yabai -m rule --add app="^Yubi" sticky=on layer=above manage=off border=off
-yabai -m rule --add app="ColorNavigator\ 7" sticky=on layer=above manage=off border=off
-
-# show scratchpads and popups on top
-yabai -m rule --add title="^scratchpad" sticky=on layer=above grid=4:4:1:1:2:2
-yabai -m rule --add title="popup" sticky=on layer=above grid=4:4:1:1:2:2
-
-# lable spaces and assign apps
-
-yabai -m space 2 --label web
-yabai -m rule --add app="^Firefox*" space="^web"
-yabai -m rule --add app="^Tor*" space="^web" manage=off
-yabai -m rule --add app="^Chromium*" space="^web"
-yabai -m rule --add app="^Safari*" space="^web"
-
-
-yabai -m space 3 --label dev
-yabai -m rule --add app="^VSCod*" space="^dev"
-yabai -m rule --add app="^RStudio*" space="^dev"
-
-yabai -m space 4 --label mail
-yabai -m rule --add app="^MailMate*" space="^mail"
-
-yabai -m space 5 --label 
-yabai -m space 6 --label 
-yabai -m space 7 --label 
-yabai -m space 8 --label 
-
-yabai -m space 9 --label OS
-# yabai -m rule --add app="System\ Preferences" space=^"OS"
-yabai -m rule --add app="Keka" space=^"OS"
-yabai -m rule --add app="Home" space=^"OS"
-yabai -m rule --add app="Karabiner-EventsViewer" space=^"OS"
-yabai -m rule --add app="Karabiner-Elements" space=^"OS"
-yabai -m rule --add app="SoftRAID" space=^"OS"
-yabai -m rule --add app="Disk Utility" space=^"OS"
-
-# send ext space to laptop monitor
-# mon_laptop=${yabai -m query --displays | jq '.[] | select(.uuid=="1FF8F5E7-4684-FAAF-396B-715F8AE0AA7F").index'}
-# yabai -m space 10 --label sec --display $mon_laptop
-
+yabai -m config active_window_opacity        1.0
+yabai -m config normal_window_opacity        0.90
 
 # spacebar
 spacebar_height=$(spacebar -m config height)
 yabai -m config external_bar all:${spacebar_height}:0
 
+# space labels
+yabai -m space 1 --label web
+yabai -m space 2 --label code
+yabai -m space 3 --label mail
+yabai -m space 4 --label chat
+yabai -m space 5 --label media
+yabai -m space 6 --label cal
+yabai -m space 7 --label OS
+yabai -m space 8 --label misc
+# yabai -m space 9
+# yabai -m space 10
+
+# window rules
+yabai -m rule --add app="^System Preferences$" sticky=on layer=above manage=off
+yabai -m rule --add app="^Karabiner-Elements$" sticky=on layer=above manage=off
+yabai -m rule --add app="^Karabiner-EventViewer$" sticky=on layer=above manage=off
+yabai -m rule --add app="^Finder$" manage=off
+yabai -m rule --add app="^Keka$" sticky=on layer=above manage=off
+yabai -m rule --add app="^Disk Utility$" sticky=on layer=above manage=off
+yabai -m rule --add app="^SoftRAID$" sticky=on layer=above manage=off
+yabai -m rule --add app="^System Information$" sticky=on layer=above manage=off
+yabai -m rule --add app="^Activity Monitor$" sticky=on layer=above manage=off
+yabai -m rule --add app="^Preferences" sticky=on layer=above manage=off
+yabai -m rule --add app="^VLC$" manage=off
+yabai -m rule --add app="^KeePassXC$" sticky=on layer=above manage=off
+yabai -m rule --add app="^Yubi" sticky=on layer=above manage=off
+yabai -m rule --add app="^ColorNavigator\ 7$" sticky=on layer=above manage=off
+yabai -m rule --add app="^Firefox*" space="^web"
+yabai -m rule --add app="^Tor*" space="^web" manage=off
+yabai -m rule --add app="^Chromium*" space="^web"
+yabai -m rule --add app="^Safari*" space="^web"
+yabai -m rule --add app="^VSCod*" space="^code"
+yabai -m rule --add app="^RStudio*" space="^code"
+yabai -m rule --add app="^MailMate*" space="^mail"
+
+# show scratchpads and popups on top
+yabai -m rule --add title="^scratchpad" sticky=on layer=above grid=4:4:1:1:2:2
+yabai -m rule --add title="^popup" sticky=on layer=above grid=4:4:1:1:2:2
 
 # adapt padding to state of stacks
 yabai -m signal --add event=window_created action="~/.config/yabai/refresh.sh"
 yabai -m signal --add event=window_destroyed action="~/.config/yabai/refresh.sh"
 
-# yabai -m signal --add event=window_destroyed action="~/.config/yabai/window-focus-on-destroy.sh $YABAI_WINDOW_ID"
-
-# kill any existing limelight process if one exists, before we launch a new one
-# killall limelight &> /dev/null
-# limelight &> /dev/null &
+yabai -m signal --add event=window_destroyed active=yes action="yabai -m query --windows --window &> /dev/null || yabai -m window --focus mouse &> /dev/null || yabai -m window --focus \$(yabai -m query --windows --space | jq .[0].id) &> /dev/null"
 
 echo "yabai configuration loaded.."

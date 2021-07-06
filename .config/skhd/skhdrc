@@ -1,4 +1,4 @@
-#! /bin/env sh
+#!/bin/sh
 
 # if you're having troubles finding key codes for a key just type skhd --observe in a terminal and type a key. Pretty cool! Or just check the wiki.
 # https://github.com/koekeishiya/skhd/issues/1
@@ -10,12 +10,12 @@
 
 # open terminal
 # hyper - return : /Applications/kitty.app/Contents/MacOS/kitty
-hyper - return : SHELL=/usr/local/bin/fish kitty --single-instance --directory=$HOME --listen-on=unix:/tmp/kitty_listen
+hyper - return : SHELL=/usr/local/bin/fish kitty --single-instance --directory=$HOME --listen-on=unix:/tmp/kitty_listen &> /dev/null
 
 # scratchpads
-hyper - e : SCRATCHPAD_TITLE="scratchpad_editor" ~/.config/skhd/scratchpad.sh "kcr shell --session master kcr attach"
+hyper - e : SCRATCHPAD_TITLE="scratchpad_editor" ~/.config/skhd/scratchpad.sh fish -c 'kcr create --session master ; kak -c master -e "rename-client scratchpad;b *scratch*"'
 hyper - t : SCRATCHPAD_TITLE="scratchpad_terminal" ~/.config/skhd/scratchpad.sh
-hyper - r : SCRATCHPAD_TITLE="scratchpad_calc" ~/.config/skhd/scratchpad.sh "r -q --no-save"
+hyper - r : SCRATCHPAD_TITLE="scratchpad_calc" ~/.config/skhd/scratchpad.sh r -q --no-save
 
 # new finder window
 hyper - f : open ~
@@ -80,8 +80,10 @@ hyper - 0 : yabai -m space --focus 0
 ctrl + alt - space : yabai -m window --toggle float
 
 # toggle sticky
-ctrl + alt - s : yabai -m window --toggle sticky ; \
-                 yabai -m window --toggle topmost ;
+ctrl + alt - s : yabai -m window --toggle sticky
+
+# toggle topmost
+ctrl + alt - t : yabai -m window --toggle topmost
 
 # toggle split (;)
 ctrl + alt - 0x29 : yabai -m window --toggle split

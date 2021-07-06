@@ -33,9 +33,14 @@ delete-scratch-message
 # Gruvbox theme for Kakoune
 # https://github.com/morhetz/gruvbox
 colorscheme gruvbox
+# set background to terminal default
+# set-face global Default rgb:ebdbb2,default
 
 # Verbose Autoinfo
 # set-option -add global autoinfo normal
+
+# accept file updates
+set-option global autoreload yes
 
 # Indentation
 # Indent with 2 spaces and make tabs 2 spaces wide.
