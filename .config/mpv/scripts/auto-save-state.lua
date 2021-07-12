@@ -53,7 +53,7 @@ local function clean_watch_later(event)
 	local tmp = io.open(tmpname, "w")
 	tmp:write(abs_path)
 	tmp:flush()
-	local hash = io.popen("md5sum "..tmpname):read():match("^%w+"):upper()
+	local hash = io.popen("md5 "..tmpname):read():match("^%w+"):upper()
 	os.remove(tmpname)
 
 	local watch_later = mp.find_config_file("watch_later")

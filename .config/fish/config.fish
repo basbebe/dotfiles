@@ -13,10 +13,6 @@ fish_add_path --global --path --move ~/.local/bin
 # Rust
 fish_add_path --global --path --append ~/.cargo/bin
 
-# Java…
-set -x JAVA_HOME (/usr/libexec/java_home)
-fish_add_path --global --path --append $JAVA_HOME/bin
-
 # util-linux
 fish_add_path --global --path --append /usr/local/opt/util-linux/bin
 fish_add_path --global --path --append /usr/local/opt/util-linux/sbin
@@ -27,6 +23,10 @@ if status is-interactive
     set -x GPG_TTY (tty)
     set -x SSH_AUTH_SOCK (gpgconf --list-dirs agent-ssh-socket)
     gpgconf --launch gpg-agent
+
+    # Java…
+    set -x JAVA_HOME (/usr/libexec/java_home)
+    fish_add_path --global --path --append $JAVA_HOME/bin
 
     # remove greeting
     set fish_greeting
@@ -107,7 +107,7 @@ if status is-interactive
 
     # nnn
     set -x GUI 1
-    set -x NNN_OPTS acDEFx
+    set -x NNN_OPTS acDEFQSx
     set -x NNN_OPENER "$HOME/.config/nnn/plugins/nuke"
     set -x NNN_BMS 'd:~/Documents;u:~/'
     set -x NNN_PLUG 'c:fzcd;f:finder;o:fzopen;O:-_launch $nnn*;p:preview-tui;d:diffs;t:nmount;v:imgview;g:-_git diff;l:-_git log;z:-_|zathura $nnn*'
@@ -127,6 +127,8 @@ if status is-interactive
     if type -q starship
         starship init fish | source
     end
+
+    source ~/.config/lf/icons.fish
 
     if test "$TERM_PROGRAM" = "iTerm.app"
         # enable iTerm2 tmux integration
