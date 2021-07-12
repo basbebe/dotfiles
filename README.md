@@ -16,6 +16,7 @@
 -   [topgrade] – Upgrade everything
 -   [exa] – ls replacement
 -   [nnn] – file manager
+-   [lazygit] – terminal UI for git commands
 -   [broot] – file picker
 -   [bat] – cat replacement
 -   [ripgrep] – grep replacement
@@ -69,6 +70,7 @@ This repository is being managed using [yadm]
   [topgrade]: https://github.com/r-darwish/topgrade
   [exa]: https://the.exa.website/
   [nnn]: https://github.com/jarun/nnn
+  [lazygit]: https://github.com/jesseduffield/lazygit
   [broot]: https://dystroy.org/broot/
   [bat]: https://github.com/sharkdp/bat
   [ripgrep]: https://github.com/BurntSushi/ripgrep
