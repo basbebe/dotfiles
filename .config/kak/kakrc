@@ -24,15 +24,18 @@ define-command -docstring 'rebuild kakoune autoload files' rebuild-autoload %{
 # Options ——————————————————————————————————————————————————————————————————————
 
 # UI
-set-option -add global ui_options ncurses_status_on_top=yes
-set-option -add global ui_options ncurses_assistant=cat
-set-option -add global ui_options ncurses_set_title=no
+set-option -add global ui_options terminal_status_on_top=yes
+set-option -add global ui_options terminal_assistant=cat
+set-option -add global ui_options terminal_set_title=no
 delete-scratch-message
 
 # Color scheme
 # Gruvbox theme for Kakoune
 # https://github.com/morhetz/gruvbox
-colorscheme gruvbox
+colorscheme gruvbox-light
+try %sh{
+    echo "colorscheme gruvbox-"$(fish -c 'echo $OS_THEME')
+}
 # set background to terminal default
 # set-face global Default rgb:ebdbb2,default
 
@@ -69,8 +72,8 @@ enable-auto-pairs
 # Highlighters
 add-highlighter global/ number-lines -relative -hlcursor
 add-highlighter global/show-matching show-matching
-add-highlighter global/ line '%val{cursor_line}' default,rgb:3c3735
-add-highlighter global/ column 81 default,rgb:3c3836
+# add-highlighter global/ line '%val{cursor_line}' default,rgb:3c3735
+add-highlighter global/ column 81 @MenuBackground
 add-highlighter global/ wrap -indent -word
 add-highlighter global/ regex \h+$ 0:Error
 
@@ -106,6 +109,7 @@ set-option global grepcmd 'rg --column --with-filename'
 
 # Windowing
 hook global ModuleLoaded kitty %{
+    set-option global kitty_window_type os-window
     alias global terminal kitty-terminal
     alias global popup kitty-terminal-popup
 }
@@ -148,7 +152,7 @@ define-command lazygit -params .. -docstring 'Open lazygit' %{
 define-command -docstring 'open yadm with lazygit' yadm '> fish -c yadm'
 
 # nnn
-define-command -docstring 'open nnn window' nnn '> fish -ic nnn .'
+define-command -docstring 'open nnn window' nnn "> fish -ic 'nnn .'"
 
 # broot
 define-command -docstring 'open broot window' broot '> broot'

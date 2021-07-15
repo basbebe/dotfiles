@@ -1,6 +1,7 @@
 [core]
 	excludesfile = ~/.gitignore_global
 	pager = delta
+	; editor = kak
 [commit]
 	template = ~/.stCommitMsg
 	gpgsign = true
@@ -17,9 +18,10 @@
 	cmd = env LOCAL=\"${LOCAL}\" BASE=\"${BASE}\" REMOTE=\"${REMOTE}\" MERGED=\"${MERGED}\" ~/git/kakmerge/kakmerge
 [delta]
 	features = side-by-side line-numbers decorations
-	syntax-theme = gruvbox
-	plus-style = syntax "#003800"
-	minus-style = syntax "#3f0001"
+	; syntax-theme = gruvbox-dark
+	; light = true
+	; plus-style = syntax "#003800"
+	; minus-style = syntax "#3f0001"
 	whitespace-error-style = 22 reverse
 	side-by-side = true
 [interactive]

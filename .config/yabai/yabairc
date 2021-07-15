@@ -16,17 +16,17 @@ yabai -m config top_padding    12
 yabai -m config bottom_padding 12
 yabai -m config left_padding   12
 yabai -m config right_padding  12
-yabai -m config window_gap     12
+yabai -m config window_gap     8
 
-#
+# border settings
 yabai -m config window_border               on
 yabai -m config window_border_width         3
-yabai -m config active_window_border_color  0xff775759
-yabai -m config normal_window_border_color  0xff555555
-yabai -m config insert_feedback_color       0xFFBF616A
+yabai -m config active_window_border_color  0xffd79921
+yabai -m config normal_window_border_color  0xbb928374
+yabai -m config insert_feedback_color       0xffcc241d
 
 # on or off (default: off)
-yabai -m config auto_balance on
+yabai -m config auto_balance off
 
 # Floating point value between 0 and 1 (default: 0.5)
 yabai -m config split_ratio 0.5
@@ -50,13 +50,13 @@ yabai -m config focus_follows_mouse autoraise
 yabai -m config mouse_follows_focus on
 
 # floating windows are always on top (default: off)
-yabai -m config window_topmost off
+yabai -m config window_topmost on
 
 # modify window shadows (default: on, options: on, off, float)
 yabai -m config window_shadow float
 
 # window opacity (default: off)
-yabai -m config window_opacity               on
+yabai -m config window_opacity               off
 # yabai -m config window_opacity_duration      0.0
 yabai -m config active_window_opacity        1.0
 yabai -m config normal_window_opacity        0.90
@@ -87,27 +87,34 @@ yabai -m rule --add app="^Disk Utility$" sticky=on layer=above manage=off
 yabai -m rule --add app="^SoftRAID$" sticky=on layer=above manage=off
 yabai -m rule --add app="^System Information$" sticky=on layer=above manage=off
 yabai -m rule --add app="^Activity Monitor$" sticky=on layer=above manage=off
-yabai -m rule --add app="^Preferences" sticky=on layer=above manage=off
+yabai -m rule --add title="^Preferences" sticky=on layer=above manage=off
 yabai -m rule --add app="^VLC$" manage=off
 yabai -m rule --add app="^KeePassXC$" sticky=on layer=above manage=off
 yabai -m rule --add app="^Yubi" sticky=on layer=above manage=off
 yabai -m rule --add app="^ColorNavigator\ 7$" sticky=on layer=above manage=off
 yabai -m rule --add app="^Firefox*" space="^web"
+yabai -m rule --add app="^Firefox*" title="^Open" manage=off layer=above
+yabai -m rule --add app="^Firefox*" title="^Enter" manage=off layer=above
 yabai -m rule --add app="^Tor*" space="^web" manage=off
+# yabai -m rule --add app="^zoom\.us$" manage=off
 yabai -m rule --add app="^Chromium*" space="^web"
 yabai -m rule --add app="^Safari*" space="^web"
 yabai -m rule --add app="^VSCod*" space="^code"
 yabai -m rule --add app="^RStudio*" space="^code"
 yabai -m rule --add app="^MailMate*" space="^mail"
+yabai -m rule --add app="^mpv$" opacity=1.0
 
 # show scratchpads and popups on top
-yabai -m rule --add title="^scratchpad" sticky=on layer=above grid=4:4:1:1:2:2
+yabai -m rule --add title="^scratchpad" manage=off sticky=on layer=above grid=4:4:1:1:2:2
 yabai -m rule --add title="^popup" sticky=on layer=above grid=4:4:1:1:2:2
 
 # adapt padding to state of stacks
 yabai -m signal --add event=window_created action="~/.config/yabai/refresh.sh"
 yabai -m signal --add event=window_destroyed action="~/.config/yabai/refresh.sh"
 
-yabai -m signal --add event=window_destroyed active=yes action="yabai -m query --windows --window &> /dev/null || yabai -m window --focus mouse &> /dev/null || yabai -m window --focus \$(yabai -m query --windows --space | jq .[0].id) &> /dev/null"
+# yabai -m signal --add event=window_destroyed action="yabai -m query --windows --window &> /dev/null || yabai -m window --focus mouse &> /dev/null || yabai -m window --focus \$(yabai -m query --windows --space | jq .[0].id) &> /dev/null"
+yabai -m signal --add event=window_destroyed action="yabai -m query --windows --window &> /dev/null || yabai -m window --focus mouse &> /dev/null || yabai -m window --focus recent &> /dev/null"
+# yabai -m signal --add event=window_destroyed action='yabai -m window --focus recent'
+yabai -m signal --add event=window_minimized action='yabai -m window --focus recent'
 
 echo "yabai configuration loaded.."

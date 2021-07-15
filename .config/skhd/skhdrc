@@ -10,17 +10,23 @@
 
 # open terminal
 # hyper - return : /Applications/kitty.app/Contents/MacOS/kitty
-hyper - return : SHELL=/usr/local/bin/fish kitty --single-instance --directory=$HOME --listen-on=unix:/tmp/kitty_listen &> /dev/null
+hyper - return : SHELL=/usr/local/bin/fish kitty --single-instance --directory=$HOME &> /dev/null
 
 # scratchpads
-hyper - e : SCRATCHPAD_TITLE="scratchpad_editor" ~/.config/skhd/scratchpad.sh fish -c 'kcr create --session master ; kak -c master -e "rename-client scratchpad;b *scratch*"'
+hyper - e : SCRATCHPAD_TITLE="scratchpad_editor" ~/.config/skhd/scratchpad.sh fish -ic 'kcr create --session master ; kak -c master -e "rename-client scratchpad;b *scratch*"'
 hyper - t : SCRATCHPAD_TITLE="scratchpad_terminal" ~/.config/skhd/scratchpad.sh
 hyper - r : SCRATCHPAD_TITLE="scratchpad_calc" ~/.config/skhd/scratchpad.sh r -q --no-save
 
 # new finder window
 hyper - f : open ~
 
-# authencicator
+# open mpv with url from clipboard
+hyper - m : open -na /Applications/mpv.app $(pbpaste)
+
+# open nnn window
+# hyper - n : SHELL=/usr/local/bin/fish kitty --single-instance -d ~ --listen-on=unix:/tmp/kitty_listen fish -ic n &> /dev/null
+
+# authenticator
 hyper - y : open -a 'Yubico Authenticator'
 
 # yabai ————————————————————————————————————————————————————————————————————————
@@ -71,7 +77,7 @@ hyper - 6 : yabai -m space --focus 6
 hyper - 7 : yabai -m space --focus 7
 hyper - 8 : yabai -m space --focus 8
 hyper - 9 : yabai -m space --focus 9
-hyper - 0 : yabai -m space --focus 0
+hyper - 0 : yabai -m space --focus 10
 
 
 # toggles ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
@@ -85,12 +91,15 @@ ctrl + alt - s : yabai -m window --toggle sticky
 # toggle topmost
 ctrl + alt - t : yabai -m window --toggle topmost
 
+# toggle pip
+# ctrl + alt - p : yabai -m window --toggle pip
+
 # toggle split (;)
 ctrl + alt - 0x29 : yabai -m window --toggle split
 
 # toggle window zoom
 ctrl + alt - z : yabai -m window --toggle zoom-parent
-ctrl + alt - f : yabai -m window --toggle zoom-fullscreen
+ctrl + alt - return : yabai -m window --grid 1:1:0:0:1:1 || yabai -m window --toggle zoom-fullscreen
 # ctrl + alt - f : yabai -m window --toggle native-fullscreen
 
 # toggle gaps (\)
@@ -202,4 +211,4 @@ ctrl + alt + cmd - 6 : yabai -m window --space 6 && yabai -m space --focus 6
 ctrl + alt + cmd - 7 : yabai -m window --space 7 && yabai -m space --focus 7
 ctrl + alt + cmd - 8 : yabai -m window --space 8 && yabai -m space --focus 8
 ctrl + alt + cmd - 9 : yabai -m window --space 9 && yabai -m space --focus 9
-ctrl + alt + cmd - 0 : yabai -m window --space 0 && yabai -m space --focus 0
+ctrl + alt + cmd - 0 : yabai -m window --space 10 && yabai -m space --focus 10

@@ -39,6 +39,10 @@ if status is-interactive
         # set -x LANG 'de_DE.UTF-8'
     # end
 
+    # get system theme (light/dark mode)
+    set -U OS_THEME (defaults read -g AppleInterfaceStyle &> /dev/null && echo dark || echo light)
+    base16-gruvbox-{$OS_THEME}-medium
+
     # kakoune.cr
     set -x EDITOR 'kcr edit'
     set -x VISUAL 'kcr edit'
@@ -93,7 +97,12 @@ if status is-interactive
 
     # bat
     abbr cat bat
+    # alias bat 'bat --theme=gruvbox-{$OS_THEME}'
+    set -x BAT_THEME gruvbox-{$OS_THEME}
     set -x MANPAGER "sh -c 'col -bx | bat -l man -p'"
+
+    # btm
+    alias btm 'btm --color=gruvbox(test $OS_THEME = dark || echo -light)'
 
     # Homebrew
     abbr brews 'brew search'
@@ -107,13 +116,14 @@ if status is-interactive
 
     # nnn
     set -x GUI 1
-    set -x NNN_OPTS acDEFQSx
+    set -x NNN_OPTS 'acdEFQSUx'
     set -x NNN_OPENER "$HOME/.config/nnn/plugins/nuke"
     set -x NNN_BMS 'd:~/Documents;u:~/'
     set -x NNN_PLUG 'c:fzcd;f:finder;o:fzopen;O:-_launch $nnn*;p:preview-tui;d:diffs;t:nmount;v:imgview;g:-_git diff;l:-_git log;z:-_|zathura $nnn*'
     # set -x NNN_FIFO '/tmp/nnn.fifo'
     set -x NNN_ARCHIVE "\\.(7z|bz2|gz|tar|tgz|zip)"
-    set -x NNN_COLORS '#6d8ed6af;4235'
+    set -x NNN_COLORS '4253'
+    set -x NNN_FCOLORS '020b0c0a000d0e0705030509'
 
     # abduco
     abbr ssha ssh-abduco

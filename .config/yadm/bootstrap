@@ -25,6 +25,9 @@ if [ "$system_type" = "Darwin" ]; then
     brew services start spacebar
   fi
 
+  # enable dark mode notify service
+  launchctl load -w ~/Library/LaunchAgents/ke.bou.dark-mode-notify.plist
+
 fi
 
 echo "Updating the yadm repo origin URL"

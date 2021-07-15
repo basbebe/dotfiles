@@ -36,6 +36,9 @@
     -   [spacebar] – minimal status bar for macOS
     -   [stackline] – visualize yabai window stacks
         -   [Hammerspoon] – macOS desktop automation with Lua
+-   [dark-mode-notify] – run a script whenever dark mode changes in
+    -   [darkModeBuddy] – switch theme based on ambient light sensor
+        macOS
 -   [util-linux] – Linux utilities for macOS
 
 ## Other useful Programs
@@ -86,6 +89,8 @@ This repository is being managed using [yadm]
   [spacebar]: https://github.com/cmacrae/spacebar
   [stackline]: https://github.com/AdamWagner/stackline
   [Hammerspoon]: https://github.com/Hammerspoon/hammerspoon
+  [dark-mode-notify]: https://github.com/bouk/dark-mode-notify
+  [darkModeBuddy]: https://github.com/insidegui/DarkModeBuddy
   [util-linux]: https://github.com/karelzak/util-linux
   [pandoc]: https://pandoc.org/
   [mupdf]: https://mupdf.com/

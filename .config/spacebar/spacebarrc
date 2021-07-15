@@ -11,6 +11,7 @@ spacebar -m config spacing_right               15
 spacebar -m config text_font                   "Mononoki:Regular:12.0"
 spacebar -m config icon_font                   "JetBrainsMono Nerd Font:Regular:12.0"
 
+# Gruvbox colors
 spacebar -m config background_color            0xff282828
 spacebar -m config foreground_color            0xffebdbb2
 spacebar -m config space_icon_color            0xfffe8019
@@ -40,9 +41,9 @@ spacebar -m config power_icon_strip             
 spacebar -m config dnd_icon                    
 
 spacebar -m config right_shell                 on
-spacebar -m config right_shell_icon            
+spacebar -m config right_shell_icon            
 # spacebar -m config right_shell_command         "whoami"
-spacebar -m config right_shell_command  "yabai -m query --spaces --space | jq -r '.type'"
+spacebar -m config right_shell_command         "~/.config/spacebar/keyboard-layout.sh"
 
 
 echo "spacebar configuration loaded.."
