@@ -46,3 +46,6 @@
 [submodule ".config/mpv/scripts/.config/mpv/scripts/mpv-playlist-navigator"]
 	path = .config/mpv/scripts/.config/mpv/scripts/mpv-playlist-navigator
 	url = git@github.com:drogers141/mpv-playlist-navigator.git
+[submodule ".config/ubersicht/simple-bar"]
+	path = .config/ubersicht/simple-bar
+	url = https://github.com/Jean-Tinland/simple-bar
