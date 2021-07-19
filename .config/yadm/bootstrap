@@ -25,6 +25,10 @@ if [ "$system_type" = "Darwin" ]; then
     brew services start spacebar
   fi
 
+  # yabai
+  # hide desktop
+  defaults write com.apple.finder CreateDesktop -bool FALSE; killall Finder
+
   # enable dark mode notify service
   launchctl load -w ~/Library/LaunchAgents/ke.bou.dark-mode-notify.plist
 

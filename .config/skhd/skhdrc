@@ -13,7 +13,7 @@
 hyper - return : SHELL=/usr/local/bin/fish kitty --single-instance --directory=$HOME &> /dev/null
 
 # scratchpads
-hyper - e : SCRATCHPAD_TITLE="scratchpad_editor" ~/.config/skhd/scratchpad.sh fish -ic 'kcr create --session master ; kak -c master -e "rename-client scratchpad;b *scratch*"'
+hyper - e : SCRATCHPAD_TITLE="scratchpad_editor" ~/.config/skhd/scratchpad.sh fish -ilc 'kcr create --session master ; kak -c master -e "rename-client scratchpad;b *scratch*"'
 hyper - t : SCRATCHPAD_TITLE="scratchpad_terminal" ~/.config/skhd/scratchpad.sh
 hyper - r : SCRATCHPAD_TITLE="scratchpad_calc" ~/.config/skhd/scratchpad.sh r -q --no-save
 

@@ -65,6 +65,9 @@ yabai -m config normal_window_opacity        0.90
 spacebar_height=$(spacebar -m config height)
 yabai -m config external_bar all:${spacebar_height}:0
 
+# simple-bar
+# yabai -m config external_bar all:28:0
+
 # space labels
 yabai -m space 1 --label web
 yabai -m space 2 --label code
@@ -89,6 +92,8 @@ yabai -m rule --add app="^System Information$" sticky=on layer=above manage=off
 yabai -m rule --add app="^Activity Monitor$" sticky=on layer=above manage=off
 yabai -m rule --add title="^Preferences" sticky=on layer=above manage=off
 yabai -m rule --add app="^VLC$" manage=off
+yabai -m rule --add app="^Deliveries$" manage=off
+yabai -m rule --add app="^DarkModeBuddy$" manage=off
 yabai -m rule --add app="^KeePassXC$" sticky=on layer=above manage=off
 yabai -m rule --add app="^Yubi" sticky=on layer=above manage=off
 yabai -m rule --add app="^ColorNavigator\ 7$" sticky=on layer=above manage=off
@@ -111,9 +116,10 @@ yabai -m rule --add title="^popup" sticky=on layer=above grid=4:4:1:1:2:2
 # adapt padding to state of stacks
 yabai -m signal --add event=window_created action="~/.config/yabai/refresh.sh"
 yabai -m signal --add event=window_destroyed action="~/.config/yabai/refresh.sh"
+# yabai -m signal --add event=window_moved action="~/.config/yabai/refresh.sh"
 
-# yabai -m signal --add event=window_destroyed action="yabai -m query --windows --window &> /dev/null || yabai -m window --focus mouse &> /dev/null || yabai -m window --focus \$(yabai -m query --windows --space | jq .[0].id) &> /dev/null"
-yabai -m signal --add event=window_destroyed action="yabai -m query --windows --window &> /dev/null || yabai -m window --focus mouse &> /dev/null || yabai -m window --focus recent &> /dev/null"
+yabai -m signal --add event=window_destroyed action="yabai -m query --windows --window &> /dev/null || yabai -m window --focus mouse &> /dev/null || yabai -m window --focus \$(yabai -m query --windows --space | jq .[0].id) &> /dev/null"
+# yabai -m signal --add event=window_destroyed action="yabai -m query --windows --window &> /dev/null || yabai -m window --focus mouse &> /dev/null || yabai -m window --focus recent &> /dev/null"
 # yabai -m signal --add event=window_destroyed action='yabai -m window --focus recent'
 yabai -m signal --add event=window_minimized action='yabai -m window --focus recent'
 
