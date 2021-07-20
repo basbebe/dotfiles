@@ -123,8 +123,9 @@ start_preview() {
             kitty @ launch --no-response --title "nnn preview" --keep-focus \
                 --cwd "$PWD" --env "PATH=$PATH" --env "NNN_FIFO=$NNN_FIFO" \
                 --env "PREVIEW_MODE=1" --env "PAGER=$PAGER" --env "TMPDIR=$TMPDIR" \
-                --env "USE_SCOPE=$USE_SCOPE" --env "SPLIT=$SPLIT" --env "TERMINAL=$TERMINAL"\
-                --env "USE_PISTOL=$USE_PISTOL" --env "BAT_STYLE=$BAT_STYLE" --env "FIFOPID=$FIFOPID" \
+                --env "USE_SCOPE=$USE_SCOPE" --env "SPLIT=$SPLIT" --env "TERMINAL=$TERMINAL" \
+                --env "USE_PISTOL=$USE_PISTOL" --env "BAT_STYLE=$BAT_STYLE" --env "BAT_THEME=$BAT_THEME" \
+                --env "OS_THEME=$OS_THEME" --env "FIFOPID=$FIFOPID" \
                 --env "PAGERPID=$PAGERPID" --env "IMGPID=$IMGPID" --env "FIFO_UEBERZUG=$FIFO_UEBERZUG" \
                 --env "ICONLOOKUP=$ICONLOOKUP" --env "NNN_PREVIEWDIR=$NNN_PREVIEWDIR" \
                 --env "NNN_PREVIEWWIDTH=$NNN_PREVIEWWIDTH" --env "NNN_PREVIEWHEIGHT=$NNN_PREVIEWHEIGHT" \
@@ -221,7 +222,7 @@ handle_ext() {
         pdf) generate_preview "$cols" "$lines" "$1" "pdf" ;;
         gz|bz2) fifo_pager tar -tvf "$1" ;;
         md) if exists glow; then
-                fifo_pager glow -s dark "$1"
+                fifo_pager glow -s $OS_THEME "$1"
             elif exists lowdown; then
                 fifo_pager lowdown -Tterm "$1"
             else

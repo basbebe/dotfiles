@@ -79,6 +79,7 @@ add-highlighter global/ regex \h+$ 0:Error
 
 # Show selections
 show-selected-text
+set-face global SelectedText +a@MatchingChar
 
 # Show whitespaces
 add-highlighter -override global/show-whitespaces show-whitespaces
@@ -152,7 +153,7 @@ define-command lazygit -params .. -docstring 'Open lazygit' %{
 define-command -docstring 'open yadm with lazygit' yadm '> fish -c yadm'
 
 # nnn
-define-command -docstring 'open nnn window' nnn "> fish -ic 'nnn .'"
+define-command -docstring 'open nnn window' nnn "> fish -ic 'nnn -s kak_$KAKOUNE_SESSION'"
 
 # broot
 define-command -docstring 'open broot window' broot '> broot'
@@ -215,12 +216,12 @@ map -docstring 'math' global normal = ':math<ret>'
 # Windowing
 map -docstring 'new client' global normal <c-t> ':new<ret>'
 map -docstring 'terminal' global normal <c-n> ':connect-terminal<ret>'
-map -docstring 'file explorer' global normal <c-e> ":> fish -ic 'nnn .'<ret>"
-map -docstring 'file picker' global normal <c-f> ':+ kcr-fzf-files<ret>'
-map -docstring 'buffer picker' global normal <c-b> ':+ kcr-fzf-buffers<ret>'
-map -docstring 'grep picker' global normal <c-g> ':+ kcr-fzf-grep<ret>'
+map -docstring 'file explorer' global normal <c-e> ":nnn<ret>"
+map -docstring 'file picker' global normal <c-f> ':+ fish -ic kcr-fzf-files<ret>'
+map -docstring 'buffer picker' global normal <c-b> ':+ fish -ic kcr-fzf-buffers<ret>'
+map -docstring 'grep picker' global normal <c-g> ':+ fish -ic kcr-fzf-grep<ret>'
 # map -docstring 'git' global normal <c-l> ':+ gitui<ret>'
-map -docstring 'git' global normal <c-l> ':+ lazygit<ret>'
+map -docstring 'git' global normal <c-l> ':+ fish -ic lazygit<ret>'
 
 # case insensitive search by default
 map global normal / "/(?i)"

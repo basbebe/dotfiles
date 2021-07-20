@@ -12,4 +12,3 @@ case $1 in
     spacebar -m config foreground_color            0xff282828
     ;;
   esac
-

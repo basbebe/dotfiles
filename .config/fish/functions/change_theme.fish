@@ -28,11 +28,8 @@ function change_theme --argument mode_setting
 
     # kitty theme
     for instance in (ls -1 /tmp/kitty_listen*)
-        kitty @ --to unix:{$instance} set-colors -a -c ~/.config/kitty/themes/gruvbox_{$mode}.conf
+        kitty @ --to unix:{$instance} set-colors -a -c ~/.config/kitty/themes/gruvbox-{$mode}.conf
     end
-
-    # fish theme
-    base16-gruvbox-{$mode}-medium
 
     # kakoune theme
     for client in (kak -l)
@@ -42,6 +39,8 @@ function change_theme --argument mode_setting
     # spacebar theme
     ~/.config/spacebar/change_mode.sh $mode
 
+    # fish
+    # handled by theme_update function
     set -U OS_THEME $mode
 
 end
