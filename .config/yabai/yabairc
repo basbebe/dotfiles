@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/bin/sh
 
 #  https://github.com/koekeishiya/yabai/wiki/Installing-yabai-(latest-release)
 
@@ -97,16 +97,16 @@ yabai -m rule --add app="^DarkModeBuddy$" manage=off
 yabai -m rule --add app="^KeePassXC$" sticky=on layer=above manage=off
 yabai -m rule --add app="^Yubi" sticky=on layer=above manage=off
 yabai -m rule --add app="^ColorNavigator\ 7$" sticky=on layer=above manage=off
-yabai -m rule --add app="^Firefox*" space="^web"
-yabai -m rule --add app="^Firefox*" title="^Open" manage=off layer=above
-yabai -m rule --add app="^Firefox*" title="^Enter" manage=off layer=above
-yabai -m rule --add app="^Tor*" space="^web" manage=off
+yabai -m rule --add app="^Firefox$" title[!]="^Mozilla Firefox" space="web"
+yabai -m rule --add app="^Firefox$" title="^Open" manage=off layer=above
+yabai -m rule --add app="^Firefox$" title="^Enter" manage=off layer=above
+yabai -m rule --add app="^Tor*" space="web"
 # yabai -m rule --add app="^zoom\.us$" manage=off
-yabai -m rule --add app="^Chromium*" space="^web"
-yabai -m rule --add app="^Safari*" space="^web"
+yabai -m rule --add app="^Chromium*" space="web"
+yabai -m rule --add app="^Safari*" space="web"
 yabai -m rule --add app="^VSCod*" space="^code"
 yabai -m rule --add app="^RStudio*" space="^code"
-yabai -m rule --add app="^MailMate*" space="^mail"
+yabai -m rule --add app="^MailMate*" space="mail"
 yabai -m rule --add app="^mpv$" opacity=1.0
 
 # show scratchpads and popups on top
