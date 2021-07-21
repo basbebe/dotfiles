@@ -119,7 +119,7 @@ if status is-interactive
     set -x NNN_OPTS 'acdEFQSUx'
     set -x NNN_OPENER "$HOME/.config/nnn/plugins/nuke"
     set -x NNN_BMS 'd:~/Documents;u:~/'
-    set -x NNN_PLUG 'c:fzcd;f:finder;o:fzopen;O:-_launch $nnn*;p:preview-tui;d:diffs;t:nmount;v:imgview;g:-_git diff;l:-_git log;z:-_|zathura $nnn*'
+    set -x NNN_PLUG 'c:fzcd;f:finder;o:fzopen;O:!launch $nnn*;p:preview-tui;d:diffs;t:nmount;v:imgview;g:-!git diff;l:-!git log;z:!&zathura $nnn*'
     # set -x NNN_FIFO '/tmp/nnn.fifo'
     set -x NNN_ARCHIVE "\\.(7z|bz2|gz|tar|tgz|zip)"
     set -x NNN_COLORS '4253'
