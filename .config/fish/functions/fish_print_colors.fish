@@ -1,4 +1,4 @@
-function print_fish_colors --description 'Shows the various fish colors being used'
+function fish_print_colors --description 'Shows the various fish colors being used'
     set -l clr_list (set -n | grep fish | grep color | grep -v __)
     if test -n "$clr_list"
         set -l bclr (set_color normal)

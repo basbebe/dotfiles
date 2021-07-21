@@ -39,6 +39,9 @@ hyper - b : open -n /Applications/Firefox.app
 # authenticator
 hyper - y : open -a 'Yubico Authenticator'
 
+# toggle dark mode
+hyper - d : osascript -e 'tell app "System Events" to tell appearance preferences to set dark mode to not dark mode'
+
 # windows ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
 # focus window (across displays)

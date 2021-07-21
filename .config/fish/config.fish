@@ -41,7 +41,7 @@ if status is-interactive
 
     # get system theme (light/dark mode)
     set -U OS_THEME (defaults read -g AppleInterfaceStyle &> /dev/null && echo dark || echo light)
-    theme_update
+    fish_update_colors
 
     # kakoune.cr
     set -x EDITOR 'kcr edit'
