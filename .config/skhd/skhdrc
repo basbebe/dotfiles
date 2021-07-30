@@ -9,15 +9,22 @@
 # Quickly restart the yabai launch agent
 ctrl + alt + cmd - r : launchctl kickstart -k "gui/${UID}/homebrew.mxcl.yabai"
 
+# .blacklist [
+#    "kitty"
+#    "terminal"
+#    "qutebrowser"
+# ]
+
 #  HYPER – launch apps & window navigation  ————————————————————————————————————
 
 # open terminal
-# hyper - return : /Applications/kitty.app/Contents/MacOS/kitty
-hyper - return : SHELL=/usr/local/bin/fish kitty --single-instance --directory=$HOME &> /dev/null
-
-hyper - 7 : kitty $SHELL -c 'printenv >> ~/environment.txt'
-hyper - 8 : echo "printenv" >> ~/environment.txt
-hyper - 9 : open -n /Applications/kitty.app
+hyper - return [
+  # "kitty" : kitty @new-window --window-type=os --cwd=$PWD
+  "kitty"  : skhd --key "cmd - n"
+  "finder" : SHELL=/usr/local/bin/fish kitty --single-instance --directory="$(osascript -e 'tell app "Finder" to POSIX path of (insertion location as alias)')" &> /dev/null
+  # *        : SHELL=/usr/local/bin/fish kitty --single-instance --directory=$HOME &> /dev/null
+  *        : open -n /Applications/kitty.app
+  ]
 
 # scratchpads
 hyper - e : SCRATCHPAD_TITLE="scratchpad_editor" ~/.config/skhd/scratchpad.sh fish -ilc 'kcr create --session master ; kak -c master -e "rename-client scratchpad;b *scratch*"'
@@ -25,13 +32,18 @@ hyper - t : SCRATCHPAD_TITLE="scratchpad_terminal" ~/.config/skhd/scratchpad.sh
 hyper - r : SCRATCHPAD_TITLE="scratchpad_calc" ~/.config/skhd/scratchpad.sh r -q --no-save
 
 # new finder window
-hyper - f : open ~
+hyper - f [
+  "kitty"  : open $(kitty @ --to unix:/tmp/kitty_listen-$(yabai -m query --windows --space | jq -c '.[] | select(.focused==1).pid') ls | \
+    jq -r '.[] | select(.is_focused==true) | select(.is_focused==true).tabs[] | select(.is_focused==true) | .windows[] | select(.is_focused==true)'.cwd)
+  "finder" : skhd --key "cmd - n"
+  *        : open ~
+  ]
 
 # open mpv with url from clipboard
 hyper - m : open -na /Applications/mpv.app $(pbpaste)
 
 # open nnn window
-hyper - n : SHELL=/usr/local/bin/fish kitty --single-instance -d ~ --listen-on=unix:/tmp/kitty_listen fish -ic n &> /dev/null
+hyper - n : SHELL=/usr/local/bin/fish kitty --single-instance -d ~ fish -ic n &> /dev/null
 
 # browser
 hyper - b : open -n /Applications/Firefox.app
