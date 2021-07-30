@@ -198,6 +198,7 @@ handle_extension() {
         ## Playlist
         m3u)
             handle_video
+            exit 1;;
         ## Log files
         log)
             "$EDITOR" "${FPATH}"
@@ -226,7 +227,7 @@ handle_extension() {
         ## Markdown
         md)
             if type glow >/dev/null 2>&1; then
-                glow -sdark "${FPATH}" | eval "$PAGER"
+                glow -s $OS_THEME "${FPATH}" | eval "$PAGER"
                 exit 0
             elif type lowdown >/dev/null 2>&1; then
                 lowdown -Tterm "${FPATH}" | eval "$PAGER"
@@ -450,7 +451,7 @@ handle_mime() {
 
         ## Text
         text/* | */xml)
-            "$EDITOR" "${FPATH}"
+            kcr edit "${FPATH}"
             exit 0;;
             ## Syntax highlight
             # if [[ "$( stat --printf='%s' -- "${FPATH}" )" -gt "${HIGHLIGHT_SIZE_MAX}" ]]; then
