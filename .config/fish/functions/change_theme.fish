@@ -54,16 +54,24 @@ function change_theme --argument-names mode_setting \
 
     # kitty theme
     for instance in (ls -1 /tmp/kitty_listen*)
-        kitty @ --to unix:{$instance} set-colors -a -c ~/.config/kitty/themes/gruvbox-{$mode}.conf
+        kitty @ --to unix:{$instance} set-colors -a -c ~/.config/kitty/themes/gruvbox-{$mode}.conf &
     end
 
     # kakoune theme
     for client in (kak -l)
-        echo "colorscheme gruvbox-$mode" | kak -p $client
+        echo "colorscheme gruvbox-$mode" | kak -p $client &
     end
 
+    # yabai window manager
+    # switch $mode
+    #     case light
+    #         yabai -m config active_window_border_color 0xff689d6a
+    #     case dark
+    #         yabai -m config active_window_border_color 0xff689d6a
+    # end
+
     # spacebar theme
-    ~/.config/spacebar/change_mode.sh $mode
+    ~/.config/spacebar/change_mode.sh $mode &
 
     # fish
     # handled by fish_update_colors function

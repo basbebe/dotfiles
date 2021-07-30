@@ -2,6 +2,8 @@
 
 kitty_cmd="kitty --title $SCRATCHPAD_TITLE \
   --directory $HOME
+  --config="$HOME/.config/kitty/kitty.conf" \
+  --config="$HOME/.config/kitty/themes/gruvbox-$(fish -c 'echo $OS_THEME').conf"
   --override macos_hide_from_tasks=yes \
   --single-instance \
   --instance-group=scratchpad"
