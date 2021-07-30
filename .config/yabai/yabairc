@@ -21,9 +21,9 @@ yabai -m config window_gap     8
 # border settings
 yabai -m config window_border               on
 yabai -m config window_border_width         3
-yabai -m config active_window_border_color  0xffd79921
-yabai -m config normal_window_border_color  0xbb928374
-yabai -m config insert_feedback_color       0xffcc241d
+yabai -m config active_window_border_color  0xff689d6a
+yabai -m config normal_window_border_color  0x88928374
+yabai -m config insert_feedback_color       0xbbd79921
 
 # on or off (default: off)
 yabai -m config auto_balance off
@@ -97,7 +97,7 @@ yabai -m rule --add app="^DarkModeBuddy$" manage=off
 yabai -m rule --add app="^KeePassXC$" sticky=on layer=above manage=off
 yabai -m rule --add app="^Yubi" sticky=on layer=above manage=off
 yabai -m rule --add app="^ColorNavigator\ 7$" sticky=on layer=above manage=off
-yabai -m rule --add app="^Firefox$" title[!]="^Mozilla Firefox" space="web"
+yabai -m rule --add app="^Firefox$" title!="^Mozilla Firefox" space="web"
 yabai -m rule --add app="^Firefox$" title="^Open" manage=off layer=above
 yabai -m rule --add app="^Firefox$" title="^Enter" manage=off layer=above
 yabai -m rule --add app="^Tor*" space="web"
