@@ -256,7 +256,6 @@ map -docstring "paste before the cursor"                         global insert <
 
 # View mode ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
-map -docstring 'view mode' global normal v V
 map -docstring 'show palette' global view p '<esc>:show-palette<ret>'
 
 # User mode ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
