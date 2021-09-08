@@ -1,51 +1,66 @@
 [submodule ".config/kak/plugins/kakoune-extra-filetypes"]
 	path = .config/kak/plugins/kakoune-extra-filetypes
-	url = https://github.com/kakoune-editor/kakoune-extra-filetypes
+	url = git@github.com:kakoune-editor/kakoune-extra-filetypes.git
 [submodule ".config/kak/plugins/kakoune-find"]
 	path = .config/kak/plugins/kakoune-find
-	url = https://github.com/occivink/kakoune-find
+	url = git@github.com:occivink/kakoune-find.git
 [submodule ".config/kak/plugins/number-toggle.kak"]
 	path = .config/kak/plugins/number-toggle.kak
-	url = https://github.com/evanrelf/number-toggle.kak
+	url = git@github.com:evanrelf/number-toggle.kak.git
 [submodule ".config/kak/plugins/kakoune-shellcheck"]
 	path = .config/kak/plugins/kakoune-shellcheck
 	url = https://gitlab.com/Screwtapello/kakoune-shellcheck.git
 [submodule ".config/kak/plugins/kakoune-smooth-scroll"]
 	path = .config/kak/plugins/kakoune-smooth-scroll
-	url = https://github.com/caksoylar/kakoune-smooth-scroll
+	url = git@github.com:caksoylar/kakoune-smooth-scroll.git
 [submodule ".config/kak/plugins/kakoune-state-save"]
 	path = .config/kak/plugins/kakoune-state-save
 	url = https://gitlab.com/Screwtapello/kakoune-state-save.git
 [submodule ".config/kak/plugins/kakoune-sudo-write"]
 	path = .config/kak/plugins/kakoune-sudo-write
-	url = https://github.com/occivink/kakoune-sudo-write
+	url = git@github.com:occivink/kakoune-sudo-write.git
 [submodule ".config/kak/plugins/kakoune-text-objects"]
 	path = .config/kak/plugins/kakoune-text-objects
-	url = https://github.com/Delapouite/kakoune-text-objects
+	url = git@github.com:Delapouite/kakoune-text-objects.git
 [submodule ".config/kak/plugins/kakoune-vertical-selection"]
 	path = .config/kak/plugins/kakoune-vertical-selection
-	url = https://github.com/occivink/kakoune-vertical-selection
+	url = git@github.com:occivink/kakoune-vertical-selection.git
 [submodule ".config/kak/plugins/todo.kak"]
 	path = .config/kak/plugins/todo.kak
-	url = https://github.com/kkga/todo.kak
+	url = git@github.com:kkga/todo.kak.git
 [submodule ".config/kak/plugins/ui.kak"]
 	path = .config/kak/plugins/ui.kak
-	url = https://github.com/kkga/ui.kak
+	url = git@github.com:kkga/ui.kak.git
 [submodule ".config/kak/plugins/scrollbar.kak"]
 	path = .config/kak/plugins/scrollbar.kak
-	url = https://github.com/sawdust-and-diamonds/scrollbar.kak
+	url = git@github.com:sawdust-and-diamonds/scrollbar.kak.git
 [submodule ".config/kak/plugins/kakoune-table"]
 	path = .config/kak/plugins/kakoune-table
 	url = https://gitlab.com/listentolist/kakoune-table.git
 [submodule ".config/kak/plugins/active-window.kak"]
 	path = .config/kak/plugins/active-window.kak
-	url = https://github.com/greenfork/active-window.kak
+	url = git@github.com:greenfork/active-window.kak.git
 [submodule ".hammerspoon/stackline"]
 	path = .hammerspoon/stackline
-	url = https://github.com/AdamWagner/stackline.git
-[submodule ".config/mpv/scripts/.config/mpv/scripts/mpv-playlist-navigator"]
+	url = git@github.com:AdamWagner/stackline.git
+[submodule ".config/mpv/scripts/mpv-playlist-navigator"]
 	path = .config/mpv/scripts/.config/mpv/scripts/mpv-playlist-navigator
 	url = git@github.com:drogers141/mpv-playlist-navigator.git
 [submodule ".config/ubersicht/simple-bar"]
 	path = .config/ubersicht/simple-bar
-	url = https://github.com/Jean-Tinland/simple-bar
+	url = git@github.com:Jean-Tinland/simple-bar.git
+[submodule ".config/kak/plugins/auto-pairs.kak"]
+	path = .config/kak/plugins/auto-pairs.kak
+	url = git@github.com:alexherbo2/auto-pairs.kak.git
+[submodule ".config/kak/plugins/surround.kak"]
+	path = .config/kak/plugins/surround.kak
+	url = git@github.com:alexherbo2/surround.kak.git
+[submodule ".config/kak/plugins/lib.kak"]
+	path = .config/kak/plugins/lib.kak
+	url = git@github.com:alexherbo2/lib.kak.git
+[submodule ".config/kak/plugins/select.kak"]
+	path = .config/kak/plugins/select.kak
+	url = git@github.com:alexherbo2/select.kak.git
+[submodule ".config/kak/plugins/search.kak"]
+	path = .config/kak/plugins/search.kak
+	url = git@github.com:alexherbo2/search.kak.git
