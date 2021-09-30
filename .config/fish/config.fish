@@ -25,7 +25,7 @@ if status is-interactive
     # SSH via gpg-agent
     set -x GPG_TTY (tty)
     set -x SSH_AUTH_SOCK (gpgconf --list-dirs agent-ssh-socket)
-    gpgconf --launch gpg-agent
+    # gpgconf --launch gpg-agent
 
     # Java…
     set -x JAVA_HOME (/usr/libexec/java_home)
