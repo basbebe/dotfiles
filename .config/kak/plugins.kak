@@ -2,9 +2,13 @@
 
 source "~/.config/kak/plugins/active-window.kak/rc/active-window.kak"
 
+source "~/.config/kak/plugins/auto-pairs.kak/rc/auto-pairs.kak"
+
 # source "~/.config/kak/plugins/kakoune-extra-filetypes/"
 
 # source "~/.config/kak/plugins/kakoune-find/find.kak"
+
+source "~/.config/kak/plugins/lib.kak/rc/lib.kak"
 
 source "~/git/modeline-extras.kak/rc/modeline-extras.kak"
 hook global ModuleLoaded modeline-extras %{
@@ -48,6 +52,10 @@ hook global WinSetOption filetype=(asciidoc|fountain|html|latex|markdown) %{
 source "~/.config/kak/plugins/scrollbar.kak/scrollbar.kak"
 hook global WinCreate .* %{ scrollbar-enable }
 
+source "~/.config/kak/plugins/search.kak/rc/search.kak"
+
+source "~/.config/kak/plugins/select.kak/rc/select.kak"
+
 source "~/.config/kak/plugins/kakoune-shellcheck/shellcheck.kak"
 
 source "~/.config/kak/plugins/kakoune-smooth-scroll/smooth-scroll.kak"
@@ -71,6 +79,8 @@ hook global KakEnd .* %{
 
 source "~/.config/kak/plugins/kakoune-sudo-write/sudo-write.kak"
 
+source "~/.config/kak/plugins/surround.kak/rc/surround.kak"
+
 source "~/.config/kak/plugins/kakoune-table/table.kak"
 # suggested mappings
 
@@ -85,7 +95,6 @@ map global user t ": enter-user-mode table<ret>" -docstring "table"
 map global user T ": enter-user-mode -lock table<ret>" -docstring "table (lock)"
 
 source "~/.config/kak/plugins/kakoune-text-objects/text-objects.kak"
-text-object-map
 
 source "~/.config/kak/plugins/todo.kak/rc/todo.kak"
 hook global WinSetOption filetype=markdown %{
