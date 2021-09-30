@@ -13,6 +13,9 @@ fish_add_path --global --path --move ~/.local/bin
 # Rust
 fish_add_path --global --path --append ~/.cargo/bin
 
+# clangd
+fish_add_path --global --path --append /usr/local/opt/llvm/bin/
+
 # util-linux
 fish_add_path --global --path --append /usr/local/opt/util-linux/bin
 fish_add_path --global --path --append /usr/local/opt/util-linux/sbin
