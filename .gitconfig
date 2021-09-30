@@ -1,7 +1,7 @@
 [core]
 	excludesfile = ~/.gitignore_global
 	pager = delta
-	; editor = kak
+	editor = kak
 [commit]
 	template = ~/.stCommitMsg
 	gpgsign = true
