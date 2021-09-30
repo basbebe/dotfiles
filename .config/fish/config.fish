@@ -53,18 +53,8 @@ if status is-interactive
     abbr K 'kcr-fzf-shell'
     abbr KK 'kcr-fzf-shell --working-directory .'
     abbr ks 'kcr shell --session'
-    abbr ksa 'kcr shell --session (string split -f2 -m1 -r / $PWD)'
     abbr kl 'kcr list'
     abbr a 'kcr attach'
-    abbr : 'kcr send'
-    abbr :cd 'kcr send cd $PWD'
-    abbr cd: 'cd (kcr get --raw --shell pwd)'
-    abbr :br 'kcr-fzf-shell --working-directory . broot'
-    abbr :n 'kcr-fzf-shell --working-directory . nnn'
-    abbr :cat 'kcr cat --raw'
-    abbr val 'kcr get --value'
-    abbr opt 'kcr get --option'
-    abbr reg 'kcr get --register'
 
     # Less
     set -x PAGER 'less -iR'
