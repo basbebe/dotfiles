@@ -1,12 +1,12 @@
 # gruvbox-inspired ANSI settings
 function fish_set_ANSI_colors
     set -U fish_color_autosuggestion      brblack
-    set -U fish_color_cancel              -r
+    set -U fish_color_cancel              red -r
     set -U fish_color_command             brmagenta
     set -U fish_color_comment             bryellow --italic
     set -U fish_color_cwd                 green
     set -U fish_color_cwd_root            red
-    set -U fish_color_end                 brmagenta
+    set -U fish_color_end                 cyan
     set -U fish_color_error               brred
     set -U fish_color_escape              brcyan
     set -U fish_color_history_current     --bold
@@ -32,9 +32,9 @@ function fish_set_ANSI_colors
     # set -U fish_pager_color_secondary_completion
     # set -U fish_pager_color_secondary_description brblack
     # set -U fish_pager_color_secondary_prefix
-    set -U fish_pager_color_selected_background    --background=cyan
-    set -U fish_pager_color_selected_completion    brwhite --bold --underline
-    set -U fish_pager_color_selected_description   normal --italics --bold --underline
-    set -U fish_pager_color_selected_prefix        normal --italics --underline
+    set -U fish_pager_color_selected_background    --background=brcyan
+    set -U fish_pager_color_selected_completion    black --bold --underline
+    set -U fish_pager_color_selected_description   black --italics --bold --underline
+    set -U fish_pager_color_selected_prefix        black --italics --underline
 end
 
