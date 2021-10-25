@@ -10,6 +10,8 @@ source "~/.config/kak/plugins/auto-pairs.kak/rc/auto-pairs.kak"
 
 source "~/.config/kak/plugins/lib.kak/rc/lib.kak"
 
+source "~/.config/kak/plugins/indent.kak/rc/indent.kak"
+
 source "~/git/modeline-extras.kak/rc/modeline-extras.kak"
 hook global ModuleLoaded modeline-extras %{
     # enable Nerd Font symbols

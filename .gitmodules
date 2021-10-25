@@ -61,6 +61,6 @@
 [submodule ".config/kak/plugins/select.kak"]
 	path = .config/kak/plugins/select.kak
 	url = git@github.com:alexherbo2/select.kak.git
-[submodule ".config/kak/plugins/search.kak"]
-	path = .config/kak/plugins/search.kak
-	url = git@github.com:alexherbo2/search.kak.git
+[submodule ".config/kak/plugins/indent.kak"]
+	path = .config/kak/plugins/indent.kak
+	url = git@github.com:alexherbo2/indent.kak.git
