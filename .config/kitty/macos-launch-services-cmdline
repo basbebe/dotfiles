@@ -1,1 +1,1 @@
---single-instance
+--single-instance --listen-on=unix:/tmp/kitty_listen_main
