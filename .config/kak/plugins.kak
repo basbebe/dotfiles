@@ -8,8 +8,6 @@ source "~/.config/kak/plugins/auto-pairs.kak/rc/auto-pairs.kak"
 
 # source "~/.config/kak/plugins/kakoune-find/find.kak"
 
-source "~/.config/kak/plugins/lib.kak/rc/lib.kak"
-
 source "~/.config/kak/plugins/indent.kak/rc/indent.kak"
 
 source "~/git/modeline-extras.kak/rc/modeline-extras.kak"
@@ -97,6 +95,8 @@ map global user t ": enter-user-mode table<ret>" -docstring "table"
 map global user T ": enter-user-mode -lock table<ret>" -docstring "table (lock)"
 
 source "~/.config/kak/plugins/kakoune-text-objects/text-objects.kak"
+
+source "~/.config/kak/plugins/tiny.kak/rc/tiny.kak"
 
 source "~/.config/kak/plugins/todo.kak/rc/todo.kak"
 hook global WinSetOption filetype=markdown %{

@@ -55,12 +55,12 @@
 [submodule ".config/kak/plugins/surround.kak"]
 	path = .config/kak/plugins/surround.kak
 	url = git@github.com:alexherbo2/surround.kak.git
-[submodule ".config/kak/plugins/lib.kak"]
-	path = .config/kak/plugins/lib.kak
-	url = git@github.com:alexherbo2/lib.kak.git
 [submodule ".config/kak/plugins/select.kak"]
 	path = .config/kak/plugins/select.kak
 	url = git@github.com:alexherbo2/select.kak.git
 [submodule ".config/kak/plugins/indent.kak"]
 	path = .config/kak/plugins/indent.kak
 	url = git@github.com:alexherbo2/indent.kak.git
+[submodule ".config/kak/plugins/tiny.kak"]
+	path = .config/kak/plugins/tiny.kak
+	url = git@github.com:alexherbo2/tiny.kak.git
