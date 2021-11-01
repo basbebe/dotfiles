@@ -64,3 +64,12 @@
 [submodule ".config/kak/plugins/tiny.kak"]
 	path = .config/kak/plugins/tiny.kak
 	url = git@github.com:alexherbo2/tiny.kak.git
+[submodule ".config/kak/plugins/shortcuts.kak"]
+	path = .config/kak/plugins/shortcuts.kak
+	url = git@github.com:alexherbo2/shortcuts.kak.git
+[submodule ".config/kak/plugins/window.kak"]
+	path = .config/kak/plugins/window.kak
+	url = git@github.com:alexherbo2/window.kak.git
+[submodule ".config/kak/plugins/show-whitespaces.kak"]
+	path = .config/kak/plugins/show-whitespaces.kak
+	url = git@github.com:alexherbo2/show-whitespaces.kak

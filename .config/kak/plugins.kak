@@ -4,9 +4,10 @@ source "~/.config/kak/plugins/active-window.kak/rc/active-window.kak"
 
 source "~/.config/kak/plugins/auto-pairs.kak/rc/auto-pairs.kak"
 
-# source "~/.config/kak/plugins/kakoune-extra-filetypes/"
+# symlinked in autoload/
+# source "~/.config/kak/plugins/kakoune-extra-filetypes"
 
-# source "~/.config/kak/plugins/kakoune-find/find.kak"
+source "~/.config/kak/plugins/kakoune-find/find.kak"
 
 source "~/.config/kak/plugins/indent.kak/rc/indent.kak"
 
@@ -52,11 +53,13 @@ hook global WinSetOption filetype=(asciidoc|fountain|html|latex|markdown) %{
 source "~/.config/kak/plugins/scrollbar.kak/scrollbar.kak"
 hook global WinCreate .* %{ scrollbar-enable }
 
-source "~/.config/kak/plugins/search.kak/rc/search.kak"
-
 source "~/.config/kak/plugins/select.kak/rc/select.kak"
 
 source "~/.config/kak/plugins/kakoune-shellcheck/shellcheck.kak"
+
+source "~/.config/kak/plugins/shortcuts.kak/rc/shortcuts.kak"
+
+source "~/.config/kak/plugins/show-whitespaces.kak/rc/show-whitespaces.kak"
 
 source "~/.config/kak/plugins/kakoune-smooth-scroll/smooth-scroll.kak"
 set-option global scroll_keys_normal <c-d> <c-u> <pageup> <pagedown> ( ) m M <a-semicolon> <percent> n <a-n> N <a-N> u U <a-u> <a-U>
@@ -106,6 +109,6 @@ hook global WinSetOption filetype=markdown %{
     map buffer normal <ret> ': todo-toggle<ret>' -docstring "toggle checkbox"
 }
 
-source "~/.config/kak/plugins/ui.kak/rc/ui.kak"
-
 source "~/.config/kak/plugins/kakoune-vertical-selection/vertical-selection.kak"
+
+source "~/.config/kak/plugins/window.kak/rc/window.kak"

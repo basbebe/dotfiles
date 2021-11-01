@@ -1,51 +1,8 @@
-# Documentation ————————————————————————————————————————————————————————————————
-
-# kcr-open-doc ⇒ open kakoune.cr documentation
-# kcr-open-kakrc ⇒ open kakoune.cr kakrc
-
 # Preamble —————————————————————————————————————————————————————————————————————
 
 try %sh{
     kcr init kakoune
     kak-lsp --kakoune --session "$kak_session"
-}
-
-try lsp-enable
-
-# Plugins
-source "~/.config/kak/plugins.kak"
-
-# Kakoune support
-# https://github.com/mawww/kakoune/tree/master/rc
-try %{
-  source-runtime rc/detection/file.kak
-  source-runtime rc/filetype/asciidoc.kak
-  source-runtime rc/filetype/c-family.kak
-  source ~/projects/fork/kakoune/rc/filetype/crystal.kak
-  source-runtime rc/filetype/css.kak
-  source-runtime rc/filetype/eruby.kak
-  source-runtime rc/filetype/etc.kak
-  source-runtime rc/filetype/git.kak
-  source-runtime rc/filetype/html.kak
-  source-runtime rc/filetype/ini.kak
-  source-runtime rc/filetype/javascript.kak
-  source-runtime rc/filetype/json.kak
-  source-runtime rc/filetype/kakrc.kak
-  source-runtime rc/filetype/makefile.kak
-  source-runtime rc/filetype/markdown.kak
-  source-runtime rc/filetype/ruby.kak
-  source-runtime rc/filetype/rust.kak
-  source-runtime rc/filetype/scss.kak
-  source-runtime rc/filetype/sh.kak
-  source-runtime rc/filetype/toml.kak
-  source-runtime rc/filetype/yaml.kak
-  source-runtime rc/tools/comment.kak
-  source-runtime rc/tools/doc.kak
-  source-runtime rc/tools/git.kak
-  source-runtime rc/tools/grep.kak
-  source-runtime rc/tools/make.kak
-  source-runtime rc/tools/man.kak
-  source-runtime rc/windowing/new-client.kak
 }
 
 # upgrade Autoload files
@@ -57,23 +14,25 @@ define-command -docstring 'rebuild kakoune autoload files' rebuild-autoload %{
     }
 }
 
+# Plugins
+source "~/.config/kak/plugins.kak"
+
 # Options ——————————————————————————————————————————————————————————————————————
 
 # UI
 set-option -add global ui_options terminal_status_on_top=yes
-set-option -add global ui_options terminal_assistant=cat
+set-option -add global ui_options terminal_assistant=none
 set-option -add global ui_options terminal_set_title=no
-delete-scratch-message
+remove-scratch-message
 
 # Color scheme
+# set to dark or light depending on environment variable
 # Gruvbox theme for Kakoune
 # https://github.com/morhetz/gruvbox
 colorscheme gruvbox-light
 try %sh{
     echo "colorscheme gruvbox-"$(fish -c 'echo $OS_THEME')
 }
-# set background to terminal default
-# set-face global Default rgb:ebdbb2,default
 
 # Verbose Autoinfo
 # set-option -add global autoinfo normal
@@ -107,26 +66,18 @@ enable-auto-pairs
 
 # Highlighters
 add-highlighter global/ number-lines -relative -hlcursor
-add-highlighter global/show-matching show-matching
-# add-highlighter global/ line '%val{cursor_line}' default,rgb:3c3735
-add-highlighter global/ column 81 @MenuBackground
+add-highlighter global/ show-matching
+add-highlighter global/ column '%opt{autowrap_column}' @SecondaryCursorEol
 add-highlighter global/ wrap -indent -word
-add-highlighter global/ regex \h+$ 0:Error
-
-# Show selections
-show-selected-text
-set-face global SelectedText +a@MatchingChar
+add-highlighter global/ regex \b(TODO|FIXME|XXX|NOTE)\b 0:default+rb
 
 # Show whitespaces
-add-highlighter -override global/show-whitespaces show-whitespaces
-add-highlighter -override global/show-trailing-whitespaces regex '\h+$' '0:red+f'
-# add-highlighter -override global/show-non-breaking-spaces regex ' +' '0:red+f'
+show-whitespaces
 
 # Show characters
 add-highlighter -override global/show-unicode-2013 regex '–' '0:green+f'
 add-highlighter -override global/show-unicode-2014 regex '—' '0:green+bf'
 add-highlighter -override global/show-math-symbols regex '[−×]' '0:cyan+f'
-add-highlighter -override global/show-limit regex '(?S)^.{79}[=+-–─┈]\K\n' '0:green+f'
 
 # Scroll offset
 set-option global scrolloff 5,1
@@ -135,13 +86,7 @@ set-option global scrolloff 5,1
 make-directory-on-save
 
 # Clipboard
-synchronize-clipboard
-synchronize-buffer-directory-name-with-register d
-hook global RegisterModified '"' %{
-    nop %sh{
-        printf %s "$kak_main_reg_dquote" | pbcopy
-    }
-}
+synchronize-terminal-clipboard
 
 # Tools
 set-option global makecmd 'make -j 8'
@@ -236,56 +181,37 @@ map -docstring 'reload kakrc' global normal <F5> ':source-kakrc; echo reloaded k
 # Editing
 map -docstring 'save' global normal <c-s> ':write; echo saved<ret>'
 map -docstring 'quit' global normal <c-q> ':quit<ret>'
-map -docstring 'close buffer' global normal <c-w> ':delete-buffer<ret>'
 map -docstring 'last buffer' global normal <c-a> ga
 map -docstring 'Write and quit' global normal <c-x> ': write-quit<ret>'
 
-# Search
-# map -docstring 'search' global normal f ':search<ret>'
-# map -docstring 'jump backward' global normal F <c-o>
-
 # Selection primitives
-map -docstring 'enter insert mode with main selection' global normal ^ ':enter-insert-mode-with-main-selection<ret>'
-# map -docstring 'select next word' global normal w ':select-next-word<ret>'
-map -docstring 'surround' global normal q ':surround<ret>'
-map -docstring 'select objects' global normal S ':select-objects<ret>'
+map -docstring 'surround mode' global normal q ':surround-mode<ret>'
+map -docstring 'select mode' global normal S ':select-mode<ret>'
 map -docstring 'select all occurrences of current selection' global normal <a-L> ':select-highlights<ret>'
-# map -docstring 'move line down' global normal <down> ':move-lines-down<ret>'
-# map -docstring 'move line up' global normal <up> ':move-lines-up<ret>'
-map -docstring 'move line down' global normal <c-j> ':move-lines-down<ret>'
-map -docstring 'move line up' global normal <c-k> ':move-lines-up<ret>'
 
 # Tools
+map -docstring 'move line down' global normal <c-j> ':move-lines-down<ret>'
+map -docstring 'move line up' global normal <c-k> ':move-lines-up<ret>'
 map -docstring 'math' global normal = ':math<ret>'
 
 # Windowing
 map -docstring 'new client' global normal <c-t> ':new<ret>'
+map -docstring 'git (popup)' global normal <c-l> ':connect popup fish -ic lazygit<ret>'
 map -docstring 'terminal' global normal <c-n> ':connect terminal fish<ret>'
 map -docstring 'file explorer' global normal <c-e> ":nnn<ret>"
 map -docstring 'file picker' global normal <c-f> ":connect popup fish -ic 'kcr fzf files'<ret>"
 map -docstring 'buffer picker' global normal <c-b> ":connect popup fish -ic 'kcr fzf buffers'<ret>"
 map -docstring 'grep picker' global normal <c-g> ":connect popup fish -ic 'kcr fzf grep'<ret>"
 map -docstring 'grep picker (buffer)' global normal <c-r> ":connect popup fish -ic 'kcr fzf grep %val{buflist}'<ret>"
-# map -docstring 'git' global normal <c-l> ':connect popup gitui<ret>'
-map -docstring 'git' global normal <c-l> ':connect popup fish -ic lazygit<ret>'
 
 # case insensitive search by default
 map global normal / "/(?i)"
-
-# delete line
-map global normal D     ';<a-l>d'
 
 # Move macros to ^
 # map -docstring 'Play macro' global normal ^ q
 # map -docstring 'Record macro' global normal <a-^> Q
 
 # Insert mode ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-
-# jj to exit
-# hook global InsertChar j %{ try %{
-#     exec -draft hH <a-k>jj<ret> d
-#       exec <esc>
-# }}
 
 map -docstring 'indent' global insert <tab> '<a-;><a-gt>'
 map -docstring 'deindent' global insert <s-tab> '<a-;><lt>'
@@ -359,7 +285,7 @@ hook global BufSetOption filetype=(css|javascipt|yaml) %{
 
 # handled by lsp
 # hook global BufSetOption filetype=(java) %{
-#     set-option buffer formatcmd "prettier --plugin=/usr/local/lib/node_modules/prettier-plugin-java/ --stdin-filepath=%val{buffile}"
+    #     set-option buffer formatcmd "prettier --plugin=/usr/local/lib/node_modules/prettier-plugin-java/ --stdin-filepath=%val{buffile}"
 # }
 
 # handled by spellcheck.kak
@@ -422,33 +348,21 @@ hook global BufOpenFile .* %{
 
 # LSP ——————————————————————————————————————————————————————————————————————————
 
-# set global lsp_cmd "kak-lsp -s %val{session} --config ~/.config/kak-lsp/kak-lsp.toml"
+
+set global lsp_cmd "kak-lsp -s %val{session} --config ~/.config/kak-lsp/kak-lsp.toml"
 
 # uncomment to enable debugging
-set global lsp_cmd "kak-lsp -s %val{session} --config ~/.config/kak-lsp/kak-lsp.toml -vvv --log /tmp/kak-lsp.log"
-eval %sh{echo ${kak_opt_lsp_cmd} >> /tmp/kak-lsp.log}
-
-# set global lsp_diagnostic_line_error_sign '║'
-# set global lsp_diagnostic_line_warning_sign '┊'
-
-define-command lsp-restart -docstring 'restart lsp server' %{ lsp-stop; lsp-start }
-define-command ne -docstring 'go to next error/warning from lsp' %{ lsp-find-error --include-warnings }
-define-command pe -docstring 'go to previous error/warning from lsp' %{ lsp-find-error --previous --include-warnings }
-define-command ee -docstring 'go to current error/warning from lsp' %{ lsp-find-error --include-warnings; lsp-find-error --previous --include-warnings }
+# set global lsp_cmd "kak-lsp -s %val{session} --config ~/.config/kak-lsp/kak-lsp.toml -vvv --log /tmp/kak-lsp.log"
+# eval %sh{echo ${kak_opt_lsp_cmd} >> /tmp/kak-lsp.log}
 
 map global normal <#> ': enter-user-mode lsp<ret>' -docstring 'lsp'
 
 set-option global lsp_auto_highlight_references true
-set global lsp_hover_anchor true
-echo -debug "Enabling LSP for filtetype %opt{filetype}"
 
-hook global WinSetOption filetype=(c|cpp|cc|rust|python|java|latex|markdown) %{
-    lsp-auto-hover-enable
-    # lsp-enable-window
+set-option global lsp_config %{
+    [language.python.settings._]
+    pyls.configurationSources = ["flake8"]
 }
 
-hook global WinSetOption filetype=python %{
-    set-option global lsp_server_configuration pyls.configurationSources=["flake8"]
-}
-
+try lsp-enable
 hook global KakEnd .* lsp-exit
