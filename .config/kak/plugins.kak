@@ -11,6 +11,8 @@ source "~/.config/kak/plugins/kakoune-find/find.kak"
 
 source "~/.config/kak/plugins/indent.kak/rc/indent.kak"
 
+source "~/.config/kak/plugins/mark.kak/rc/mark.kak"
+
 source "~/git/modeline-extras.kak/rc/modeline-extras.kak"
 hook global ModuleLoaded modeline-extras %{
     # enable Nerd Font symbols

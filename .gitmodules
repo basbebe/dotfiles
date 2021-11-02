@@ -98,3 +98,7 @@
 	path = .config/kak/plugins/show-whitespaces.kak
 	url = git@github.com:alexherbo2/show-whitespaces.kak
 	update = merge
+[submodule ".config/kak/plugins/mark.kak"]
+	path = .config/kak/plugins/mark.kak
+	url = git@github.com:alexherbo2/mark.kak
+	update = merge
