@@ -1,75 +1,100 @@
 [submodule ".config/kak/plugins/kakoune-extra-filetypes"]
 	path = .config/kak/plugins/kakoune-extra-filetypes
 	url = git@github.com:kakoune-editor/kakoune-extra-filetypes.git
+	update = merge
 [submodule ".config/kak/plugins/kakoune-find"]
 	path = .config/kak/plugins/kakoune-find
 	url = git@github.com:occivink/kakoune-find.git
+	update = merge
 [submodule ".config/kak/plugins/number-toggle.kak"]
 	path = .config/kak/plugins/number-toggle.kak
 	url = git@github.com:evanrelf/number-toggle.kak.git
+	update = merge
 [submodule ".config/kak/plugins/kakoune-shellcheck"]
 	path = .config/kak/plugins/kakoune-shellcheck
 	url = https://gitlab.com/Screwtapello/kakoune-shellcheck.git
+	update = merge
 [submodule ".config/kak/plugins/kakoune-smooth-scroll"]
 	path = .config/kak/plugins/kakoune-smooth-scroll
 	url = git@github.com:caksoylar/kakoune-smooth-scroll.git
+	update = merge
 [submodule ".config/kak/plugins/kakoune-state-save"]
 	path = .config/kak/plugins/kakoune-state-save
 	url = https://gitlab.com/Screwtapello/kakoune-state-save.git
+	update = merge
 [submodule ".config/kak/plugins/kakoune-sudo-write"]
 	path = .config/kak/plugins/kakoune-sudo-write
 	url = git@github.com:occivink/kakoune-sudo-write.git
+	update = merge
 [submodule ".config/kak/plugins/kakoune-text-objects"]
 	path = .config/kak/plugins/kakoune-text-objects
 	url = git@github.com:Delapouite/kakoune-text-objects.git
+	update = merge
 [submodule ".config/kak/plugins/kakoune-vertical-selection"]
 	path = .config/kak/plugins/kakoune-vertical-selection
 	url = git@github.com:occivink/kakoune-vertical-selection.git
+	update = merge
 [submodule ".config/kak/plugins/todo.kak"]
 	path = .config/kak/plugins/todo.kak
 	url = git@github.com:kkga/todo.kak.git
+	update = merge
 [submodule ".config/kak/plugins/ui.kak"]
 	path = .config/kak/plugins/ui.kak
 	url = git@github.com:kkga/ui.kak.git
+	update = merge
 [submodule ".config/kak/plugins/scrollbar.kak"]
 	path = .config/kak/plugins/scrollbar.kak
 	url = git@github.com:sawdust-and-diamonds/scrollbar.kak.git
+	update = merge
 [submodule ".config/kak/plugins/kakoune-table"]
 	path = .config/kak/plugins/kakoune-table
 	url = https://gitlab.com/listentolist/kakoune-table.git
+	update = merge
 [submodule ".config/kak/plugins/active-window.kak"]
 	path = .config/kak/plugins/active-window.kak
 	url = git@github.com:greenfork/active-window.kak.git
+	update = merge
 [submodule ".hammerspoon/stackline"]
 	path = .hammerspoon/stackline
 	url = git@github.com:AdamWagner/stackline.git
+	update = merge
 [submodule ".config/mpv/scripts/mpv-playlist-navigator"]
 	path = .config/mpv/scripts/.config/mpv/scripts/mpv-playlist-navigator
 	url = git@github.com:drogers141/mpv-playlist-navigator.git
+	update = merge
 [submodule ".config/ubersicht/simple-bar"]
 	path = .config/ubersicht/simple-bar
 	url = git@github.com:Jean-Tinland/simple-bar.git
+	update = merge
 [submodule ".config/kak/plugins/auto-pairs.kak"]
 	path = .config/kak/plugins/auto-pairs.kak
 	url = git@github.com:alexherbo2/auto-pairs.kak.git
+	update = merge
 [submodule ".config/kak/plugins/surround.kak"]
 	path = .config/kak/plugins/surround.kak
 	url = git@github.com:alexherbo2/surround.kak.git
+	update = merge
 [submodule ".config/kak/plugins/select.kak"]
 	path = .config/kak/plugins/select.kak
 	url = git@github.com:alexherbo2/select.kak.git
+	update = merge
 [submodule ".config/kak/plugins/indent.kak"]
 	path = .config/kak/plugins/indent.kak
 	url = git@github.com:alexherbo2/indent.kak.git
+	update = merge
 [submodule ".config/kak/plugins/tiny.kak"]
 	path = .config/kak/plugins/tiny.kak
 	url = git@github.com:alexherbo2/tiny.kak.git
+	update = merge
 [submodule ".config/kak/plugins/shortcuts.kak"]
 	path = .config/kak/plugins/shortcuts.kak
 	url = git@github.com:alexherbo2/shortcuts.kak.git
+	update = merge
 [submodule ".config/kak/plugins/window.kak"]
 	path = .config/kak/plugins/window.kak
 	url = git@github.com:alexherbo2/window.kak.git
+	update = merge
 [submodule ".config/kak/plugins/show-whitespaces.kak"]
 	path = .config/kak/plugins/show-whitespaces.kak
 	url = git@github.com:alexherbo2/show-whitespaces.kak
+	update = merge
