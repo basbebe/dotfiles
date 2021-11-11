@@ -121,20 +121,20 @@ args = [
     "-Dosgi.bundles.defaultStartLevel=4",
     "-Declipse.product=org.eclipse.jdt.ls.core.product",
     "-Dlog.level=ALL",
-    "-Dfile.encoding=utf-8",
+    "-noverify",
+    "-Xmx1G",
+    "-jar",
+    "/Users/bastian/git/eclipse.jdt.ls/org.eclipse.jdt.ls.product/target/repository/plugins/org.eclipse.equinox.launcher_1.6.400.v20210924-0641.jar",
+    "-configuration",
+    "/Users/bastian/git/eclipse.jdt.ls/org.eclipse.jdt.ls.product/target/repository/config_mac",
+    "-data",
+    "/Users/bastian/.eclipse.jdt.ls.workspace",
     "--add-modules=ALL-SYSTEM",
     "--add-opens",
     "java.base/java.util=ALL-UNNAMED",
     "--add-opens",
-    "java.base/java.lang=ALL-UNNAMED",
-    "-noverify",
-    "-Xmx1G",
-    "-jar",
-    "/Users/bastian/git/eclipse.jdt.ls/org.eclipse.jdt.ls.product/target/repository/plugins/org.eclipse.equinox.launcher_1.6.200.v20210416-2027.jar",
-    "-configuration",
-    "/Users/bastian/git/eclipse.jdt.ls/org.eclipse.jdt.ls.product/target/repository/config_mac",
-    "-data",
-    "/Users/bastian/.eclipse.jdt.ls.workspace"
+    "java.base/java.lang=ALL-UNNAMED"
+    # "-Dfile.encoding=utf-8",
 ]
 [language.java.settings]
 # See https://github.dev/eclipse/eclipse.jdt.ls
