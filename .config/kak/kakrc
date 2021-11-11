@@ -2,7 +2,6 @@
 
 try %sh{
     kcr init kakoune
-    kak-lsp --kakoune --session "$kak_session"
 }
 
 # upgrade Autoload files
@@ -126,6 +125,7 @@ define-command -docstring 'Open starship.toml' edit-starship 'edit ~/.config/sta
 define-command -docstring 'Open yabairc' edit-yabai 'edit ~/.config/yabai/yabairc'
 define-command -docstring 'Open skhdrc' edit-skhd 'edit ~/.config/skhd/skhdrc'
 define-command -docstring 'Open spacebarrc' edit-spacebar 'edit ~/.config/spacebar/spacebarrc'
+define-command -docstring 'Open tridactyl' edit-tridactyl 'edit ~/.config/tridactyl/tridactylrc'
 
 # lazygit
 # https://github.com/jesseduffield/lazygit
@@ -181,13 +181,11 @@ map -docstring 'reload kakrc' global normal <F5> ':source-kakrc; echo reloaded k
 # Editing
 map -docstring 'save' global normal <c-s> ':write; echo saved<ret>'
 map -docstring 'quit' global normal <c-q> ':quit<ret>'
-map -docstring 'last buffer' global normal <c-a> ga
 map -docstring 'Write and quit' global normal <c-x> ': write-quit<ret>'
 
 # Selection primitives
 map -docstring 'surround mode' global normal q ':surround-mode<ret>'
 map -docstring 'select mode' global normal S ':select-mode<ret>'
-map -docstring 'select all occurrences of current selection' global normal <a-L> ':select-highlights<ret>'
 
 # Tools
 map -docstring 'move line down' global normal <c-j> ':move-lines-down<ret>'
@@ -197,7 +195,7 @@ map -docstring 'math' global normal = ':math<ret>'
 # Windowing
 map -docstring 'new client' global normal <c-t> ':new<ret>'
 map -docstring 'git (popup)' global normal <c-l> ':connect popup fish -ic lazygit<ret>'
-map -docstring 'terminal' global normal <c-n> ':connect terminal fish<ret>'
+map -docstring 'terminal' global normal <c-ret> ':connect terminal fish<ret>'
 map -docstring 'file explorer' global normal <c-e> ":nnn<ret>"
 map -docstring 'file picker' global normal <c-f> ":connect popup fish -ic 'kcr fzf files'<ret>"
 map -docstring 'buffer picker' global normal <c-b> ":connect popup fish -ic 'kcr fzf buffers'<ret>"
@@ -348,6 +346,7 @@ hook global BufOpenFile .* %{
 
 # LSP ——————————————————————————————————————————————————————————————————————————
 
+try %sh{kak-lsp --kakoune --session "$kak_session"}
 
 set global lsp_cmd "kak-lsp -s %val{session} --config ~/.config/kak-lsp/kak-lsp.toml"
 
