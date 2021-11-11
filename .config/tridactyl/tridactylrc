@@ -1,2 +1,14 @@
+" bind arrow keys
+bind <ArrowUp> scrollline -10
+bind <ArrowDown> scrollline 10
+bind <ArrowLeft> scrollpx -50
+bind <ArrowRight> scrollpx 50
+bind <S-ArrowUp> tabnext
+bind <S-ArrowDown> tabprev
+bind <S-ArrowLeft> back
+bind <S-ArrowRight> forward
+
 " custom hint chars
-set hintchars ieahrsntgyoqjflcbxuzkvwmdp
+set hintchars iteranhsudolmkfbcwygqzjpxv
+
+set smoothscroll true

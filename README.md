@@ -23,6 +23,7 @@
 -   [bottom] – Yet another cross-platform graphical process/system
     monitor
 -   [abduco] – session management
+-   [tridactyl]
 
 ### macOS
 
@@ -76,6 +77,7 @@ This repository is being managed using [yadm]
   [delta]: https://github.com/dandavison/delta
   [bottom]: https://github.com/ClementTsang/bottom
   [abduco]: https://github.com/martanne/abduco/
+  [tridactyl]: https://tridactyl.xyz/
   [Karabiner-Elements]: https://karabiner-elements.pqrs.org/
   [yabai]: https://github.com/koekeishiya/yabai/wiki/Commands#message-passing-interface
   [skhd]: https://github.com/koekeishiya/skhd
