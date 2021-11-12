@@ -286,10 +286,11 @@ hook global BufSetOption filetype=(css|javascipt|yaml) %{
     #     set-option buffer formatcmd "prettier --plugin=/usr/local/lib/node_modules/prettier-plugin-java/ --stdin-filepath=%val{buffile}"
 # }
 
-# handled by spellcheck.kak
-# hook global WinSetOption filetype=sh %{
-#     set-option window lintcmd 'shellcheck'
-# }
+hook global WinSetOption filetype=sh %{
+    set-option buffer formatcmd "shfmt -i 2 -ci -bn %val{buffile}"
+    # handled by spellcheck.kak
+    # set-option window lintcmd 'shellcheck'
+}
 
 hook global WinSetOption filetype=python %{
     set-option window lintcmd "flake8 --filename='*' --format='%%(path)s:%%(row)d:%%(col)d: error: %%(text)s' --ignore=E121,E123,E126,E226,E24,E704,W503,W504,E501,E221,E127,E128,E129,F405"
