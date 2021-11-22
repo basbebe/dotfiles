@@ -241,16 +241,18 @@ map -docstring 'show palette' global view p '<esc>:show-palette<ret>'
 map global normal <space> , -docstring 'leader'
 
 # spell checking
-map global user s ': enter-user-mode spell<ret>' -docstring 'enter spell mode'
+try %{
 declare-user-mode spell
-map global spell d ': set-option current spell_lang de; spell<ret>' -docstring 'German check'
-map global spell e ': set-option current spell_lang en; spell<ret>' -docstring 'Englisch check'
-map global spell n ': spell-next<ret>_: enter-user-mode spell<ret>' -docstring 'next'
-map global spell r ': spell-replace<ret>' -docstring 'replace'
-map global spell a ': spell-add; spell<ret>' -docstring 'add to dictionary'
-map global spell c ': spell-clear<ret>' -docstring 'clear'
-hook global ModeChange push:[^:]*:next-key\[user.spell\] %{
-        hook -once -always window NormalIdle .* spell-clear
+    map global user s ': enter-user-mode spell<ret>' -docstring 'enter spell mode'
+    map global spell d ': set-option current spell_lang de; spell<ret>' -docstring 'German check'
+    map global spell e ': set-option current spell_lang en; spell<ret>' -docstring 'Englisch check'
+    map global spell n ': spell-next<ret>_: enter-user-mode spell<ret>' -docstring 'next'
+    map global spell r ': spell-replace<ret>' -docstring 'replace'
+    map global spell a ': spell-add; spell<ret>' -docstring 'add to dictionary'
+    map global spell c ': spell-clear<ret>' -docstring 'clear'
+    hook global ModeChange push:[^:]*:next-key\[user.spell\] %{
+            hook -once -always window NormalIdle .* spell-clear
+    }
 }
 
 # edit kakrc
