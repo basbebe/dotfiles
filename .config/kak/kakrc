@@ -238,9 +238,11 @@ map -docstring "paste before the cursor"                         global insert <
 
 # Editing
 map -docstring 'write' global user w ': write; echo saved<ret>'
+map -docstring 'write quit' global user W ': write-quit;<ret>'
 map -docstring 'quit' global user q ': quit<ret>'
-map -docstring 'write quit' global user Q ': write-quit;<ret>'
+map -docstring 'quit!' global user Q ': quit!<ret>'
 map -docstring 'delete buffer' global user d ': delete-buffer<ret>'
+map -docstring 'delete buffer!' global user D ': delete-buffer!<ret>'
 
 map -docstring 'format selection' global user F ': format<ret>'
 map -docstring 'format buffer' global user f ': format-buffer<ret>'
