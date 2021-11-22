@@ -4,17 +4,20 @@ try %sh{
     kcr init kakoune
 }
 
-# upgrade Autoload files
-define-command -docstring 'rebuild kakoune autoload files' rebuild-autoload %{
-    nop %sh{
-        rm -rf "$kak_config/autoload/standard-library"
-        mkdir -p "$kak_config/autoload"
-        ln -s "$kak_runtime/autoload" "$kak_config/autoload/standard-library"
+try %{    # upgrade Autoload files
+    define-command -docstring 'rebuild kakoune autoload files' rebuild-autoload %{
+        nop %sh{
+            rm -rf "$kak_config/autoload/standard-library"
+            mkdir -p "$kak_config/autoload"
+            ln -s "$kak_runtime/autoload" "$kak_config/autoload/standard-library"
+        }
     }
 }
 
 # Plugins
-source "~/.config/kak/plugins.kak"
+try %{
+    source "~/.config/kak/plugins.kak"
+}
 
 # Options ——————————————————————————————————————————————————————————————————————
 
@@ -64,11 +67,11 @@ enable-auto-pairs
 # set-option global disabled_hooks '(?!auto)(?!detect)(?!modeline)(?!latex)(?!markdown)\K(.+)-(trim-indent|insert|indent)'
 
 # Highlighters
-add-highlighter global/ number-lines -relative -hlcursor
-add-highlighter global/ show-matching
-add-highlighter global/ column '%opt{autowrap_column}' @SecondaryCursorEol
-add-highlighter global/ wrap -indent -word
-add-highlighter global/ regex \b(TODO|FIXME|XXX|NOTE)\b 0:default+rb
+add-highlighter -override global/ number-lines -relative -hlcursor
+add-highlighter -override global/ show-matching
+add-highlighter -override global/ column '%opt{autowrap_column}' @SecondaryCursorEol
+add-highlighter -override global/ wrap -indent -word
+add-highlighter -override global/ regex \b(TODO|FIXME|XXX|NOTE)\b 0:default+rb
 
 # Show whitespaces
 show-whitespaces
@@ -115,38 +118,41 @@ hook global InsertCompletionHide .* %{
 # Commands ——————————————————————————————————————————————————————————————————————
 
 # Quick editing
-define-command -docstring 'Open kakrc' edit-kakoune 'edit ~/.config/kak/kakrc'
-define-command -docstring 'Open tmux.conf' edit-tmux 'edit ~/.tmux.conf'
-define-command -docstring 'Open kitty.conf' edit-kitty 'edit ~/.config/kitty/kitty.conf'
-define-command -docstring 'Open config.fish' edit-fish 'edit ~/.config/fish/config.fish'
-define-command -docstring 'Open gitconfig' edit-git 'edit ~/.gitconfig'
-define-command -docstring 'Open broot/conf.toml' edit-broot 'edit ~/.config/broot/conf.hjson'
-define-command -docstring 'Open starship.toml' edit-starship 'edit ~/.config/starship.toml'
-define-command -docstring 'Open yabairc' edit-yabai 'edit ~/.config/yabai/yabairc'
-define-command -docstring 'Open skhdrc' edit-skhd 'edit ~/.config/skhd/skhdrc'
-define-command -docstring 'Open spacebarrc' edit-spacebar 'edit ~/.config/spacebar/spacebarrc'
-define-command -docstring 'Open tridactyl' edit-tridactyl 'edit ~/.config/tridactyl/tridactylrc'
+try %{
+    define-command -docstring 'Open kakrc' edit-kakoune 'edit ~/.config/kak/kakrc'
+    define-command -docstring 'Open tmux.conf' edit-tmux 'edit ~/.tmux.conf'
+    define-command -docstring 'Open kitty.conf' edit-kitty 'edit ~/.config/kitty/kitty.conf'
+    define-command -docstring 'Open config.fish' edit-fish 'edit ~/.config/fish/config.fish'
+    define-command -docstring 'Open gitconfig' edit-git 'edit ~/.gitconfig'
+    define-command -docstring 'Open broot/conf.toml' edit-broot 'edit ~/.config/broot/conf.hjson'
+    define-command -docstring 'Open starship.toml' edit-starship 'edit ~/.config/starship.toml'
+    define-command -docstring 'Open yabairc' edit-yabai 'edit ~/.config/yabai/yabairc'
+    define-command -docstring 'Open skhdrc' edit-skhd 'edit ~/.config/skhd/skhdrc'
+    define-command -docstring 'Open spacebarrc' edit-spacebar 'edit ~/.config/spacebar/spacebarrc'
+    define-command -docstring 'Open tridactyl' edit-tridactyl 'edit ~/.config/tridactyl/tridactylrc'
 
-# lazygit
-# https://github.com/jesseduffield/lazygit
-define-command lazygit -params .. -docstring 'Open lazygit' %{
-    connect popup lazygit %arg{@}
+    # lazygit
+    # https://github.com/jesseduffield/lazygit
+    define-command lazygit -params .. -docstring 'Open lazygit' %{
+        connect popup lazygit %arg{@}
+    }
+
+    # yadm
+    define-command -docstring 'open yadm with lazygit' yadm 'connect terminal fish -c yadm'
+
+    # nnn
+    define-command -docstring 'open nnn window' nnn "connect terminal fish -ic 'nnn -s kak_$KAKOUNE_SESSION'"
+
+    # broot
+    define-command -docstring 'open broot window' broot 'connect terminal broot'
+
+    # kitty popup
+    define-command -docstring 'kitty-terminal-popup <program> [arguments]: create a new terminal as an kitty OS window (title: popup)' \
+        kitty-terminal-popup -override -params .. -shell-completion %{
+            kitty-terminal --title "popup" %arg{@}
+    }
 }
 
-# yadm
-define-command -docstring 'open yadm with lazygit' yadm 'connect terminal fish -c yadm'
-
-# nnn
-define-command -docstring 'open nnn window' nnn "connect terminal fish -ic 'nnn -s kak_$KAKOUNE_SESSION'"
-
-# broot
-define-command -docstring 'open broot window' broot 'connect terminal broot'
-
-# kitty popup
-define-command -docstring 'kitty-terminal-popup <program> [arguments]: create a new terminal as an kitty OS window (title: popup)' \
-    kitty-terminal-popup -override -params .. -shell-completion %{
-        kitty-terminal --title "popup" %arg{@}
-    }
 
 # Aliases ——————————————————————————————————————————————————————————————————————
 
@@ -169,6 +175,9 @@ alias global br broot
 
 # Normal mode ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
+# Enter command mode
+map -docstring 'enter command' global normal <ret> :
+
 # Arrow keys
 map global normal <left> 'h'
 map global normal <down> 'j'
@@ -181,7 +190,6 @@ map -docstring 'reload kakrc' global normal <F5> ':source-kakrc; echo reloaded k
 # Editing
 map -docstring 'save' global normal <c-s> ':write; echo saved<ret>'
 map -docstring 'quit' global normal <c-q> ':quit<ret>'
-map -docstring 'Write and quit' global normal <c-x> ': write-quit<ret>'
 
 # Selection primitives
 map -docstring 'surround mode' global normal q ':surround-mode<ret>'
@@ -200,7 +208,7 @@ map -docstring 'file explorer' global normal <c-e> ":nnn<ret>"
 map -docstring 'file picker' global normal <c-f> ":connect popup fish -ic 'kcr fzf files'<ret>"
 map -docstring 'buffer picker' global normal <c-b> ":connect popup fish -ic 'kcr fzf buffers'<ret>"
 map -docstring 'grep picker' global normal <c-g> ":connect popup fish -ic 'kcr fzf grep'<ret>"
-map -docstring 'grep picker (buffer)' global normal <c-r> ":connect popup fish -ic 'kcr fzf grep %val{buflist}'<ret>"
+map -docstring 'grep picker (buffer)' global normal <c-r> ":connect popup fish -ic 'kcr fzf grep $argv[1]' -- %val{buflist}<ret>"
 
 # case insensitive search by default
 map global normal / "/(?i)"
@@ -229,6 +237,8 @@ map -docstring "paste before the cursor"                         global insert <
 map -docstring 'show palette' global view p '<esc>:show-palette<ret>'
 
 # User mode ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
+map global normal <space> , -docstring 'leader'
 
 # spell checking
 map global user s ': enter-user-mode spell<ret>' -docstring 'enter spell mode'
