@@ -118,41 +118,38 @@ hook global InsertCompletionHide .* %{
 # Commands ——————————————————————————————————————————————————————————————————————
 
 # Quick editing
-try %{
-    define-command -docstring 'Open kakrc' edit-kakoune 'edit ~/.config/kak/kakrc'
-    define-command -docstring 'Open tmux.conf' edit-tmux 'edit ~/.tmux.conf'
-    define-command -docstring 'Open kitty.conf' edit-kitty 'edit ~/.config/kitty/kitty.conf'
-    define-command -docstring 'Open config.fish' edit-fish 'edit ~/.config/fish/config.fish'
-    define-command -docstring 'Open gitconfig' edit-git 'edit ~/.gitconfig'
-    define-command -docstring 'Open broot/conf.toml' edit-broot 'edit ~/.config/broot/conf.hjson'
-    define-command -docstring 'Open starship.toml' edit-starship 'edit ~/.config/starship.toml'
-    define-command -docstring 'Open yabairc' edit-yabai 'edit ~/.config/yabai/yabairc'
-    define-command -docstring 'Open skhdrc' edit-skhd 'edit ~/.config/skhd/skhdrc'
-    define-command -docstring 'Open spacebarrc' edit-spacebar 'edit ~/.config/spacebar/spacebarrc'
-    define-command -docstring 'Open tridactyl' edit-tridactyl 'edit ~/.config/tridactyl/tridactylrc'
+define-command -override -docstring 'Open kakrc' edit-kakoune 'edit ~/.config/kak/kakrc'
+define-command -override -docstring 'Open tmux.conf' edit-tmux 'edit ~/.tmux.conf'
+define-command -override -docstring 'Open kitty.conf' edit-kitty 'edit ~/.config/kitty/kitty.conf'
+define-command -override -docstring 'Open config.fish' edit-fish 'edit ~/.config/fish/config.fish'
+define-command -override -docstring 'Open gitconfig' edit-git 'edit ~/.gitconfig'
+define-command -override -docstring 'Open broot/conf.toml' edit-broot 'edit ~/.config/broot/conf.hjson'
+define-command -override -docstring 'Open starship.toml' edit-starship 'edit ~/.config/starship.toml'
+define-command -override -docstring 'Open yabairc' edit-yabai 'edit ~/.config/yabai/yabairc'
+define-command -override -docstring 'Open skhdrc' edit-skhd 'edit ~/.config/skhd/skhdrc'
+define-command -override -docstring 'Open spacebarrc' edit-spacebar 'edit ~/.config/spacebar/spacebarrc'
+define-command -override -docstring 'Open tridactyl' edit-tridactyl 'edit ~/.config/tridactyl/tridactylrc'
 
-    # lazygit
-    # https://github.com/jesseduffield/lazygit
-    define-command lazygit -params .. -docstring 'Open lazygit' %{
-        connect popup lazygit %arg{@}
-    }
-
-    # yadm
-    define-command -docstring 'open yadm with lazygit' yadm 'connect terminal fish -c yadm'
-
-    # nnn
-    define-command -docstring 'open nnn window' nnn "connect terminal fish -ic 'nnn -s kak_$KAKOUNE_SESSION'"
-
-    # broot
-    define-command -docstring 'open broot window' broot 'connect terminal broot'
-
-    # kitty popup
-    define-command -docstring 'kitty-terminal-popup <program> [arguments]: create a new terminal as an kitty OS window (title: popup)' \
-        kitty-terminal-popup -override -params .. -shell-completion %{
-            kitty-terminal --title "popup" %arg{@}
-    }
+# lazygit
+# https://github.com/jesseduffield/lazygit
+define-command -override lazygit -params .. -docstring 'Open lazygit' %{
+    connect popup lazygit %arg{@}
 }
 
+# yadm
+define-command -override -docstring 'open yadm with lazygit' yadm 'connect terminal fish -c yadm'
+
+# nnn
+define-command -override -docstring 'open nnn window' nnn "connect terminal fish -ic 'nnn -s kak_$KAKOUNE_SESSION'"
+
+# broot
+define-command -override -docstring 'open broot window' broot 'connect terminal broot'
+
+# kitty popup
+define-command -override -docstring 'kitty-terminal-popup <program> [arguments]: create a new terminal as an kitty OS window (title: popup)' \
+    kitty-terminal-popup -params .. -shell-completion %{
+        kitty-terminal --title "popup" %arg{@}
+}
 
 # Aliases ——————————————————————————————————————————————————————————————————————
 
@@ -184,6 +181,9 @@ map global normal <down> 'j'
 map global normal <up> 'k'
 map global normal <right> 'l'
 
+# keep normal word movement (overridden by shortcutn.kak)
+map global normal w 'w'
+
 # Hot reloading
 map -docstring 'reload kakrc' global normal <F5> ':source-kakrc; echo reloaded kakrc<ret>'
 
@@ -198,10 +198,8 @@ map -docstring 'select mode' global normal S ':select-mode<ret>'
 # Tools
 map -docstring 'move line down' global normal <c-j> ':move-lines-down<ret>'
 map -docstring 'move line up' global normal <c-k> ':move-lines-up<ret>'
-map -docstring 'math' global normal = ':math<ret>'
 
 # Windowing
-map -docstring 'new client' global normal <c-t> ':new<ret>'
 map -docstring 'git (popup)' global normal <c-l> ':connect popup fish -ic lazygit<ret>'
 map -docstring 'terminal' global normal <c-ret> ':connect terminal fish<ret>'
 map -docstring 'file explorer' global normal <c-e> ":nnn<ret>"
@@ -213,9 +211,13 @@ map -docstring 'grep picker (buffer)' global normal <c-r> ":connect popup fish -
 # case insensitive search by default
 map global normal / "/(?i)"
 
+# Commenting
+map -docstring 'comment line' global normal <#> ':comment-line<ret>'
+map -docstring 'comment block' global normal <a-#> ':comment-block<ret>'
+
 # Move macros to ^
-# map -docstring 'Play macro' global normal ^ q
-# map -docstring 'Record macro' global normal <a-^> Q
+map -docstring 'Play macro' global normal ^ q
+map -docstring 'Record macro' global normal <a-^> Q
 
 # Insert mode ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
@@ -232,13 +234,29 @@ map -docstring "delete until the next word boundary"             global insert <
 map -docstring "delete until the previous word boundary"         global insert <c-w> '<esc>bc'
 map -docstring "paste before the cursor"                         global insert <c-y> '<esc>Pi'
 
-# View mode ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-
-map -docstring 'show palette' global view p '<esc>:show-palette<ret>'
-
 # User mode ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
-map global normal <space> , -docstring 'leader'
+# Editing
+map -docstring 'write' global user w ': write; echo saved<ret>'
+map -docstring 'quit' global user q ': quit<ret>'
+map -docstring 'write quit' global user Q ': write-quit;<ret>'
+map -docstring 'delete buffer' global user d ': delete-buffer<ret>'
+
+map -docstring 'format selection' global user F ': format<ret>'
+map -docstring 'format buffer' global user f ': format-buffer<ret>'
+map -docstring 'LSP mode' global user l ': enter-user-mode lsp<ret>'
+
+# edit kakrc
+map -docstring 'Open kakrc' global user <,> ': edit-kakoune<ret>'
+
+# commenting
+map global user c -docstring '(un-)comment line' ': comment-line<ret>'
+map global user C -docstring '(un-)comment block' ': comment-block<ret>'
+
+# pasting from clipboard
+map global user -docstring "paste over from system clipboard" R '\| pbpaste<ret>'
+map global user -docstring "paste after from clipboard" p '\<a-!> pbpaste<ret>'
+map global user -docstring "paste before from clipboard" P '\! pbpaste<ret>'
 
 # spell checking
 try %{
@@ -255,20 +273,7 @@ declare-user-mode spell
     }
 }
 
-# edit kakrc
-map -docstring 'Open kakrc' global user <,> ': edit-kakoune<ret>'
-
-# commenting
-map global user c -docstring '(un-)comment line' ': comment-line<ret>'
-map global user C -docstring '(un-)comment block' ': comment-block<ret>'
-
-# UI toggles
-map global user -docstring "UI mode" u ': enter-user-mode ui<ret>'
-
-# pasting from clipboard
-map global user -docstring "paste over from system clipboard" R '\| pbpaste<ret>'
-map global user -docstring "paste after from clipboard" p '\<a-!> pbpaste<ret>'
-map global user -docstring "paste before from clipboard" P '\! pbpaste<ret>'
+# View mode ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
 # Linting & Formatting —————————————————————————————————————————————————————————
 
@@ -366,8 +371,6 @@ set global lsp_cmd "kak-lsp -s %val{session} --config ~/.config/kak-lsp/kak-lsp.
 # uncomment to enable debugging
 # set global lsp_cmd "kak-lsp -s %val{session} --config ~/.config/kak-lsp/kak-lsp.toml -vvv --log /tmp/kak-lsp.log"
 # eval %sh{echo ${kak_opt_lsp_cmd} >> /tmp/kak-lsp.log}
-
-map global normal <#> ': enter-user-mode lsp<ret>' -docstring 'lsp'
 
 set-option global lsp_auto_highlight_references true
 
