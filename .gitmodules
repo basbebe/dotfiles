@@ -14,10 +14,6 @@
 	path = .config/kak/plugins/kakoune-shellcheck
 	url = https://gitlab.com/Screwtapello/kakoune-shellcheck.git
 	update = merge
-[submodule ".config/kak/plugins/kakoune-smooth-scroll"]
-	path = .config/kak/plugins/kakoune-smooth-scroll
-	url = git@github.com:caksoylar/kakoune-smooth-scroll.git
-	update = merge
 [submodule ".config/kak/plugins/kakoune-state-save"]
 	path = .config/kak/plugins/kakoune-state-save
 	url = https://gitlab.com/Screwtapello/kakoune-state-save.git
