@@ -9,6 +9,7 @@ bind <S-ArrowLeft> back
 bind <S-ArrowRight> forward
 
 " custom hint chars
-set hintchars iteranhsudolmkfbcwygqzjpxv
+set hintchars iteranhsudol,mzvpgyw.c'f-bxkqj
 
+colors shydactyl
 set smoothscroll true
