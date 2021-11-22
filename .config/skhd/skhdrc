@@ -23,7 +23,7 @@ hyper - return [
   "kitty"  : skhd --key "cmd - n"
   "finder" : SHELL=/usr/local/bin/fish kitty --single-instance --directory="$(osascript -e 'tell app "Finder" to POSIX path of (insertion location as alias)')" &> /dev/null
   # *        : SHELL=/usr/local/bin/fish kitty --single-instance --directory=$HOME &> /dev/null
-  *        : open -n /Applications/kitty.app
+  *        : SHELL=/usr/local/bin/fish open -n /Applications/kitty.app
   ]
 
 # scratchpads
