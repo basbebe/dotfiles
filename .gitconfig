@@ -10,7 +10,7 @@
 [include]
 	path = .gitconfig.local
 [init]
-	defaultBranch = master
+	defaultBranch = main
 [merge]
 	tool = kakmerge
 [mergetool "kakmerge"]
