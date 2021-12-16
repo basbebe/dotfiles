@@ -17,7 +17,6 @@ args = ["start"]
 filetypes = ["c", "cpp"]
 roots = ["compile_commands.json", ".clangd", ".git", ".hg"]
 command = "clangd"
-offset_encoding = "utf-8"
 
 [language.crystal]
 filetypes = ["crystal"]
@@ -87,7 +86,6 @@ command = "erlang_ls"
 filetypes = ["go"]
 roots = ["Gopkg.toml", "go.mod", ".git", ".hg"]
 command = "gopls"
-offset_encoding = "utf-8"
 settings_section = "gopls"
 [language.go.settings.gopls]
 # See https://github.com/golang/tools/blob/master/gopls/doc/settings.md
@@ -100,7 +98,7 @@ command = "haskell-language-server-wrapper"
 args = ["--lsp"]
 settings_section = "haskell"
 [language.haskell.settings.haskell]
-# See https://github.com/latex-lsp/texlab/blob/e1ee8495b0f54b4411a1ffacf787efa621d8f826/src/options.rs
+# See https://haskell-language-server.readthedocs.io/en/latest/configuration.html
 # formattingProvider = "ormolu"
 
 [language.html]
@@ -187,8 +185,9 @@ roots = [".git", ".hg"]
 command = "texlab"
 settings_section = "texlab"
 [language.latex.settings.texlab]
-# See https://github.com/latex-lsp/texlab/blob/master/src/options.rs
-# bibtexFormatter = "texlab"
+# See https://github.com/latex-lsp/texlab/blob/master/docs/options.md
+forwardSearch.executable = "zathura"
+forwardSearch.args = ["--synctex-forward", "%l:1:%f", "%p"]
 
 [language.lua]
 filetypes = ["lua"]
@@ -225,14 +224,23 @@ intelephense.storagePath = "/tmp/intelephense"
 [language.python]
 filetypes = ["python"]
 roots = ["requirements.txt", "setup.py", ".git", ".hg"]
-command = "pyls"
-offset_encoding = "utf-8"
-workaround_server_sends_plaintext_labeled_as_markdown = true
+command = "pylsp"
 settings_section = "_"
 [language.python.settings._]
-# See https://github.com/palantir/python-language-server#configuration
-# and https://github.com/palantir/python-language-server/blob/develop/vscode-client/package.json
-# pyls.configurationSources = ["flake8"]
+# See https://github.com/python-lsp/python-lsp-server#configuration
+# pylsp.configurationSources = ["flake8"]
+
+[language.r]
+filetypes = ["r"]
+roots = ["DESCRIPTION", ".git", ".hg"]
+command = "R"
+args = ["--slave", "-e", "languageserver::run()"]
+
+[language.racket]
+filetypes = ["racket"]
+roots = ["info.rkt"]
+command = "racket"
+args = ["-l", "racket-langserver"]
 
 [language.reason]
 filetypes = ["reason"]
