@@ -290,6 +290,7 @@ hook global WinSetOption filetype=fish %{
 
 hook global WinSetOption filetype=haskell %{
     set-option window lintcmd 'hlint'
+    set-option window formatcmd 'ormolu'
 }
 
 hook global BufSetOption filetype=json %{
@@ -350,7 +351,7 @@ hook global BufWritePost .* %{
 # update git gutter on write
 # enable flag-lines hl for git diff
 hook global WinCreate .* %{
-    add-highlighter window/git-diff flag-lines Default git_diff_flags
+    add-highlighter -override window/git-diff flag-lines Default git_diff_flags
 }
 # trigger update diff if inside git dir
 hook global BufOpenFile .* %{
@@ -383,3 +384,17 @@ set-option global lsp_config %{
 
 try lsp-enable
 hook global KakEnd .* lsp-exit
+
+face global InfoDefault               Information
+face global InfoBlock                 Information
+face global InfoBlockQuote            Information
+face global InfoBullet                Information
+face global InfoHeader                Information
+face global InfoLink                  Information
+face global InfoLinkMono              Information
+face global InfoMono                  Information
+face global InfoRule                  Information
+face global InfoDiagnosticError       Information
+face global InfoDiagnosticHint        Information
+face global InfoDiagnosticInformation Information
+face global InfoDiagnosticWarning     Information
