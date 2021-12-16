@@ -4,11 +4,14 @@ scriptencoding utf-8
 
 "### dein Scripts
 
+if &compatible
+  set nocompatible               " Be iMproved
+endif
+
 " Required:
 set runtimepath+=~/.cache/dein/repos/github.com/Shougo/dein.vim 
 
   " Required:
-  if dein#load_state('~/.cache/dein')
   call dein#begin('~/.cache/dein')
 
   " Let dein manage dein
@@ -95,8 +98,6 @@ set runtimepath+=~/.cache/dein/repos/github.com/Shougo/dein.vim
 
   " Required:
   call dein#end()
-  call dein#save_state()
-endif
 
 " Required:
 filetype plugin indent on
