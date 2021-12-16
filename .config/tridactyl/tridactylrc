@@ -11,5 +11,5 @@ bind <S-ArrowRight> forward
 " custom hint chars
 set hintchars iteranhsudol,fzvkc'myg.w-bxpqj
 
-colors shydactyl
+colors auto
 set smoothscroll true
