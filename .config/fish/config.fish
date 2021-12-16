@@ -22,45 +22,17 @@ fish_add_path --global --path --append /usr/local/opt/util-linux/sbin
 
 if status is-interactive
 
-    # SSH via gpg-agent
-    set -x GPG_TTY (tty)
-    set -x SSH_AUTH_SOCK (gpgconf --list-dirs agent-ssh-socket)
-    # gpgconf --launch gpg-agent
-
-    # Java…
-    set -x JAVA_HOME (/usr/libexec/java_home)
-    fish_add_path --global --path --append $JAVA_HOME/bin
+    # Settings  ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
     # remove greeting
     set fish_greeting
 
-    #enable vim key bindings
-    # fish_vi_key_bindings
+    # Program-specific –––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
-    # Defaults
-    # if set -q $LANG
-        # set -x LANG 'de_DE.UTF-8'
-    # end
-
-    # get system theme (light/dark mode)
-    set -U OS_THEME (defaults read -g AppleInterfaceStyle &> /dev/null && echo dark || echo light)
-    fish_update_colors
-
-    # kakoune.cr
-    set -x EDITOR 'kcr edit'
-    set -x VISUAL 'kcr edit'
-    abbr k 'kcr edit'
-    abbr K 'kcr-fzf-shell'
-    abbr KK 'kcr-fzf-shell --working-directory .'
-    abbr ks 'kcr shell --session'
-    abbr kl 'kcr list'
-    abbr a 'kcr attach'
-
-    # Less
-    set -x PAGER 'less -iR'
-    set -x LESS '-g -i -M -R -S -w -z-4'
-    set -x LESSOPEN "|/usr/local/bin/lesspipe.sh %s"
-    set -x LESS_ADVANCED_PREPROCESSOR 1
+    # bat
+    abbr cat bat
+    set -x BAT_THEME gruvbox-{$OS_THEME}
+    set -x MANPAGER "sh -c 'col -bx | bat -l man -p'"
 
     # fzf
     # this is already being set by PatrickF1/fzf.fish
@@ -68,34 +40,61 @@ if status is-interactive
     bind --erase \cf
     bind \ef __fzf_search_current_dir
 
-    # use Python3 as default
-    abbr python python3
-    # abbr pip pip3
+    # Java…
+    set -x JAVA_HOME (/usr/libexec/java_home)
+    fish_add_path --global --path --append $JAVA_HOME/bin
 
-    # use neovim
-    abbr vi nvim
-    abbr vim nvim
+    # kakoune.cr
+    set -x EDITOR 'kcr edit'
+    set -x VISUAL 'kcr edit'
 
-    # kakoune
-    abbr kk kittykak
+    # Less
+    set -x PAGER 'less -iR'
+    set -x LESS '-g -i -M -R -S -w -z-4'
+    set -x LESSOPEN "|/usr/local/bin/lesspipe.sh %s"
+    set -x LESS_ADVANCED_PREPROCESSOR 1
+
+    # lf
+    source ~/.config/lf/icons.fish
+
+    # nnn
+    set -x GUI 1
+    set -x NNN_OPTS 'acdEFQSUx'
+    set -x NNN_OPENER "$HOME/.config/nnn/plugins/nuke"
+    set -x NNN_BMS 'd:~/Documents;g:~/git;u:~/;.:~/.config'
+    set -x NNN_PLUG 'c:fzcd;f:finder;o:fzopen;O:!launch $nnn*;p:preview-tui;d:diffs;t:nmount;v:imgview;g:-!git diff;l:-!git log;z:!&zathura $nnn*'
+    set -x NNN_ARCHIVE "\\.(7z|bz2|gz|tar|tgz|zip)"
+    set -x NNN_COLORS '4253'
+    set -x NNN_FCOLORS '020b0c0a000d0e0705030509'
+
+    # Aliases & Abbreviations ––––––––––––––––––––––––––––––––––––––––––––––––––
+
+    # abduco
+    abbr ssha ssh-abduco
+
+    # btm
+    alias btm 'btm --color=gruvbox(test $OS_THEME = dark || echo -light)'
+
+    abbr cx 'chmod -x'
+
+    abbr cp 'cp -i'
 
     # exa
     alias exa 'exa --icons'
-    abbr ls exa
     abbr ll 'exa -l'
+    abbr ls exa
     abbr la 'exa -a'
     abbr lla 'exa -la'
     abbr llg 'exa -l --git'
     abbr tree 'exa --tree'
 
-    # bat
-    abbr cat bat
-    # alias bat 'bat --theme=gruvbox-{$OS_THEME}'
-    set -x BAT_THEME gruvbox-{$OS_THEME}
-    set -x MANPAGER "sh -c 'col -bx | bat -l man -p'"
-
-    # btm
-    alias btm 'btm --color=gruvbox(test $OS_THEME = dark || echo -light)'
+    # git
+    abbr gc 'git commit'
+    abbr gca 'git commit --all'
+    abbr gf 'git fetch --all --prune'
+    abbr gfp 'git fetch --all --prune; git pull; git remote update'
+    abbr gl 'git log --oneline --graph --decorate --all'
+    abbr gp 'git pull'
 
     # Homebrew
     abbr brews 'brew search'
@@ -104,22 +103,43 @@ if status is-interactive
     abbr brewu 'brew update'
     abbr brewU 'brew upgrade'
 
+    # kakoune
+    abbr kk kittykak
+
+    # kakoune.cr
+    abbr k 'kcr edit'
+    abbr K 'kcr-fzf-shell'
+    abbr KK 'kcr-fzf-shell --working-directory .'
+    abbr ks 'kcr shell --session'
+    abbr kl 'kcr list'
+    abbr a 'kcr attach'
+    alias :f 'kcr fzf files'
+    alias f: 'kcr-fzf-shell --working-directory . kcr fzf files'
+    alias fm: 'kcr-fzf-shell sidetree --working-directory'
+    alias :g 'kcr fzf grep'
+    alias g: 'kcr-fzf-shell --working-directory . kcr fzf grep'
+
     # lazygit
     abbr lg lazygit
 
-    # nnn
-    set -x GUI 1
-    set -x NNN_OPTS 'acdEFQSUx'
-    set -x NNN_OPENER "$HOME/.config/nnn/plugins/nuke"
-    set -x NNN_BMS 'd:~/Documents;u:~/'
-    set -x NNN_PLUG 'c:fzcd;f:finder;o:fzopen;O:!launch $nnn*;p:preview-tui;d:diffs;t:nmount;v:imgview;g:-!git diff;l:-!git log;z:!&zathura $nnn*'
-    # set -x NNN_FIFO '/tmp/nnn.fifo'
-    set -x NNN_ARCHIVE "\\.(7z|bz2|gz|tar|tgz|zip)"
-    set -x NNN_COLORS '4253'
-    set -x NNN_FCOLORS '020b0c0a000d0e0705030509'
+    abbr mv 'mv -i'
 
-    # abduco
-    abbr ssha ssh-abduco
+    # use neovim
+    abbr vi nvim
+    abbr vim nvim
+
+    # use Python3 as default
+    abbr python python3
+
+    # Utility / Housekeeping –––––––––––––––––––––––––––––––––––––––––––––––––––
+
+    # SSH via gpg-agent
+    set -x GPG_TTY (tty)
+    set -x SSH_AUTH_SOCK (gpgconf --list-dirs agent-ssh-socket)
+
+    # get system theme (light/dark mode)
+    set -U OS_THEME (defaults read -g AppleInterfaceStyle &> /dev/null && echo dark || echo light)
+    fish_update_colors
 
     # publish fish_private_mode
     if set -q fish_private_mode
@@ -130,8 +150,6 @@ if status is-interactive
     if type -q starship
         starship init fish | source
     end
-
-    source ~/.config/lf/icons.fish
 
     if test "$TERM_PROGRAM" = "iTerm.app"
         # enable iTerm2 tmux integration
