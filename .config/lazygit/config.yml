@@ -52,6 +52,8 @@ os:
 refresher:
   refreshInterval: 10 # file/submodule refresh interval in seconds
   fetchInterval: 60 # re-fetch interval in seconds
+services:
+  'gitlab2.cip.ifi.lmu.de': 'gitlab:gitlab2.cip.ifi.lmu.de'
 update:
   method: prompt # can be: prompt | background | never
   days: 14 # how often an update is checked for
