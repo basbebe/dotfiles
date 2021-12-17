@@ -88,7 +88,10 @@ set-option global scrolloff 5,1
 make-directory-on-save
 
 # Clipboard
-synchronize-terminal-clipboard
+# synchronize-terminal-clipboard
+hook global RegisterModified '"' %{ nop %sh{
+  printf %s "$kak_main_reg_dquote" | pbcopy
+}}
 
 # Tools
 set-option global makecmd 'make -j 8'
@@ -246,7 +249,9 @@ map -docstring 'delete buffer!' global user D ': delete-buffer!<ret>'
 
 map -docstring 'format selection' global user F ': format<ret>'
 map -docstring 'format buffer' global user f ': format-buffer<ret>'
-map -docstring 'LSP mode' global user l ': enter-user-mode lsp<ret>'
+map -docstring "enter Git mode" global user g ": enter-user-mode git<ret>"
+map -docstring 'enter LSP mode' global user l ': enter-user-mode lsp<ret>'
+map -docstring 'enter spell mode' global user s ': enter-user-mode spell<ret>'
 
 # edit kakrc
 map -docstring 'Open kakrc' global user <,> ': edit-kakoune<ret>'
@@ -260,10 +265,18 @@ map global user -docstring "paste over from system clipboard" R '\| pbpaste<ret>
 map global user -docstring "paste after from clipboard" p '\<a-!> pbpaste<ret>'
 map global user -docstring "paste before from clipboard" P '\! pbpaste<ret>'
 
-# spell checking
+# git mode
+try %{
+declare-user-mode git
+    map global git -docstring "commit - Record changes to the repository" c ": git commit<ret>"
+    map global git -docstring "diff - Show changes between HEAD and working tree" d ": git diff<ret>"
+    map global git -docstring "staged - Show staged changes" t ": git diff --staged<ret>"
+    map global git -docstring "write - Write and stage the current file" w ": write<ret>: git add<ret>: git update-diff<ret>"
+}
+
+# spell checking mode
 try %{
 declare-user-mode spell
-    map global user s ': enter-user-mode spell<ret>' -docstring 'enter spell mode'
     map global spell d ': set-option current spell_lang de; spell<ret>' -docstring 'German check'
     map global spell e ': set-option current spell_lang en; spell<ret>' -docstring 'Englisch check'
     map global spell n ': spell-next<ret>_: enter-user-mode spell<ret>' -docstring 'next'
