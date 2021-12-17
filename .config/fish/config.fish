@@ -95,6 +95,7 @@ if status is-interactive
     abbr gfp 'git fetch --all --prune; git pull; git remote update'
     abbr gl 'git log --oneline --graph --decorate --all'
     abbr gp 'git pull'
+    abbr gP 'git push'
 
     # Homebrew
     abbr brews 'brew search'
