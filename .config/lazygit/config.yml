@@ -6,7 +6,7 @@ gui:
   expandFocusedSidePanel: false
   mainPanelSplitMode: 'flexible' # one of 'horizontal' | 'flexible' | 'vertical'
   theme:
-    lightTheme: false # For terminals with a light background
+    lightTheme: false
     activeBorderColor:
       - white
       - bold
@@ -15,9 +15,9 @@ gui:
     optionsTextColor:
       - blue
     selectedLineBgColor:
-      - default
+      - reverse
     selectedRangeBgColor:
-      - blue
+      - reverse
   commitLength:
     show: true
   mouseEvents: true
