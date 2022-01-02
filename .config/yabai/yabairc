@@ -111,7 +111,7 @@ yabai -m rule --add app="^mpv$" opacity=1.0
 
 # show scratchpads and popups on top
 yabai -m rule --add title="^scratchpad" manage=off sticky=on layer=above grid=4:4:1:1:2:2
-yabai -m rule --add title="^popup" sticky=on layer=above grid=4:4:1:1:2:2
+yabai -m rule --add title="^popup" manage=off layer=above grid=6:6:1:1:4:4
 
 # adapt padding to state of stacks
 yabai -m signal --add event=window_created action="~/.config/yabai/refresh.sh"
