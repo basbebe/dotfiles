@@ -31,7 +31,7 @@
 -   [yabai] – tiling window manager
     -   [skhd] – simple hotkey daemon for macOS\
         (don’t forget to [switch shell])
-    -   [spacebar] – minimal status bar for macOS
+    -   [SketchyBar] – minimal status bar for macOS
     -   [stackline] – visualize yabai window stacks
         -   [Hammerspoon] – macOS desktop automation with Lua
 -   [dark-mode-notify] – run a script whenever dark mode changes in
@@ -82,7 +82,7 @@ This repository is being managed using [yadm]
   [yabai]: https://github.com/koekeishiya/yabai/wiki/Commands#message-passing-interface
   [skhd]: https://github.com/koekeishiya/skhd
   [switch shell]: https://github.com/koekeishiya/skhd/issues/42
-  [spacebar]: https://github.com/cmacrae/spacebar
+  [SketchyBar]: https://github.com/FelixKratz/SketchyBar
   [stackline]: https://github.com/AdamWagner/stackline
   [Hammerspoon]: https://github.com/Hammerspoon/hammerspoon
   [dark-mode-notify]: https://github.com/bouk/dark-mode-notify

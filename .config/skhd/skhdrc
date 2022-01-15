@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/env bash
 
 # if you're having troubles finding key codes for a key just type skhd --observe in a terminal and type a key. Pretty cool! Or just check the wiki.
 # https://github.com/koekeishiya/skhd/issues/1
@@ -19,11 +19,9 @@ ctrl + alt + cmd - r : launchctl kickstart -k "gui/${UID}/homebrew.mxcl.yabai"
 
 # open terminal
 hyper - return [
-  # "kitty" : kitty @new-window --window-type=os --cwd=$PWD
   "kitty"  : skhd --key "cmd - n"
   "finder" : SHELL=/usr/local/bin/fish kitty --single-instance --directory="$(osascript -e 'tell app "Finder" to POSIX path of (insertion location as alias)')" &> /dev/null
-  # *        : SHELL=/usr/local/bin/fish kitty --single-instance --directory=$HOME &> /dev/null
-  *        : SHELL=/usr/local/bin/fish open -n /Applications/kitty.app
+  *        : ~/.local/bin/kitty-wrapper.sh
   ]
 
 # scratchpads
@@ -57,32 +55,26 @@ hyper - d : osascript -e 'tell app "System Events" to tell appearance preference
 # windows ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
 # focus window (across displays)
-hyper - j : yabai -m window --focus south
-hyper - k : yabai -m window --focus north
-hyper - h : yabai -m window --focus west || \
-            { yabai -m display --focus next  || yabai -m display --focus first ; \
-              yabai -m window --focus last ; }
-hyper - l : yabai -m window --focus east || \
-            { yabai -m display --focus prev || yabai -m display --focus last ; \
-              yabai -m window --focus first ; }
+hyper - j : skhd --key "hyper - down"
+hyper - k : skhd --key "hyper - up"
+hyper - h : skhd --key "hyper - left"
+hyper - l : skhd --key "hyper - right"
 hyper - down : yabai -m window --focus south
 hyper - up : yabai -m window --focus north
 hyper - left : yabai -m window --focus west || \
-            { yabai -m display --focus next  || yabai -m display --focus first ; \
-              yabai -m window --focus last ; }
+            { yabai -m display --focus west || yabai -m display --focus first ; }
 hyper - right : yabai -m window --focus east || \
-            { yabai -m display --focus prev || yabai -m display --focus last ; \
-              yabai -m window --focus first ; }
+            { yabai -m display --focus east || yabai -m display --focus last ; }
 
 # cycle through stacks '[]'
-hyper - 0x21 : yabai -m window --focus stack.prev || yabai -m window --focus stack.last
-hyper - 0x1E : yabai -m window --focus stack.next || yabai -m window --focus stack.first
+hyper - 0x21 : skhd --key "hyper - pageup"
+hyper - 0x1E : skhd --key "hyper - pagedown"
 hyper - pageup : yabai -m window --focus stack.prev || yabai -m window --focus stack.last
 hyper - pagedown : yabai -m window --focus stack.next || yabai -m window --focus stack.first
 
 # cycle through spaces 'hyper + ,. - karabiner trick'
-0x5F : yabai -m space --focus prev || yabai -m space --focus last
-0x41 : yabai -m space --focus next || yabai -m space --focus first
+0x5F :skhd --key "hyper - home"
+0x41 :skhd --key "hyper - end"
 hyper - home : yabai -m space --focus prev || yabai -m space --focus last
 hyper - end : yabai -m space --focus next || yabai -m space --focus first
 
@@ -239,8 +231,8 @@ meh - c : yabai -m space --create && \
 meh - x : yabai -m space --destroy
 
 # switch space layout
-meh - s : yabai -m space --layout stack
-meh - b : yabai -m space --layout bsp
+meh - s : yabai -m space --layout stack && sketchybar --trigger space_mode_change &> /dev/null
+meh - b : yabai -m space --layout bsp && sketchybar --trigger space_mode_change &> /dev/null
 
 # move space to display
 meh - h : yabai -m space --display next || yabai -m space --display first

@@ -70,9 +70,6 @@ function change_theme --argument-names mode_setting \
     #         yabai -m config active_window_border_color 0xff689d6a
     # end
 
-    # spacebar theme
-    ~/.config/spacebar/change_mode.sh $mode &
-
     # fish
     # handled by fish_update_colors function
     set -U OS_THEME $mode

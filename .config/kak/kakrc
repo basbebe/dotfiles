@@ -130,7 +130,7 @@ define-command -override -docstring 'Open broot/conf.toml' edit-broot 'edit ~/.c
 define-command -override -docstring 'Open starship.toml' edit-starship 'edit ~/.config/starship.toml'
 define-command -override -docstring 'Open yabairc' edit-yabai 'edit ~/.config/yabai/yabairc'
 define-command -override -docstring 'Open skhdrc' edit-skhd 'edit ~/.config/skhd/skhdrc'
-define-command -override -docstring 'Open spacebarrc' edit-spacebar 'edit ~/.config/spacebar/spacebarrc'
+define-command -override -docstring 'Open sketchybarrc' edit-sketchybar 'edit ~/.config/sketchybar/sketchybarrc'
 define-command -override -docstring 'Open tridactyl' edit-tridactyl 'edit ~/.config/tridactyl/tridactylrc'
 
 # lazygit
@@ -155,7 +155,7 @@ define-command -override -docstring 'kitty-terminal-popup <program> [arguments]:
 }
 
 # ide
-define-command ide %{
+define-command -override ide %{
     rename-client main
     set global jumpclient main
 
@@ -330,10 +330,9 @@ hook global BufSetOption filetype=(css|javascipt|yaml) %{
     #     set-option buffer formatcmd "prettier --plugin=/usr/local/lib/node_modules/prettier-plugin-java/ --stdin-filepath=%val{buffile}"
 # }
 
-hook global WinSetOption filetype=sh %{
+hook global BufSetOption filetype=(bash|sh) %{
     set-option buffer formatcmd "shfmt -i 2 -ci -bn %val{buffile}"
-    # handled by spellcheck.kak
-    # set-option window lintcmd 'shellcheck'
+    set-option buffer lintcmd "shellcheck --shell=%opt{filetype}"
 }
 
 hook global WinSetOption filetype=python %{
