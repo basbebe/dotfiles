@@ -19,7 +19,6 @@ hook global ModuleLoaded modeline-extras %{
     set-option global modeline_nerdfont true
 
     # enable options
-    modeline-buffer-position-enable
     modeline-git-branch-enable
     modeline-indent-enable
     modeline-lsp-enable
@@ -28,7 +27,7 @@ hook global ModuleLoaded modeline-extras %{
     # Git branch + Filename
     set-option global modelinefmt '{magenta+i}%opt{modeline_git_branch} {bright-blue+u}%val{bufname}{default}'
     # Position
-    set-option -add global modelinefmt ' %val{cursor_line}:%val{cursor_char_column} %opt{modeline_buffer_position}{default}'
+    set-option -add global modelinefmt ' %val{cursor_line}:%val{cursor_char_column} {default}'
     # Context Info + Mode Info
     set-option -add global modelinefmt ' {{context_info}} {{mode_info}}'
     # out-of-view

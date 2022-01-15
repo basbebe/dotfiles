@@ -154,6 +154,20 @@ define-command -override -docstring 'kitty-terminal-popup <program> [arguments]:
         kitty-terminal --title "popup" %arg{@}
 }
 
+# ide
+define-command ide %{
+    rename-client main
+    set global jumpclient main
+
+    new rename-client tools
+    set global toolsclient tools
+
+    new rename-client lsp
+    lsp-auto-hover-enable lsp
+
+    focus main
+}
+
 # Aliases ——————————————————————————————————————————————————————————————————————
 
 # Aliases
@@ -378,6 +392,8 @@ hook global BufOpenFile .* %{
 # LSP ——————————————————————————————————————————————————————————————————————————
 
 try %sh{kak-lsp --kakoune --session "$kak_session"}
+try lsp-enable
+hook global KakEnd .* lsp-exit
 
 set global lsp_cmd "kak-lsp -s %val{session} --config ~/.config/kak-lsp/kak-lsp.toml"
 
@@ -393,8 +409,6 @@ set-option global lsp_config %{
     pyls.configurationSources = ["flake8"]
 }
 
-try lsp-enable
-hook global KakEnd .* lsp-exit
 
 face global InfoDefault               Information
 face global InfoBlock                 Information
