@@ -8,6 +8,14 @@ bind <S-ArrowDown> tabprev
 bind <S-ArrowLeft> back
 bind <S-ArrowRight> forward
 
+bind --mode=ex <S-ArrowUp> ex.prev_completion
+bind --mode=ex <S-ArrowDown> ex.next_completion
+
+bind ga tab #
+bind gA tabaudio
+
+set editorcmd /usr/local/bin/kitty --single-instance --wait-for-single-instance-window-close fish -ic 'kak %f +%l:%c'
+
 " custom hint chars
 set hintchars iteranhsudol,fzvkc'myg.w-bxpqj
 
