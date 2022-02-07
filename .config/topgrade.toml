@@ -67,6 +67,7 @@ repos = [
 "pip3 packages global" = "pip-review --auto"
 "yadm status" = "bash -c 'if command -v yadm &> /dev/null; then yadm status; fi'"
 "yadm submodules" = "yadm submodule update --init --recursive && yadm submodule update --recursive --remote --merge"
+"kakoune plugins" = "cork update"
 
 [brew]
 #greedy_cask = true

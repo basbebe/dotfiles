@@ -1,23 +1,156 @@
 # Preamble —————————————————————————————————————————————————————————————————————
 
-try %sh{
+evaluate-commands %sh{
+    cork init
     kcr init kakoune
 }
 
-try %{    # upgrade Autoload files
-    define-command -docstring 'rebuild kakoune autoload files' rebuild-autoload %{
-        nop %sh{
-            rm -rf "$kak_config/autoload/standard-library"
-            mkdir -p "$kak_config/autoload"
-            ln -s "$kak_runtime/autoload" "$kak_config/autoload/standard-library"
-        }
+# upgrade Autoload files
+define-command -override -docstring 'rebuild kakoune autoload files' \
+rebuild-autoload %{
+    nop %sh{
+        rm -rf "$kak_config/autoload/standard-library"
+        mkdir -p "$kak_config/autoload"
+        ln -s "$kak_runtime/autoload" "$kak_config/autoload/standard-library"
     }
 }
 
-# Plugins
-try %{
-    source "~/.config/kak/plugins.kak"
+# Plugins ——————————————————————————————————————————————————————————————————————
+
+cork active-window https://github.com/greenfork/active-window.kak
+
+cork auto-pairs https://github.com/alexherbo2/auto-pairs.kak %{
+    enable-auto-pairs
 }
+
+cork indent https://github.com/alexherbo2/indent.kak %{
+    set-indent global 2
+}
+
+cork extra-filetypes https://github.com/kakoune-editor/kakoune-extra-filetypes
+
+cork find https://github.com/occivink/kakoune-find
+
+cork shellcheck https://gitlab.com/Screwtapello/kakoune-shellcheck.git
+
+cork state-save https://gitlab.com/Screwtapello/kakoune-state-save.git %{
+    hook global KakBegin .* %{
+        state-save-reg-load colon
+        state-save-reg-load pipe
+        state-save-reg-load slash
+    }
+    hook global KakEnd .* %{
+        state-save-reg-save colon
+        state-save-reg-save pipe
+       state-save-reg-save slash
+    }
+}
+
+cork sudo-write https://github.com/occivink/kakoune-sudo-write
+
+cork table https://gitlab.com/listentolist/kakoune-table.git %{
+    map global user t ": enter-user-mode table<ret>" -docstring "table"
+    map global user T ": enter-user-mode -lock table<ret>" -docstring "table (lock)"
+}
+
+cork text-objects https://github.com/Delapouite/kakoune-text-objects
+
+cork vertical-selection https://github.com/occivink/kakoune-vertical-selection
+
+cork mark https://github.com/alexherbo2/mark.kak
+
+cork number-toggle https://github.com/evanrelf/number-toggle.kak %{
+    require-module number-toggle
+    set-option global number_toggle_params -hlcursor
+}
+
+cork scrollbar https://github.com/sawdust-and-diamonds/scrollbar.kak %{
+    hook global WinCreate .* %{ scrollbar-enable }
+}
+
+cork select https://github.com/alexherbo2/select.kak %{
+    map -docstring 'select mode' global normal S ':select-mode<ret>'
+}
+
+cork shortcuts https://github.com/alexherbo2/shortcuts.kak
+
+cork show-whitespaces https://github.com/alexherbo2/show-whitespaces.kak
+
+cork surround https://github.com/alexherbo2/surround.kak %{
+    map -docstring 'surround mode' global normal q ':surround-mode<ret>'
+}
+
+cork tiny https://github.com/alexherbo2/tiny.kak %{
+    make-directory-on-save
+    remove-scratch-message
+}
+
+cork todo https://github.com/kkga/todo.kak %{
+    hook global WinCreate (.*/)?TODO %{ set buffer filetype todo }
+    hook global WinSetOption filetype=todo %{
+        add-highlighter buffer/ regex '^[A-Z0-9 ]+:$' 0:yellow+b
+    }
+    hook global WinSetOption filetype=(markdown|todo) %{
+        require-module todo
+        map buffer normal <ret> ': todo-toggle<ret>' -docstring "toggle checkbox"
+        add-highlighter buffer/ regex '\[ \]' 0:blue+b
+        add-highlighter buffer/ regex '\[x\]' 0:comment
+    }
+}
+
+cork ui https://github.com/kkga/ui.kak %{
+    set-face global TodoComment +b@Information
+    # set-option global ui_whitespaces_flags -spc '·' -lf ' ' -tab '┊' -tabpad ' '
+    set-option global ui_line_numbers_flags -hlcursor -relative
+    set-option global ui_wrap_flags -word -indent
+    hook global WinCreate .* %{
+        ui-whitespaces-toggle
+        ui-trailing-spaces-toggle
+        ui-search-toggle
+        ui-matching-toggle
+        ui-todos-toggle
+        ui-lint-toggle
+        ui-git-diff-toggle
+        ui-wrap-toggle
+    }
+}
+
+cork window https://github.com/alexherbo2/window.kak
+
+try %{ source "~/git/modeline-extras.kak/rc/modeline-extras.kak" }
+hook global ModuleLoaded modeline-extras %{
+    # enable Nerd Font symbols
+    set-option global modeline_nerdfont true
+
+    # enable options
+    modeline-git-branch-enable
+    modeline-indent-enable
+    modeline-lsp-enable
+    # modeline-codepoint-enable
+
+    # Git branch + Filename
+    set-option global modelinefmt '{magenta+i}%opt{modeline_git_branch} {bright-blue+u}%val{bufname}{default}'
+    # Position
+    set-option -add global modelinefmt ' %val{cursor_line}:%val{cursor_char_column} {default}'
+    # Context Info + Mode Info
+    set-option -add global modelinefmt ' {{context_info}} {{mode_info}}'
+    # out-of-view
+    # set-option -add global modelinefmt ' {StatusLineMode}%opt{out_of_view_status_line}{default}'
+    # lsp
+    set-option -add global modelinefmt ' {DiagnosticError}%opt{modeline_lsp_err}{DiagnosticWarning}%opt{modeline_lsp_warn}{default}'
+    # Filetype + Indentwidth
+    set-option -add global modelinefmt ' %opt{filetype} %opt{modeline_indent}'
+    # client@session
+    set-option -add global modelinefmt ' {bright-cyan}%val{client}{bright-cyan+b}%val{session}'
+}
+require-module modeline-extras
+
+try %{ source "~/git/pandoc.kak/rc/pandoc.kak" }
+hook global WinSetOption filetype=(asciidoc|fountain|html|latex|markdown) %{
+    require-module pandoc
+    set-option global pandoc_options '-d default'
+}
+
 
 # Options ——————————————————————————————————————————————————————————————————————
 
@@ -25,28 +158,17 @@ try %{
 set-option -add global ui_options terminal_status_on_top=yes
 set-option -add global ui_options terminal_assistant=none
 set-option -add global ui_options terminal_set_title=no
-remove-scratch-message
 
 # Color scheme
 # set to dark or light depending on environment variable
 # Gruvbox theme for Kakoune
 # https://github.com/morhetz/gruvbox
-colorscheme gruvbox-light
-try %sh{
-    echo "colorscheme gruvbox-"$(fish -c 'echo $OS_THEME')
+evaluate-commands %sh{
+    echo "colorscheme gruvbox-"$OS_THEME
 }
-
-# Verbose Autoinfo
-# set-option -add global autoinfo normal
 
 # accept file updates
 set-option global autoreload yes
-
-# Indentation
-# Indent with 2 spaces and make tabs 2 spaces wide.
-set-indent global 2
-# enable-detect-indent
-# enable-auto-indent
 
 # Filetype-specific
 # Makefile
@@ -60,21 +182,8 @@ hook global WinSetOption filetype=(c|fish|fsharp|java|julia|kak|kotlin|perl|php|
     set-indent window 4
 }
 
-# Auto-pairing of characters
-enable-auto-pairs
-
-# Disable indentation hooks
-# set-option global disabled_hooks '(?!auto)(?!detect)(?!modeline)(?!latex)(?!markdown)\K(.+)-(trim-indent|insert|indent)'
-
 # Highlighters
-add-highlighter -override global/ number-lines -relative -hlcursor
-add-highlighter -override global/ show-matching
 add-highlighter -override global/ column '%opt{autowrap_column}' @SecondaryCursorEol
-add-highlighter -override global/ wrap -indent -word
-add-highlighter -override global/ regex \b(TODO|FIXME|XXX|NOTE)\b 0:default+rb
-
-# Show whitespaces
-show-whitespaces
 
 # Show characters
 add-highlighter -override global/show-unicode-2013 regex '–' '0:green+f'
@@ -83,9 +192,6 @@ add-highlighter -override global/show-math-symbols regex '[−×]' '0:cyan+f'
 
 # Scroll offset
 set-option global scrolloff 5,1
-
-# Save buffer
-make-directory-on-save
 
 # Clipboard
 # synchronize-terminal-clipboard
@@ -151,11 +257,13 @@ define-command -override -docstring 'open broot window' broot 'connect terminal 
 # kitty popup
 define-command -override -docstring 'kitty-terminal-popup <program> [arguments]: create a new terminal as an kitty OS window (title: popup)' \
     kitty-terminal-popup -params .. -shell-completion %{
-        kitty-terminal --title "popup" %arg{@}
+        kitty-terminal --type=overlay %arg{@}
 }
 
 # ide
 define-command -override ide %{
+    set-option global kitty_window_type window
+
     rename-client main
     set global jumpclient main
 
@@ -166,6 +274,7 @@ define-command -override ide %{
     lsp-auto-hover-enable lsp
 
     focus main
+    set-option global kitty_window_type os-window
 }
 
 # Aliases ——————————————————————————————————————————————————————————————————————
@@ -204,10 +313,6 @@ map -docstring 'reload kakrc' global normal <F5> ':source-kakrc; echo reloaded k
 # Editing
 map -docstring 'save' global normal <c-s> ':write; echo saved<ret>'
 map -docstring 'quit' global normal <c-q> ':quit<ret>'
-
-# Selection primitives
-map -docstring 'surround mode' global normal q ':surround-mode<ret>'
-map -docstring 'select mode' global normal S ':select-mode<ret>'
 
 # Tools
 map -docstring 'move line down' global normal <c-j> ':move-lines-down<ret>'
@@ -262,6 +367,7 @@ map -docstring 'format selection' global user F ': format<ret>'
 map -docstring 'format buffer' global user f ': format-buffer<ret>'
 map -docstring "enter Git mode" global user g ": enter-user-mode git<ret>"
 map -docstring 'enter LSP mode' global user l ': enter-user-mode lsp<ret>'
+map -docstring 'enter kakmerge mode' global user m ': enter-user-mode kakmerge<ret>'
 map -docstring 'enter spell mode' global user s ': enter-user-mode spell<ret>'
 
 # edit kakrc
@@ -297,6 +403,13 @@ declare-user-mode spell
     hook global ModeChange push:[^:]*:next-key\[user.spell\] %{
             hook -once -always window NormalIdle .* spell-clear
     }
+}
+
+# kakmerge
+try %{
+    map global kakmerge -docstring "pick local" l ': kakmerge-pick local<ret>'
+    map global kakmerge -docstring "pick base" b ': kakmerge-pick base<ret>'
+    map global kakmerge -docstring "pick remote" r ': kakmerge-pick remote<ret>'
 }
 
 # View mode ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
