@@ -8,7 +8,7 @@ sketchybar --add       item               window.yabai_status left              
            --add event window_mode_change                                                      \
            --subscribe window.yabai_status front_app_switched window_mode_change mouse.clicked \
                                                                                                \
-           --add       item               window.yabai_stack right                             \
+           --add       item               window.yabai_stack left                              \
            --set       window.yabai_stack script="$PLUGIN_DIR/stack.sh"                        \
                                           icon.font="$FONT:Bold:16.0"                          \
                                           updates=on                                           \

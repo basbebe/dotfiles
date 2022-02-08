@@ -9,7 +9,27 @@ update() {
   if [ "$DEVICE" = "" ]; then
     sketchybar --set $NAME drawing=off
   elif [[ "$DEVICE" = AirPods\ Pro* ]]; then
-    sketchybar --set $NAME drawing=on icon="􀪷" label=""
+    # Left
+    LEFT="$(echo $QUERY | jq -rc '.[] | .device_batteryLevelLeft' | head -n1 | cut -d '%' -f1)"
+
+    # Right
+    RIGHT="$(echo $QUERY | jq -rc '.[] | .device_batteryLevelRight' | head -n1 | cut -d '%' -f1)"
+
+    # Case
+    CASE="$(echo $QUERY | jq -rc '.[] | .device_batteryLevelCase' | head -n1 | cut -d '%' -f1)"
+
+    if [ $LEFT = 0 ]; then
+      LEFT="-"
+    fi
+
+    if [ $RIGHT = 0 ]; then
+      RIGHT="-"
+    fi
+
+    if [ $CASE = 0 ]; then
+      CASE="-"
+    fi
+    sketchybar --set $NAME drawing=on icon="􀪷" label="$LEFT $RIGHT $CASE"
   else
     sketchybar --set $NAME drawing=on icon="􀑈" label="$DEVICE"
   fi
