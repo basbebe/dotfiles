@@ -12,18 +12,19 @@
 [init]
 	defaultBranch = main
 [merge]
+	conflictstyle = diff3
 	tool = kakmerge
 [mergetool "kakmerge"]
 	trustExitCode = true
 	cmd = env LOCAL=\"${LOCAL}\" BASE=\"${BASE}\" REMOTE=\"${REMOTE}\" MERGED=\"${MERGED}\" ~/git/kakmerge/kakmerge
 [delta]
-	features = side-by-side line-numbers decorations
-	; syntax-theme = gruvbox-dark
-	; light = true
-	; plus-style = syntax "#003800"
-	; minus-style = syntax "#3f0001"
-	whitespace-error-style = 22 reverse
+	; hyperlinks = true
+	navigation = true
 	side-by-side = true
+	decorations = true
+	whitespace-error-style = 22 reverse
+[diff]
+	colorMoved = default
 [interactive]
 	diffFilter = delta --color-only
 [pull]
