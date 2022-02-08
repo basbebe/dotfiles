@@ -44,6 +44,9 @@ if status is-interactive
     set -x JAVA_HOME (/usr/libexec/java_home)
     fish_add_path --global --path --append $JAVA_HOME/bin
 
+    # kakoune
+    set -xg KAKOUNE_POSIX_SHELL /bin/dash
+
     # kakoune.cr
     set -x EDITOR 'kcr edit'
     set -x VISUAL 'kcr edit'

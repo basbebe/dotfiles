@@ -1,4 +1,4 @@
-#!/bin/env bash
+#!/usr/bin/env sh
 
 # if you're having troubles finding key codes for a key just type skhd --observe in a terminal and type a key. Pretty cool! Or just check the wiki.
 # https://github.com/koekeishiya/skhd/issues/1
@@ -20,7 +20,7 @@ ctrl + alt + cmd - r : launchctl kickstart -k "gui/${UID}/homebrew.mxcl.yabai"
 # open terminal
 hyper - return [
   "kitty"  : skhd --key "cmd - n"
-  "finder" : SHELL=/usr/local/bin/fish kitty --single-instance --directory="$(osascript -e 'tell app "Finder" to POSIX path of (insertion location as alias)')" &> /dev/null
+  "finder" : SHELL=/usr/local/bin/fish kitty --single-instance --directory="$(osascript -e 'tell app "Finder" to POSIX path of (insertion location as alias)')" 2>&1 /dev/null
   *        : ~/.local/bin/kitty-wrapper.sh
   ]
 
@@ -31,7 +31,7 @@ hyper - r : SCRATCHPAD_TITLE="scratchpad_calc" ~/.config/skhd/scratchpad.sh r -q
 
 # new finder window
 hyper - f [
-  "kitty"  : open $(kitty @ --to unix:/tmp/kitty_listen-$(yabai -m query --windows --space | jq -c '.[] | select(.focused==1).pid') ls | \
+  "kitty"  : open $(kitty @ --to unix:/tmp/kitty_listen_$(yabai -m query --windows --space | jq -rc '.[] | select(."has-focus" == true).pid') ls | \
     jq -r '.[] | select(.is_focused==true) | select(.is_focused==true).tabs[] | select(.is_focused==true) | .windows[] | select(.is_focused==true)'.cwd)
   "finder" : skhd --key "cmd - n"
   *        : open ~

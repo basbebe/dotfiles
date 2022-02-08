@@ -1,39 +1,35 @@
 #!/bin/sh
 
-kitty_cmd="kitty \
-  --config="$HOME/.config/kitty/kitty.conf" \
-  --config="$HOME/.config/kitty/themes/gruvbox-$(fish -c 'echo $OS_THEME').conf"
+kitty_cmd="/usr/local/bin/kitty \
+  --config=$HOME/.config/kitty/kitty.conf
+  --config=$HOME/.config/kitty/themes/gruvbox-$(fish -c 'echo $OS_THEME').conf \
   --override macos_hide_from_tasks=yes \
   --single-instance \
+  --wait-for-single-instance-window-close \
   --instance-group=scratchpad \
-  --listen-on=unix:/tmp/kitty_listen_scratchpad"
-
-kitty_launch="kitty @ --to=unix:/tmp/kitty_listen_scratchpad \
-  launch \
-  --env SHELL=/usr/local/bin/fish \
   --title=$SCRATCHPAD_TITLE \
-  --cwd=$HOME \
-  --type=os-window"
+  --directory=$HOME"
 
-scratchpad_id=$(yabai -m query --windows | jq --arg title "$SCRATCHPAD_TITLE" -c '[.[] | select(.title==$title).id'][0])
+scratchpad_id=$(yabai -m query --windows | jq --arg title "$SCRATCHPAD_TITLE" -rc '[.[] | select(.title==$title)][0].id')
 
 is_focused() {
-  [[ $(yabai -m query --windows --window $1 | jq -rc '."has-focus"') == "true" ]]
+  [ "$(yabai -m query --windows --window "$1" | jq -rc '."has-focus"')" = "true" ]
 }
 is_minimized() {
-  [[ $(yabai -m query --windows --window $1 | jq -rc '."is-minimized"') == "true" ]]
+  [ "$(yabai -m query --windows --window "$1" | jq -rc '."is-minimized"')" = "true" ]
 }
 
-if [[ "$scratchpad_id" -lt 1 ]]; then
-  $kitty_launch "${@}" \
-    || $kitty_cmd $kitty_launch "${@}"
+echo $scratchpad_id
+
+if [ "$scratchpad_id" = "null" ]; then
+  SHELL=/usr/local/bin/fish $kitty_cmd "$@"
 else
   current_space=$(yabai -m query --spaces --space | jq -rc '.index')
-  if is_minimized $scratchpad_id; then
+  if is_minimized "$scratchpad_id"; then
     yabai -m window "$scratchpad_id" --space "$current_space"
     yabai -m window --focus "$scratchpad_id"
   else
-    if is_focused $scratchpad_id; then
+    if is_focused "$scratchpad_id"; then
       yabai -m window "$scratchpad_id" --minimize
     else
       yabai -m window --focus "$scratchpad_id"
