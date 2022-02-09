@@ -42,7 +42,6 @@ sketchybar --bar                height=32                                       
            --default            drawing=on                                                        \
                                 lazy=off                                                          \
                                 updates=when_shown                                                \
-                                cache_scripts=on                                                  \
                                 label.font="$FONT:Semibold:13.0"                                  \
                                 icon.font="$FONT:Bold:14.0"                                       \
                                 icon.color=$ICON_COLOR                                            \
@@ -92,16 +91,16 @@ sketchybar --bar                height=32                                       
                                                                                                   \
            --add event          theme_change AppleInterfaceThemeChangedNotification
 
-source "$ITEM_DIR/apple.sh"
-source "$ITEM_DIR/spaces.sh"
-source "$ITEM_DIR/window.sh"
-source "$ITEM_DIR/network.sh"
-source "$ITEM_DIR/memory.sh"
+. "$ITEM_DIR/apple.sh"
+. "$ITEM_DIR/spaces.sh"
+. "$ITEM_DIR/window.sh"
+. "$ITEM_DIR/network.sh"
+. "$ITEM_DIR/memory.sh"
 
-source "$ITEM_DIR/calendar.sh"
-source "$ITEM_DIR/system.sh"
-source "$ITEM_DIR/cpu.sh"
-source "$ITEM_DIR/spotify.sh"
+. "$ITEM_DIR/calendar.sh"
+. "$ITEM_DIR/system.sh"
+. "$ITEM_DIR/cpu.sh"
+. "$ITEM_DIR/spotify.sh"
 
 ############## FINALIZING THE SETUP ##############
 sketchybar --update

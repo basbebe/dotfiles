@@ -3,23 +3,25 @@
 update() {
   # This is called for all other events
   WINDOW=$(yabai -m query --windows --window)
-  read -r floating split parent fullscreen sticky <<<$(echo "$WINDOW" | jq -rc '.["is-floating", "split-type", "has-parent-zoom", "has-fullscreen-zoom", "is-sticky"]')
-
-  if [[ $floating == "true" ]]; then
+  WINDOWPROPERTIES="$(echo "$WINDOW" | jq -rc '[.["is-floating", "split-type", "has-parent-zoom", "has-fullscreen-zoom", "is-sticky"]] | @sh')"
+  read -r floating split parent fullscreen sticky <<EOF
+  $WINDOWPROPERTIES
+EOF
+  if [ "$floating" = "true" ]; then
     icon="􀶣"
-  elif [[ $parent == "true" ]]; then
+  elif [ "$parent" = "true" ]; then
     icon="􁈔"
-  elif [[ $fullscreen == "true" ]]; then
+  elif [ "$fullscreen" = "true" ]; then
     icon="􀏒"
-  elif [[ $split == "vertical" ]]; then
+  elif [ "$split" = "'vertical'" ]; then
     icon="􀧉"
-  elif [[ $split == "horizontal" ]]; then
+  elif [ "$split" = "'horizontal'" ]; then
     icon="􀧋"
   else
     icon="􀏄"
   fi
 
-  sketchybar --set $NAME icon=$icon
+  sketchybar --set "$NAME" icon="$icon"
 }
 
 mouse_clicked() {
@@ -28,11 +30,11 @@ mouse_clicked() {
 }
 
 mouse_entered() {
-  sketchybar --set $NAME background.drawing=on
+  sketchybar --set "$NAME" background.drawing=on
 }
 
 mouse_exited() {
-  sketchybar --set $NAME background.drawing=off
+  sketchybar --set "$NAME" background.drawing=off
 }
 
 case "$SENDER" in

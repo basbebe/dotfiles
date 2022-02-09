@@ -11,54 +11,47 @@ ARTIST=""
 SHUFFLE=""
 REPEAT=""
 
-
-next ()
-{
-  if [ $RUNNING -eq 0 ]; then 
+next() {
+  if [ $RUNNING -eq 0 ]; then
     osascript -e 'tell application "Spotify" to play next track'
   fi
 }
 
-back () 
-{
-  if [ $RUNNING -eq 0 ]; then 
+back() {
+  if [ $RUNNING -eq 0 ]; then
     osascript -e 'tell application "Spotify" to play previous track'
   fi
 }
 
-play_pause () 
-{
-  if [ $RUNNING -eq 0 ]; then 
+play_pause() {
+  if [ $RUNNING -eq 0 ]; then
     osascript -e 'tell application "Spotify" to playpause'
   fi
 }
 
-repeat () 
-{
+repeat() {
   REPEAT=$(osascript -e 'tell application "Spotify" to get repeating')
   if [ "$REPEAT" = "false" ]; then
     sketchybar -m --set spotify.repeat icon.highlight=on
     osascript -e 'tell application "Spotify" to set repeating to true'
-  else 
+  else
     sketchybar -m --set spotify.repeat icon.highlight=off
     osascript -e 'tell application "Spotify" to set repeating to false'
   fi
 }
 
-shuffle () 
-{
+shuffle() {
   SHUFFLE=$(osascript -e 'tell application "Spotify" to get shuffling')
   if [ "$SHUFFLE" = "false" ]; then
     sketchybar -m --set spotify.shuffle icon.highlight=on
     osascript -e 'tell application "Spotify" to set shuffling to true'
-  else 
+  else
     sketchybar -m --set spotify.shuffle icon.highlight=off
     osascript -e 'tell application "Spotify" to set shuffling to false'
   fi
 }
 
-update ()
-{
+update() {
   if [ "$(osascript -e 'if application "Spotify" is running then tell application "Spotify" to get player state')" == "playing" ]; then
     PLAYING=0
     TRACK=$(osascript -e 'tell application "Spotify" to get name of current track' | cut -c1-20)
@@ -75,39 +68,44 @@ update ()
     else
       args+=(--set spotify.name label="$TRACK  􀉮  $ARTIST" drawing=on)
     fi
-    args+=(--set spotify.play_pause icon=􀊆 \
-           --set spotify.shuffle icon.highlight=$SHUFFLE \
-           --set spotify.repeat icon.highlight=$REPEAT)
+    args+=(--set spotify.play_pause icon=􀊆
+      --set spotify.shuffle icon.highlight=$SHUFFLE
+      --set spotify.repeat icon.highlight=$REPEAT)
   else
-    args+=(--set spotify.name drawing=off \
-           --set spotify.name popup.drawing=off \
-           --set spotify.play_pause icon=􀊄)
+    args+=(--set spotify.name drawing=off
+      --set spotify.name popup.drawing=off
+      --set spotify.play_pause icon=􀊄)
   fi
   sketchybar -m "${args[@]}"
 }
 
-mouse_clicked () {
+mouse_clicked() {
   case "$NAME" in
-    "spotify.next") next
-    ;;
-    "spotify.back") back
-    ;;
-    "spotify.play_pause") play_pause
-    ;;
-    "spotify.shuffle") shuffle
-    ;;
-    "spotify.repeat") repeat
-    ;;
-    *)
-    ;;
+    "spotify.next")
+      next
+      ;;
+    "spotify.back")
+      back
+      ;;
+    "spotify.play_pause")
+      play_pause
+      ;;
+    "spotify.shuffle")
+      shuffle
+      ;;
+    "spotify.repeat")
+      repeat
+      ;;
+    *) ;;
+
   esac
 }
 
 case "$SENDER" in
-  "mouse.clicked") mouse_clicked
-  ;;
-  *) update
-  ;;
+  "mouse.clicked")
+    mouse_clicked
+    ;;
+  *)
+    update
+    ;;
 esac
-  
-

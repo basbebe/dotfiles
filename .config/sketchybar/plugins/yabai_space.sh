@@ -14,7 +14,7 @@ update() {
       icon="􀚅"
       ;;
   esac
-  sketchybar --set $NAME icon=$icon
+  sketchybar --set "$NAME" icon=$icon
 }
 
 mouse_clicked() {
@@ -23,11 +23,11 @@ mouse_clicked() {
 }
 
 mouse_entered() {
-  sketchybar --set $NAME background.drawing=on
+  sketchybar --set "$NAME" background.drawing=on
 }
 
 mouse_exited() {
-  sketchybar --set $NAME background.drawing=off
+  sketchybar --set "$NAME" background.drawing=off
 }
 
 case "$SENDER" in
