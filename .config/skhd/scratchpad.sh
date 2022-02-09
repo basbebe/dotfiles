@@ -10,13 +10,13 @@ kitty_cmd="/usr/local/bin/kitty \
   --title=$SCRATCHPAD_TITLE \
   --directory=$HOME"
 
-scratchpad_id=$(yabai -m query --windows | jq --arg title "$SCRATCHPAD_TITLE" -rc '[.[] | select(.title==$title)][0].id')
+scratchpad_id=$(yabai -m query --windows | jq --arg title "$SCRATCHPAD_TITLE" -rc '[.[] | select(.title==$title)][0].id | @sh')
 
 is_focused() {
-  [ "$(yabai -m query --windows --window "$1" | jq -rc '."has-focus"')" = "true" ]
+  [ "$(yabai -m query --windows --window "$1" | jq -rc '."has-focus" | @sh')" = "true" ]
 }
 is_minimized() {
-  [ "$(yabai -m query --windows --window "$1" | jq -rc '."is-minimized"')" = "true" ]
+  [ "$(yabai -m query --windows --window "$1" | jq -rc '."is-minimized" | @sh')" = "true" ]
 }
 
 echo $scratchpad_id
@@ -24,7 +24,7 @@ echo $scratchpad_id
 if [ "$scratchpad_id" = "null" ]; then
   SHELL=/usr/local/bin/fish $kitty_cmd "$@"
 else
-  current_space=$(yabai -m query --spaces --space | jq -rc '.index')
+  current_space=$(yabai -m query --spaces --space | jq -rc '.index | @sh')
   if is_minimized "$scratchpad_id"; then
     yabai -m window "$scratchpad_id" --space "$current_space"
     yabai -m window --focus "$scratchpad_id"
