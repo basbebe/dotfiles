@@ -1,3 +1,5 @@
+#!/usr/bin/env fish
+
 # source: https://github.com/fatih/dotfiles/blob/main/fish/functions/change_background.fish
 # change background to the given mode. If mode is missing,
 # we try to deduct it from the system settings.
@@ -25,10 +27,10 @@ function change_theme --argument-names mode_setting \
     function toggle_mode --argument-names mode
         switch $mode
             case light
-                osascript -l JavaScript -e "Application('System Events').appearancePreferences.darkMode = false" >/dev/null
+                osascript -l JavaScript -e "Application('System Events').appearancePreferences.darkMode = false" >/dev/null &
                 echo light
             case dark
-                osascript -l JavaScript -e "Application('System Events').appearancePreferences.darkMode = true" >/dev/null
+                osascript -l JavaScript -e "Application('System Events').appearancePreferences.darkMode = true" >/dev/null &
                 echo dark
         end
     end

@@ -32,7 +32,7 @@ hyper - r : SCRATCHPAD_TITLE="scratchpad_calc" ~/.config/skhd/scratchpad.sh r -q
 # new finder window
 hyper - f [
   "kitty"  : open $(kitty @ --to unix:/tmp/kitty_listen_$(yabai -m query --windows --space | jq -rc '.[] | select(."has-focus" == true).pid') ls | \
-    jq -r '.[] | select(.is_focused==true) | select(.is_focused==true).tabs[] | select(.is_focused==true) | .windows[] | select(.is_focused==true)'.cwd)
+    jq -rc '.[] | select(.is_focused==true) | select(.is_focused==true).tabs[] | select(.is_focused==true).windows[] | select(.is_focused==true).cwd')
   "finder" : skhd --key "cmd - n"
   *        : open ~
   ]
@@ -50,7 +50,7 @@ hyper - b : open -n /Applications/Firefox.app
 hyper - y : open -a 'Yubico Authenticator'
 
 # toggle dark mode
-hyper - d : osascript -e 'tell app "System Events" to tell appearance preferences to set dark mode to not dark mode'
+hyper - d : ~/.local/bin/change-theme toggle
 
 # windows ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
@@ -224,7 +224,7 @@ meh - r : yabai -m space --rotate 90
 
 # create new space and follow focus
 meh - c : yabai -m space --create && \
-                         index="$(yabai -m query --spaces --display | jq 'map(select(."native-fullscreen" == 0))[-1].index')" && \
+                         index="$(yabai -m query --spaces --display | jq -rc 'map(select(."native-fullscreen" == 0))[-1].index')" && \
                          yabai -m space --focus "${index}"
 
 # destroy space

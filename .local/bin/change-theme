@@ -1,0 +1,95 @@
+#!/bin/dash
+
+# toggle / light / dark
+# when run without an argument will reset theme to system state.
+# invoked by dark-mode-notify when system dark mode changes
+# dark-mode-notify sets $DARKMODE to 1 or 0 depending on the system's state.
+
+arg=$1
+
+# get mode depending on system state (use $DARKMODE,
+# otherwise use function to query state)
+get_mode() {
+  if [ -z "$DARKMODE" ]; then
+    mode=$(~/.local/bin/get-system-theme)
+  elif [ "$DARKMODE" -eq 1 ]; then
+    mode=dark
+  elif [ "$DARKMODE" -eq 0 ]; then
+    mode=light
+  fi
+  echo "$mode"
+}
+
+set_kitty() {
+  for instance in /tmp/kitty_listen*; do
+    (/usr/local/bin/kitty @ --to unix:"${instance}" set-colors \
+      --all --configured \
+      ~/.config/kitty/themes/gruvbox-"${1}".conf &)
+  done
+}
+
+set_kak() {
+  for client in $(/usr/local/bin/kak -l | /usr/local/bin/rg -v '\('); do
+    (echo "colorscheme gruvbox-${1}" | /usr/local/bin/kak -p "$client" &)
+  done
+}
+
+set_fish() {
+  (/usr/local/bin/fish -c "set -U OS_THEME $1" &)
+}
+
+set_mode() {
+  # quit if called by dark-mode-notify and system theme and fish variable
+  # already match
+  [ -n "$DARKMODE" ] \
+    && [ "$1" = "$(/usr/local/bin/fish -c 'echo $OS_THEME ')" ] \
+    && exit
+  case $1 in
+    light)
+      #only change system state if not being called by system state change
+      # (dark-mode-notify)
+      [ -z "$DARKMODE" ] \
+        && (osascript -l JavaScript -e \
+          "Application('System Events').appearancePreferences.darkMode = false" \
+          >/dev/null &)
+      mode=light
+      ;;
+    dark)
+      #only change system state if not being called by system state change
+      # (dark-mode-notify)
+      [ -z "$DARKMODE" ] \
+        && (osascript -l JavaScript -e \
+          "Application('System Events').appearancePreferences.darkMode = true" \
+          >/dev/null &)
+      mode=dark
+      ;;
+  esac
+
+  (set_kitty "$mode" &)
+  (set_kak "$mode" &)
+  (set_fish "$mode" &)
+}
+
+case $arg in
+  light)
+    set_mode light
+    ;;
+  dark)
+    set_mode dark
+    ;;
+  toggle)
+    case $(get_mode) in
+      dark)
+        set_mode light
+        ;;
+      light)
+        set_mode dark
+        ;;
+    esac
+    ;;
+  *)
+    set_mode "$(get_mode)"
+    ;;
+esac
+
+exit
