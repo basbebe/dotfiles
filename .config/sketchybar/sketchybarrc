@@ -3,20 +3,23 @@
 ITEM_DIR="$HOME/.config/sketchybar/items" # Directory where the items are configured
 PLUGIN_DIR="$HOME/.config/sketchybar/plugins" # Directory where all the plugin scripts are stored
 
+# get theme colors matching system dark/light mode
+. ~/.local/bin/get-colortheme
+
 LOADING=􀖇 # Icon displayed while an item is still initializing
 PADDINGS=3 # All paddings use this value (icon, label, background and bar paddings)
 FONT="SF Pro" # Needs to have Regular, Bold, Semibold, Heavy and Black variants
-BAR_COLOR=0xff282828 # Black bar
-ICON_COLOR=0xffebdbb2 # Color of all icons
-LABEL_COLOR=0xffebdbb2 # Color of all labels
-CONTRAST_COLOR=$ICON_COLOR #0xff2a2f38 # The color of elements in front of a background
+BAR_COLOR=0xff$COLOR_BG # Black bar
+ICON_COLOR=0xff$COLOR_FG # Color of all icons
+LABEL_COLOR=0xff$COLOR_FG_GRAY # Color of all labels
+CONTRAST_COLOR=$ICON_COLOR # The color of elements in front of a background
 SPACE_CLICK_SCRIPT="yabai -m space --focus \$SID" # The script that is run for clicking on space components
 
 SEGMENT_HEIGHT=28 # The height of the segments
 SEGMENT_SPACING=13 # The spacing between the segments
 SEGMENT_BORDER_WIDTH=0 # Width of the borders for segments
-SEGMENT_BACKGROUND_COLOR=0x00000000 # The background color for segments
-SEGMENT_BACKGROUND_HIGHLIGHT_COLOR=$SEGMENT_BACKGROUND_COLOR # 0xffe1e3e4 # The background highlight color for segments (borders, etc)
+SEGMENT_BACKGROUND_COLOR=0xff$COLOR_BG # The background color for segments
+SEGMENT_BACKGROUND_HIGHLIGHT_COLOR=$SEGMENT_BACKGROUND_COLOR # The background highlight color for segments (borders, etc)
 CORNER_RADIUS=4 # Roundness of the segments
 
 POPUP_BACKGROUND_COLOR=$BAR_COLOR
@@ -87,9 +90,7 @@ sketchybar --bar                height=32                                       
                                                                                                   \
            --add item           sep_template left                                                 \
            --set sep_template   icon="︙"                                                          \
-                                drawing=off                                                       \
-                                                                                                  \
-           --add event          theme_change AppleInterfaceThemeChangedNotification
+                                drawing=off
 
 . "$ITEM_DIR/apple.sh"
 . "$ITEM_DIR/spaces.sh"
@@ -101,6 +102,7 @@ sketchybar --bar                height=32                                       
 . "$ITEM_DIR/system.sh"
 . "$ITEM_DIR/cpu.sh"
 . "$ITEM_DIR/spotify.sh"
+. "$ITEM_DIR/theme.sh"
 
 ############## FINALIZING THE SETUP ##############
 sketchybar --update

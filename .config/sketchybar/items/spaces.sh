@@ -1,5 +1,6 @@
 #!/usr/bin/env sh
 
+echo $COLOR_FG_BLUE
 sketchybar --add item            space_mode left                                \
            --set space_mode      script="$PLUGIN_DIR/yabai_space.sh"            \
                                  icon.font="$FONT:Bold:16.0"                    \
@@ -10,20 +11,20 @@ sketchybar --add item            space_mode left                                
                                                                                 \
            --clone space_label_template label_template                          \
            --add space          space_template left                             \
-           --set space_template icon.highlight_color=0xff9dd274                 \
+           --set space_template icon.highlight_color=0xff$COLOR_BG_BLUE         \
                                 label.drawing=off                               \
                                 drawing=off                                     \
                                 updates=on                                      \
                                 associated_display=1                            \
                                 label.font="$FONT:Black:13.0"                   \
                                 icon.font="$FONT:Bold:17.0"                     \
-                                script="$PLUGIN_DIR/space.sh"                     \
+                                script="$PLUGIN_DIR/space.sh"                   \
                                 click_script="$SPACE_CLICK_SCRIPT"              \
                                                                                 \
            --add item           yabai_spaces left                               \
            --set yabai_spaces   drawing=off                                     \
                                 updates=on                                      \
-                                script="$PLUGIN_DIR/yabai_spaces.sh"              \
+                                script="$PLUGIN_DIR/yabai_spaces.sh"            \
            --add event          display_number_changed                          \
            --add event          space_number_changed                            \
            --subscribe yabai_spaces display_number_changed space_number_changed \

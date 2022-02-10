@@ -34,6 +34,10 @@ set_kak() {
   done
 }
 
+set_bar() {
+  sketchybar --trigger theme_change MODE=$1
+}
+
 set_fish() {
   (/usr/local/bin/fish -c "set -U OS_THEME $1" &)
 }
@@ -67,6 +71,7 @@ set_mode() {
 
   (set_kitty "$mode" &)
   (set_kak "$mode" &)
+  (set_bar "$mode" &)
   (set_fish "$mode" &)
 }
 

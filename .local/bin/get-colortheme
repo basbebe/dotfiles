@@ -1,0 +1,134 @@
+#!/bin/sh
+
+# exports theme colors to variables
+# theme: gruvbox $MODE (medium)
+
+MODE="${MODE:-$(~/.local/bin/get-system-theme)}"
+# exit if $MODE isn't safe for eval
+echo "$MODE" | rg -iq '^[A-Z_][A-Z0-9_]*$' || exit
+
+# source: https://github.com/morhetz/gruvbox-contrib
+dark0_hard=1d2021
+dark0=282828
+dark0_soft=32302f
+dark1=3c3836
+dark2=504945
+dark3=665c54
+dark4=7c6f64
+gray_245=928374
+gray_244=928374
+light0_hard=f9f5d7
+light0=fbf1c7
+light0_soft=f2e5bc
+light1=ebdbb2
+light2=d5c4a1
+light3=bdae93
+light4=a89984
+bright_red=fb4934
+bright_green=b8bb26
+bright_yellow=fabd2f
+bright_blue=83a598
+bright_purple=d3869b
+bright_aqua=8ec07c
+bright_orange=fe8019
+neutral_red=cc241d
+neutral_green=98971a
+neutral_yellow=d79921
+neutral_blue=458588
+neutral_purple=b16286
+neutral_aqua=689d6a
+neutral_orange=d65d0e
+faded_red=9d0006
+faded_green=79740e
+faded_yellow=b57614
+faded_blue=076678
+faded_purple=8f3f71
+faded_aqua=427b58
+faded_orange=af3a03
+
+dark_bg=$dark0
+dark_bg_0=$dark0
+dark_bg_1=$dark1
+dark_bg_2=$dark2
+dark_bg_3=$dark3
+dark_bg_4=$dark4
+dark_bg_gray=$light4
+dark_bg_orange=$neutral_orange
+dark_bg_red=$neutral_red
+dark_bg_green=$neutral_green
+dark_bg_yellow=$neutral_yellow
+dark_bg_blue=$neutral_blue
+dark_bg_magenta=$neutral_purple
+dark_bg_cyan=$neutral_aqua
+dark_fg=$light1
+dark_fg_0=$light0
+dark_fg_1=$light1
+dark_fg_2=$light2
+dark_fg_3=$light3
+dark_fg_4=$light4
+dark_fg_gray=$gray_245
+dark_fg_orange=$bright_orange
+dark_fg_red=$bright_red
+dark_fg_green=$bright_green
+dark_fg_yellow=$bright_yellow
+dark_fg_blue=$bright_blue
+dark_fg_magenta=$bright_purple
+dark_fg_cyan=$bright_aqua
+
+light_bg=$light0
+light_bg_0=$light0
+light_bg_1=$light1
+light_bg_2=$light2
+light_bg_3=$light3
+light_bg_4=$light4
+light_bg_gray=$dark4
+light_bg_orange=$neutral_orange
+light_bg_red=$neutral_red
+light_bg_green=$neutral_green
+light_bg_yellow=$neutral_yellow
+light_bg_blue=$neutral_blue
+light_bg_magenta=$neutral_purple
+light_bg_cyan=$neutral_aqua
+light_fg=$dark1
+light_fg_0=$dark0
+light_fg_1=$dark1
+light_fg_2=$dark2
+light_fg_3=$dark3
+light_fg_4=$dark4
+light_fg_gray=$gray_244
+light_fg_orange=$faded_orange
+light_fg_red=$faded_red
+light_fg_green=$faded_green
+light_fg_yellow=$faded_yellow
+light_fg_blue=$faded_blue
+light_fg_magenta=$faded_purple
+light_fg_cyan=$faded_aqua
+
+export COLOR_BG=$(eval "echo \$${MODE}_bg")
+export COLOR_BG_0=$(eval "echo \$${MODE}_bg_0")
+export COLOR_BG_1=$(eval "echo \$${MODE}_bg_1")
+export COLOR_BG_2=$(eval "echo \$${MODE}_bg_2")
+export COLOR_BG_3=$(eval "echo \$${MODE}_bg_3")
+export COLOR_BG_4=$(eval "echo \$${MODE}_bg_4")
+export COLOR_BG_GRAY=$(eval "echo \$${MODE}_bg_gray")
+export COLOR_BG_ORANGE=$(eval "echo \$${MODE}_bg_orange")
+export COLOR_BG_RED=$(eval "echo \$${MODE}_bg_red")
+export COLOR_BG_GREEN=$(eval "echo \$${MODE}_bg_green")
+export COLOR_BG_YELLOW=$(eval "echo \$${MODE}_bg_yellow")
+export COLOR_BG_BLUE=$(eval "echo \$${MODE}_bg_blue")
+export COLOR_BG_MAGENTA=$(eval "echo \$${MODE}_bg_magenta")
+export COLOR_BG_CYAN=$(eval "echo \$${MODE}_bg_cyan")
+export COLOR_FG=$(eval "echo \$${MODE}_fg")
+export COLOR_FG_0=$(eval "echo \$${MODE}_fg_0")
+export COLOR_FG_1=$(eval "echo \$${MODE}_fg_1")
+export COLOR_FG_2=$(eval "echo \$${MODE}_fg_2")
+export COLOR_FG_3=$(eval "echo \$${MODE}_fg_3")
+export COLOR_FG_4=$(eval "echo \$${MODE}_fg_4")
+export COLOR_FG_GRAY=$(eval "echo \$${MODE}_fg_gray")
+export COLOR_FG_ORANGE=$(eval "echo \$${MODE}_fg_orange")
+export COLOR_FG_RED=$(eval "echo \$${MODE}_fg_red")
+export COLOR_FG_GREEN=$(eval "echo \$${MODE}_fg_green")
+export COLOR_FG_YELLOW=$(eval "echo \$${MODE}_fg_yellow")
+export COLOR_FG_BLUE=$(eval "echo \$${MODE}_fg_blue")
+export COLOR_FG_MAGENTA=$(eval "echo \$${MODE}_fg_magenta")
+export COLOR_FG_CYAN=$(eval "echo \$${MODE}_fg_cyan")

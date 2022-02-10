@@ -68,7 +68,7 @@ for display in $DISPLAYS; do
     args+=(--clone "$NAME" space_template before
       --set "$NAME" label="${NAME}"
       icon="${ICON}"
-      icon.highlight_color=0xff72cce8 associated_space="${COUNT}"
+      associated_space="${COUNT}"
       associated_display="${display}"
       drawing=on)
   done <<<"$SPACES"
