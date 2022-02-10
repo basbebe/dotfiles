@@ -20,7 +20,7 @@ ctrl + alt + cmd - r : launchctl kickstart -k "gui/${UID}/homebrew.mxcl.yabai"
 # open terminal
 hyper - return [
   "kitty"  : skhd --key "cmd - n"
-  "finder" : SHELL=/usr/local/bin/fish kitty --single-instance --directory="$(osascript -e 'tell app "Finder" to POSIX path of (insertion location as alias)')" 2>&1 /dev/null
+  "finder" : (SHELL=/usr/local/bin/fish kitty --single-instance --directory=$(osascript -e 'tell app "Finder" to POSIX path of (insertion location as alias)') &)
   *        : ~/.local/bin/kitty-wrapper.sh
   ]
 
@@ -41,7 +41,7 @@ hyper - f [
 hyper - m : open -na /Applications/mpv.app $(pbpaste)
 
 # open nnn window
-hyper - n : SHELL=/usr/local/bin/fish kitty --single-instance -d ~ fish -ic n &> /dev/null
+hyper - n : (SHELL=/usr/local/bin/fish kitty --single-instance -d ~ fish -ic n &> /dev/null &)
 
 # browser
 hyper - b : open -n /Applications/Firefox.app

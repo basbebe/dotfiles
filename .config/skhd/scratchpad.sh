@@ -22,7 +22,7 @@ is_minimized() {
 echo $scratchpad_id
 
 if [ "$scratchpad_id" = "null" ]; then
-  SHELL=/usr/local/bin/fish $kitty_cmd "$@"
+  (SHELL=/usr/local/bin/fish $kitty_cmd "$@" &)
 else
   current_space=$(yabai -m query --spaces --space | jq -rc '.index | @sh')
   if is_minimized "$scratchpad_id"; then
