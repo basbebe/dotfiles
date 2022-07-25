@@ -20,6 +20,9 @@ fish_add_path --global --path --append /usr/local/opt/llvm/bin/
 fish_add_path --global --path --append /usr/local/opt/util-linux/bin
 fish_add_path --global --path --append /usr/local/opt/util-linux/sbin
 
+# openssl
+fish_add_path --global --path --move /usr/local/opt/openssl@3/bin
+
 if status is-interactive
 
     # Settings  ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
