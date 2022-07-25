@@ -27,7 +27,7 @@ hook global BufWritePost .* %{
 
 # Filetype-specific
 # Makefile
-hook global WinSetOption filetype=(ini|makefile) %{
+hook global WinSetOption filetype=(ini|makefile|latex) %{
     set-option window indentwidth 0
 }
 
@@ -61,6 +61,14 @@ hook global BufSetOption filetype=(css|javascipt|yaml) %{
     set-option buffer formatcmd "prettier --stdin-filepath=%val{buffile}"
 }
 
+hook global BufSetOption filetype=yaml %{
+    set-option buffer lintcmd %{ run() {
+           # change [message-type] to message-type:
+           yamllint -f parsable "$1" | sed 's/ \[\(.*\)\] / \1: /'
+      } && run }
+}
+
+
 # handled by lsp
 # hook global BufSetOption filetype=(java) %{
     #     set-option buffer formatcmd "prettier --plugin=/usr/local/lib/node_modules/prettier-plugin-java/ --stdin-filepath=%val{buffile}"
@@ -80,9 +88,9 @@ hook global BufSetOption filetype=rust %{
 }
 
 # text files
-hook global WinSetOption filetype=(asciidoc|fountain|latex|markdown|plain) %{
-    set-option window lintcmd "proselint"
+hook global BufSetOption filetype=(asciidoc|fountain|latex|markdown|plain) %{
+    set-option buffer lintcmd "proselint"
     # (?<=^[-]{3}\n)(.*^)(header-includes:)(?=.*^[-|.]{3}\n)
-    set-option window formatcmd "pandoc -f %opt{filetype} -t %opt{filetype}-fenced_code_attributes-smart --standalone --reference-links"
+    set-option buffer formatcmd "pandoc -f %opt{filetype} -t %opt{filetype}-fenced_code_attributes-smart --standalone --reference-links"
 }
 

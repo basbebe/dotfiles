@@ -8,7 +8,7 @@ set-option -add global ui_options terminal_set_title=no
 # Gruvbox theme for Kakoune
 # https://github.com/morhetz/gruvbox
 try %sh{
-    echo "colorscheme gruvbox-"$(fish -c 'echo $OS_THEME')
+    echo "colorscheme gruvbox-$(~/.local/bin/get-system-theme)"
 }
 
 # accept file updates
@@ -28,7 +28,11 @@ set-option global scrolloff 4,4
 # Clipboard
 # synchronize-terminal-clipboard
 hook global RegisterModified '"' %{ nop %sh{
-  printf %s "$kak_main_reg_dquote" | pbcopy
+    if [ "$TERM" = "xterm-kitty" ]; then
+        printf %s "$kak_main_reg_dquote" | kitty +kitten clipboard
+    else
+        printf %s "$kak_main_reg_dquote" | pbcopy
+  fi
 }}
 
 # Tools
@@ -60,7 +64,7 @@ hook global InsertCompletionHide .* %{
 
 try %sh{kak-lsp --kakoune --session "$kak_session"}
 
-hook global WinSetOption filetype=(c|cpp|elm|crystal|css|elm|haskell|html|java|javascript|json|rust|python|go|typescript|svelte|zig|gdscript) %{
+hook global WinSetOption filetype=(c|cpp|elm|crystal|css|elm|haskell|html|java|javascript|json|latex|rust|python|go|typescript|svelte|zig|gdscript) %{
     set-option global lsp_auto_highlight_references true
     set-option global lsp_auto_show_code_actions true
     echo -debug "Enabling LSP for %opt{filetype}"
