@@ -17,7 +17,7 @@ yabai -m config right_padding  4
 yabai -m config window_gap     2
 
 # border settings
-yabai -m config window_border               off
+yabai -m config window_border               on
 yabai -m config window_border_width         4
 yabai -m config active_window_border_color  0xff689d6a
 yabai -m config normal_window_border_color  0x88928374
@@ -63,7 +63,7 @@ yabai -m config active_window_opacity        1.0
 # yabai -m config normal_window_opacity        0.90
 
 # sketchybar
-sketchybar_height=$(sketchybar --query bar | jq '.geometry.height')
+sketchybar_height=$(sketchybar --query bar | jq '.height')
 yabai -m config external_bar all:"${sketchybar_height}":0
 
 
@@ -162,8 +162,8 @@ yabai -m rule --add title="^popup" manage=off layer=above grid=6:6:1:1:4:4
 # yabai -m signal --add event=window_created action="~/.config/yabai/refresh.sh"
 # yabai -m signal --add event=window_destroyed action="~/.config/yabai/refresh.sh"
 
-yabai -m signal --add event=window_destroyed action="yabai -m query --windows --window &> /dev/null || yabai -m window --focus mouse &> /dev/null || yabai -m window --focus \$(yabai -m query --windows --space | jq .[0].id) &> /dev/null"
-# yabai -m signal --add event=window_minimized action='yabai -m window --focus recent'
+# yabai -m signal --add event=window_destroyed action="yabai -m query --windows --window &> /dev/null || yabai -m window --focus mouse &> /dev/null || yabai -m window --focus \$(yabai -m query --windows --space | jq .[0].id) &> /dev/null"
+yabai -m signal --add event=window_minimized action='yabai -m window --focus recent'
 yabai -m signal --add event=window_focused action="sketchybar --trigger window_mode_change &> /dev/null"
 yabai -m signal --add event=window_moved action="sketchybar --trigger window_mode_change &> /dev/null"
 yabai -m signal --add event=window_resized action="sketchybar --trigger window_mode_change &> /dev/null"
@@ -176,7 +176,7 @@ yabai -m config debug_output on
 
 # MONTEREY WORKAROUND
 # kill any existing limelight process if one exists, before we launch a new one
-killall limelight &> /dev/null
-limelight -c ~/.config/limelightrc  &> /dev/null &
+# killall limelight &> /dev/null
+# limelight -c ~/.config/limelightrc  &> /dev/null &
 
 echo "yabai configuration loaded.."
