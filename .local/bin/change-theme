@@ -35,7 +35,7 @@ set_kak() {
 }
 
 set_bar() {
-  sketchybar --trigger theme_change MODE=$1
+  /usr/local/bin/sketchybar --trigger theme_change MODE=$1
 }
 
 set_fish() {
