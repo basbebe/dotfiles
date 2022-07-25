@@ -65,13 +65,13 @@ if status is-interactive
 
     # nnn
     set -x GUI 1
-    set -x NNN_OPTS 'acdEFQSUx'
+    set -x NNN_OPTS acdEFQSUx
     set -x NNN_OPENER "$HOME/.config/nnn/plugins/nuke"
     set -x NNN_BMS 'd:~/Documents;g:~/git;u:~/;.:~/.config'
     set -x NNN_PLUG 'c:fzcd;f:finder;o:fzopen;O:!launch $nnn*;p:preview-tui;d:diffs;t:nmount;v:imgview;g:-!git diff;l:-!git log;x:!chmod +x $nnn;z:!&zathura $nnn*'
     set -x NNN_ARCHIVE "\\.(7z|bz2|gz|tar|tgz|zip)"
-    set -x NNN_COLORS '4253'
-    set -x NNN_FCOLORS '020b0c0a000d0e0705030509'
+    set -x NNN_COLORS 4253
+    set -x NNN_FCOLORS 020b0c0a000d0e0705030509
 
     # Aliases & Abbreviations ––––––––––––––––––––––––––––––––––––––––––––––––––
 
@@ -81,9 +81,16 @@ if status is-interactive
     # btm
     alias btm 'btm --color=gruvbox(test $OS_THEME = dark || echo -light)'
 
-    abbr cx 'chmod -x'
+    abbr cx 'chmod +x'
 
     abbr cp 'cp -i'
+    abbr mv 'mv -i'
+
+    abbr s 'kitty +kitten ssh'
+
+    # clipboard
+    abbr pbc 'kitty +kitten clipboard'
+    abbr pbp 'kitty +kitten clipboard --get-clipboard'
 
     # exa
     alias exa 'exa --icons'
@@ -115,7 +122,7 @@ if status is-interactive
 
     # kakoune.cr
     abbr k 'kcr edit'
-    abbr K 'kcr-fzf-shell'
+    abbr K kcr-fzf-shell
     abbr KK 'kcr-fzf-shell --working-directory .'
     abbr ks 'kcr shell --session'
     abbr kl 'kcr list'
@@ -129,8 +136,6 @@ if status is-interactive
     # lazygit
     abbr lg lazygit
 
-    abbr mv 'mv -i'
-
     # use neovim
     abbr vi nvim
     abbr vim nvim
@@ -141,11 +146,11 @@ if status is-interactive
     # Utility / Housekeeping –––––––––––––––––––––––––––––––––––––––––––––––––––
 
     # SSH via gpg-agent
-    set -x GPG_TTY (tty)
-    set -x SSH_AUTH_SOCK (gpgconf --list-dirs agent-ssh-socket)
+    # set -x GPG_TTY (tty)
+    # set -x SSH_AUTH_SOCK (gpgconf --list-dirs agent-ssh-socket)
 
     # get system theme (light/dark mode)
-    set -U OS_THEME (defaults read -g AppleInterfaceStyle &> /dev/null && echo dark || echo light)
+    # set -U OS_THEME (defaults read -g AppleInterfaceStyle &> /dev/null && echo dark || echo light)
     fish_update_colors
 
     # publish fish_private_mode
@@ -156,6 +161,11 @@ if status is-interactive
     # Starship prompt
     if type -q starship
         starship init fish | source
+    end
+
+    # zoxide
+    if type -q zoxide
+        zoxide init fish | source
     end
 
     if test "$TERM_PROGRAM" = "iTerm.app"
