@@ -168,6 +168,9 @@ if status is-interactive
         zoxide init fish | source
     end
 
+    # direnv
+    direnv hook fish | source
+
     if test "$TERM_PROGRAM" = "iTerm.app"
         # enable iTerm2 tmux integration
         set -x ITERM_ENABLE_SHELL_INTEGRATION_WITH_TMUX YES

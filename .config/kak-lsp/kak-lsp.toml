@@ -173,20 +173,23 @@ args = [
       dirname(something(
         # 1. Check if there is an explicitly set project
         Base.load_path_expand((
-          p = get(ENV, "JULIA_PROJECT", nothing);
+          p = get(ENV, "JULIA_PROJECT", nothing), "markdown";
           p === nothing ? nothing : isempty(p) ? nothing : p
         )),
         # 2. Check for Project.toml in current working directory
         Base.current_project(pwd()),
-        # 3. Check for Project.toml from buffer's full file path excluding the file name
+        # 3. Check for Project.toml from buffer's full file path excluding the file nam, "markdown"e
+        texlab.latexindent.modifyLineBreaks = "true"
         Base.current_project(dirname(buffer_file)),
         # 4. Fallback to global environment
-        Base.active_project()
+        Base.active_project(, "markdown")
       ))
     end
+    xlab.latexindent.modifyLineBreaks = "true"
     server = LanguageServer.LanguageServerInstance(stdin, stdout, project_path, depot_path);
     server.runlinter = true;
     run(server);
+    xlab.latexindent.modifyLineBreaks = "true"
     """,
 ]
 [language.julia.settings]
@@ -199,16 +202,17 @@ args = [
 # "julia.lint.run" = "true"
 
 [language.latex]
-filetypes = ["latex", "markdown"]
+filetypes = ["bibtex", "latex", "markdown"]
 roots = [".git", ".hg"]
 command = "texlab"
 settings_section = "texlab"
 [language.latex.settings.texlab]
-# See https://github.com/latex-lsp/texlab/blob/master/docs/options.md
-texlab.latexindent.local = ".latexindent.yaml"
+# See https://github.com/latex-lsp/texlab/wiki/Configuration
+latexindent.local = ".latexindent.yaml"
+latexindent.modifyLineBreaks = true
 #
 # Preview configuration for zathura with SyncTeX search.
-# For other PDF viewers see https://github.com/latex-lsp/texlab/blob/master/docs/previewing.md
+# For other PDF viewers see https://github.com/latex-lsp/texlab/wiki/Previewing
 forwardSearch.executable = "zathura"
 forwardSearch.args = [
     "%p",
@@ -227,7 +231,6 @@ forwardSearch.args = [
         '
     """,
 ]
-
 [language.lua]
 filetypes = ["lua"]
 roots = [".git", ".hg"]

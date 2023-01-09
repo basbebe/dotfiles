@@ -22,6 +22,8 @@ yabai -m config window_border_width         4
 yabai -m config active_window_border_color  0xff689d6a
 yabai -m config normal_window_border_color  0x88928374
 yabai -m config insert_feedback_color       0xbbd79921
+yabai -m config window_border_blur          on
+yabai -m config window_border_hidpi         on
 
 # on or off (default: off)
 yabai -m config auto_balance off
@@ -42,7 +44,7 @@ yabai -m config mouse_action2 resize
 yabai -m config mouse_drop_action stack
 
 # set focus follows mouse mode (default: off, options: off, autoraise, autofocus)
-yabai -m config focus_follows_mouse autofocus
+yabai -m config focus_follows_mouse autoraise
 
 # Specify which display a newly created window should be managed in (default: default)
 yabai -m config window_origin_display cursor
@@ -51,7 +53,7 @@ yabai -m config window_origin_display cursor
 yabai -m config mouse_follows_focus on
 
 # floating windows are always on top (default: off)
-yabai -m config window_topmost on
+yabai -m config window_topmost off
 
 # modify window shadows (default: on, options: on, off, float)
 yabai -m config window_shadow float
@@ -96,6 +98,7 @@ disable_for_app "^System Information$"
 disable_for_app "^System\ Preferences$"
 disable_for_app "^VLC$"
 
+disable_for_app_sticky "Bitwarden"
 disable_for_app_sticky "^KeePassXC$"
 disable_for_app_sticky "^Yubi"
 
@@ -121,6 +124,7 @@ yabai -m space 3 --label productivity
 yabai -m rule --add app="^Calendar" space="productivity"
 yabai -m rule --add app="^MailMate*" space=^"productivity"
 yabai -m rule --add app="^Reminders" space="productivity"
+yabai -m rule --add app="^Logseq" space="productivity"
 
 yabai -m space 4 --label communication
 yabai -m config --space communication layout stack

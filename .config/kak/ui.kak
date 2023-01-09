@@ -64,11 +64,11 @@ hook global InsertCompletionHide .* %{
 
 try %sh{kak-lsp --kakoune --session "$kak_session"}
 
-hook global WinSetOption filetype=(c|cpp|elm|crystal|css|elm|haskell|html|java|javascript|json|latex|rust|python|go|typescript|svelte|zig|gdscript) %{
+hook global WinSetOption filetype=(bibtex|c|cpp|elm|crystal|css|elm|haskell|html|java|javascript|json|latex|rust|python|go|typescript|svelte|zig|gdscript) %{
     set-option global lsp_auto_highlight_references true
     set-option global lsp_auto_show_code_actions true
     echo -debug "Enabling LSP for %opt{filetype}"
-    lsp-enable-window
+    # lsp-enable-window
 }
 hook global KakEnd .* lsp-exit
 

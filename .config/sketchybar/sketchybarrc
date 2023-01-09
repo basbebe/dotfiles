@@ -8,7 +8,7 @@ PLUGIN_DIR="$HOME/.config/sketchybar/plugins" # Directory where all the plugin s
 
 LOADING=􀖇 # Icon displayed while an item is still initializing
 PADDINGS=3 # All paddings use this value (icon, label, background and bar paddings)
-FONT="SF Pro" # Needs to have Regular, Bold, Semibold, Heavy and Black variants
+FONT="Victor Mono" # Needs to have Regular, Bold, Semibold, Heavy and Black variants
 BAR_COLOR=0xff$COLOR_BG # Black bar
 ICON_COLOR=0xff$COLOR_FG # Color of all icons
 LABEL_COLOR=0xff$COLOR_FG_GRAY # Color of all labels

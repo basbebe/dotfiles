@@ -4,7 +4,6 @@
 	editor = kak
 [commit]
 	template = ~/.stCommitMsg
-	gpgsign = true
 [tag]
 	forceSignAnnotated = true
 [include]
